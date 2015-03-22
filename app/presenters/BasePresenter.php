@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use Kdyby\Doctrine\EntityManager;
 use Nette,
 	App\Model;
 
@@ -11,5 +12,13 @@ use Nette,
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+	/**
+	 * @var EntityManager
+	 */
+	protected $em;
 
+	public function __construct(EntityManager $em)
+	{
+		$this->em = $em;
+	}
 }

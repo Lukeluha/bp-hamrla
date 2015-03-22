@@ -2,19 +2,24 @@
 
 namespace App\Presenters;
 
-use Nette,
-	App\Model;
-
-
+use App\Model\Role;
 /**
  * Homepage presenter.
  */
 class HomepagePresenter extends BasePresenter
 {
 
-	public function renderDefault()
+	public function actionDefault()
 	{
-		$this->template->anyVariable = 'any value';
+		$role = new Role();
+		$role->setName("student");
+
+		$this->em->persist($role);
+		$this->em->flush();
 	}
 
+	public function renderDefault()
+	{
+
+	}
 }
