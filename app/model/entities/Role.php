@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model;
+namespace App\Model\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use \Doctrine\ORM\Mapping as ORM;
 
 /**
  * Entity represents user role

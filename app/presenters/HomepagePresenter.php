@@ -1,21 +1,29 @@
 <?php
 
 namespace App\Presenters;
+use App\Model\Services\UserService;
 
-use App\Model\Role;
 /**
  * Homepage presenter.
  */
 class HomepagePresenter extends BasePresenter
 {
+	/**
+	 * @inject
+	 * @var UserService
+	 */
+	public $userService;
+
+	/**
+	 * @inject
+	 * @var \Nette\Security\User
+	 */
+	public $user;
 
 	public function actionDefault()
 	{
-		$role = new Role();
-		$role->setName("student");
-
-		$this->em->persist($role);
-		$this->em->flush();
+		//$this->userManager->logout();
+		//$this->userService->authenticate(array("admin", "123"));
 	}
 
 	public function renderDefault()
