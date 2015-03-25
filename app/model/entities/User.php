@@ -4,6 +4,7 @@ namespace App\Model\Entity;
 
 
 use \Doctrine\ORM\Mapping as ORM;
+use Nette\Security\IIdentity;
 
 /**
  * Class represents User in database
@@ -11,7 +12,7 @@ use \Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
-class User extends BaseEntity
+class User extends BaseEntity implements IIdentity
 {
 
 	/**
@@ -157,5 +158,10 @@ class User extends BaseEntity
 	{
 		$this->role = $role;
 		return $this;
+	}
+
+	public function getRoles()
+	{
+		return array($this->getRole()->getName());
 	}
 }

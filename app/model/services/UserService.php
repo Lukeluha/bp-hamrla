@@ -6,7 +6,6 @@ use App\Model\Entity\User;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Security\AuthenticationException;
 use Nette\Security\IAuthenticator;
-use Nette\Security\Identity;
 use Nette\Security\IIdentity;
 use Nette\Security\Passwords;
 
@@ -46,8 +45,8 @@ class UserService extends BaseService implements IAuthenticator
 			$this->em->flush();
 		}
 
-		return new Identity($user->getId(), array($user->getRole()->getName()));
-//		return $user;
+		//return new Identity($user->getId(), array($user->getRole()->getName()));
+		return $user;
 	}
 
 	/**

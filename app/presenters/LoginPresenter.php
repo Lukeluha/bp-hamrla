@@ -3,16 +3,9 @@
 namespace App\Presenters;
 
 use Nette\Application\UI\Form;
-use Nette\Application\UI\Presenter;
 
-class LoginPresenter extends Presenter
+class LoginPresenter extends BasePresenter
 {
-	/**
-	 * @inject
-	 * @var \Nette\Security\User
-	 */
-	public $userManager;
-
 	public function createComponentLoginForm()
 	{
 		$form = new Form();
@@ -31,7 +24,7 @@ class LoginPresenter extends Presenter
 	{
 		$values = $form->getValues();
 		try {
-			$this->userManager->login($values['login'], $values['password']);
+			$this->authenticator->login($values['login'], $values['password']);
 		} catch (\Exception $e) {
 			$this->flashMessage("Nepodařilo se přihlásit. " . $e->getMessage(), "alert");
 		}
@@ -42,7 +35,7 @@ class LoginPresenter extends Presenter
 	public function startup()
 	{
 		parent::startup();
-		if ($this->userManager->isLoggedIn()) {
+		if ($this->authenticator->isLoggedIn()) {
 			$this->redirect("Homepage:default");
 		}
 	}

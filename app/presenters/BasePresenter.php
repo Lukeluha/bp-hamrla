@@ -13,26 +13,14 @@ use Nette,
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
 	/**
+	 * @inject
 	 * @var EntityManager
 	 */
-	protected $em;
+	public $em;
 
 	/**
+	 * @inject
 	 * @var Nette\Security\User
 	 */
-	protected $userManager;
-
-	public function __construct(EntityManager $em, Nette\Security\User $user)
-	{
-		$this->em = $em;
-		$this->userManager = $user;
-	}
-
-	public function startup()
-	{
-		parent::startup();
-		if (!$this->userManager->isLoggedIn()) {
-			$this->redirect("Login:default");
-		}
-	}
+	public $authenticator;
 }
