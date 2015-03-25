@@ -1,0 +1,7 @@
+php:
+	date.timezone: Europe/Prague
+
+
+services:
+	cacheStorage:
+		class: Nette\Caching\Storages\MemoryStorage
