@@ -11,32 +11,32 @@
 
 	{if $isProduction}
 		<link rel="stylesheet" href="{$basePath}/css/screen.min.css" />
+		<script src="{$basePath}/js/app.min.js"></script>
 	{else}
 		<!-- build:css {$basePath}/css/screen.min.css -->
 		<link rel="stylesheet" href="{$basePath}/css/app.css" />
 		<!-- endbuild -->
+
+		<!-- build:js {$basePath}/js/app.min.js -->
 		<script src="{$basePath}/js/modernizr.js"></script>
+		<script src="{$basePath}/js/jquery.min.js"></script>
+		<script src="{$basePath}/js/foundation.min.js"></script>
+		<script src="{$basePath}/js/live-form-validation.js"></script>
+		<script src="{$basePath}/js/app.js"></script>
+		<!-- endbuild -->
 	{/if}
 
 	{block head}{/block}
 </head>
 <body>
 
+<div class="fixed">
+	{control menu}
+</div>
+
 <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
 {include content}
-
-
-{if $isProduction}
-	<script src="{$basePath}/js/app.min.js"></script>
-{else}
-	<!-- build:js {$basePath}/js/app.min.js -->
-	<script src="{$basePath}/js/jquery.min.js"></script>
-	<script src="{$basePath}/js/foundation.min.js"></script>
-	<script src="{$basePath}/js/live-form-validation.js"></script>
-	<script src="{$basePath}/js/app.js"></script>
-	<!-- endbuild -->
-{/if}
 
 </body>
 </html>

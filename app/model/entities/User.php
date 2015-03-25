@@ -46,9 +46,8 @@ class User extends BaseEntity implements IIdentity
 	protected $password;
 
 	/**
-	 * @var Role
-	 * @ORM\ManyToOne(targetEntity="Role")
-	 * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+	 * @ORM\Column(type="string", length=100)
+	 * @var string
 	 */
 	protected $role;
 
@@ -143,7 +142,7 @@ class User extends BaseEntity implements IIdentity
 	}
 
 	/**
-	 * @return Role
+	 * @return string
 	 */
 	public function getRole()
 	{
@@ -151,7 +150,7 @@ class User extends BaseEntity implements IIdentity
 	}
 
 	/**
-	 * @param Role $role
+	 * @param string $role
 	 * @return $this
 	 */
 	public function setRole($role)
@@ -162,6 +161,6 @@ class User extends BaseEntity implements IIdentity
 
 	public function getRoles()
 	{
-		return array($this->getRole()->getName());
+		return array($this->role);
 	}
 }

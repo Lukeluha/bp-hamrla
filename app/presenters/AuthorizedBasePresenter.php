@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Presenters;
+use App\Control\MenuControl;
 
 
 /**
@@ -16,6 +17,13 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 		if (!$this->authenticator->isLoggedIn()) {
 			$this->redirect("Login:default");
 		}
+	}
 
+	/**
+	 * Factory for creating menu component
+	 */
+	public function createComponentMenu()
+	{
+		return new MenuControl($this->em);
 	}
 }

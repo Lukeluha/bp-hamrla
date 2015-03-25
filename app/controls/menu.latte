@@ -1,0 +1,33 @@
+<nav class="top-bar" data-topbar role="navigation">
+	<ul class="title-area">
+		<li class="name"></li>
+		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+	</ul>
+
+	<section class="top-bar-section">
+		<ul class="left">
+			<li class="has-dropdown">
+				<a href="#">Mé předměty</a>
+				<ul class="dropdown">
+					{if isset($userSubjects) && count($userSubjects)}
+						<li n:foreach="$userSubjects as $subject"><a href="#">{$subject->name}</a></li>
+					{else}
+						<li><a href="#">Nemáte zapsány žádné předměty</a></li>
+					{/if}
+				</ul>
+			</li>
+			<li class="divider"></li>
+			<li><a href="#">Vyhledávání</a></li>
+			<li class="divider"></li>
+			{if $user->isInRole('admin')}
+				<li><a href="#">Nastavení</a></li>
+			{/if}
+		</ul>
+
+		<ul class="right">
+
+		</ul>
+
+
+	</section>
+</nav>
