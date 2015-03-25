@@ -8,8 +8,15 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>{ifset title}{include title|striptags} | {/ifset}Nette Sandbox</title>
-	<link rel="stylesheet" href="{$basePath}/css/app.css" />
-	<script src="{$basePath}/js/modernizr.js"></script>
+
+	{if $isProduction}
+		<link rel="stylesheet" href="{$basePath}/css/screen.min.css" />
+	{else}
+		<!-- build:css {$basePath}/css/screen.min.css -->
+		<link rel="stylesheet" href="{$basePath}/css/app.css" />
+		<!-- endbuild -->
+		<script src="{$basePath}/js/modernizr.js"></script>
+	{/if}
 
 	{block head}{/block}
 </head>
@@ -20,10 +27,17 @@
 {include content}
 
 
-<script src="{$basePath}/js/jquery.min.js"></script>
-<script src="{$basePath}/js/foundation.min.js"></script>
-<script src="{$basePath}/js/live-form-validation.js"></script>
-<script src="{$basePath}/js/app.js"></script>
+{if $isProduction}
+	<script src="{$basePath}/js/app.min.js"></script>
+{else}
+	<!-- build:js {$basePath}/js/app.min.js -->
+	<script src="{$basePath}/js/jquery.min.js"></script>
+	<script src="{$basePath}/js/foundation.min.js"></script>
+	<script src="{$basePath}/js/live-form-validation.js"></script>
+	<script src="{$basePath}/js/app.js"></script>
+	<!-- endbuild -->
+{/if}
+
 </body>
 </html>
 

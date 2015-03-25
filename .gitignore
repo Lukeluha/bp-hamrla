@@ -9,3 +9,4 @@ temp/*
 app/config/config.local.neon
 
 /.sass-cache/*
+.tmp/

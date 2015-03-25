@@ -23,4 +23,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	 * @var Nette\Security\User
 	 */
 	public $authenticator;
+
+	public function beforeRender()
+	{
+		$this->template->isProduction = Nette\Environment::isProduction();
+	}
 }
