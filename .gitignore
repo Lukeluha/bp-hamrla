@@ -9,4 +9,7 @@ temp/*
 app/config/config.local.neon
 
 /.sass-cache/*
-.tmp/
+.tmp/*
+node_modules/*
+scss/.sass-cache/*
+vendor/bower_components/*
