@@ -7,7 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
-    'Majkl578\\NetteAddons\\Doctrine2Identity\\' => array($vendorDir . '/majkl578/nette-identity-doctrine/lib'),
     'Kdyby\\Persistence\\' => array($vendorDir . '/kdyby/doctrine/src'),
     'Kdyby\\Events\\' => array($vendorDir . '/kdyby/events/src'),
     'Kdyby\\Doctrine\\' => array($vendorDir . '/kdyby/doctrine/src'),

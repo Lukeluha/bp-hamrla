@@ -2,14 +2,13 @@
 
 namespace App\Model\Services;
 
-use App\Model\Entity\Role;
 use App\Model\Entity\User;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Security\AuthenticationException;
 use Nette\Security\IAuthenticator;
+use Nette\Security\Identity;
 use Nette\Security\IIdentity;
 use Nette\Security\Passwords;
-use Nette\Security\Permission;
 
 class UserService extends BaseService implements IAuthenticator
 {
@@ -47,7 +46,7 @@ class UserService extends BaseService implements IAuthenticator
 			$this->em->flush();
 		}
 
-		return $user;
+		return new Identity($user->getId(), $user->getRole()->getName());
 	}
 
 	/**
@@ -58,4 +57,5 @@ class UserService extends BaseService implements IAuthenticator
 	{
 		$user->setPassword(Passwords::hash($user->getPassword()));
 	}
+
 }

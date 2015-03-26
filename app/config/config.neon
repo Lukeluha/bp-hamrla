@@ -18,16 +18,14 @@ application:
 session:
 	expiration: 14 days
 
-
 services:
 	- App\Forms\SignFormFactory
 	router: App\RouterFactory::createRouter
 	authenticator: App\Model\Services\UserService
 
+
 extensions:
-    # add theese four lines
     console: Kdyby\Console\DI\ConsoleExtension
     events: Kdyby\Events\DI\EventsExtension
     annotations: Kdyby\Annotations\DI\AnnotationsExtension
     doctrine: Kdyby\Doctrine\DI\OrmExtension
-    doctrine2identity: Majkl578\NetteAddons\Doctrine2Identity\DI\IdentityExtension

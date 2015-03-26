@@ -4,8 +4,6 @@ namespace App\Model\Entity;
 
 
 use \Doctrine\ORM\Mapping as ORM;
-use Nette\Environment;
-use Nette\Http\Url;
 use Nette\Security\IIdentity;
 
 /**
@@ -29,6 +27,7 @@ class User extends BaseEntity implements IIdentity
 	 */
 	protected $surname;
 
+
 	/**
 	 * @ORM\Column(type="string", length=255)
 	 * @var string
@@ -42,8 +41,9 @@ class User extends BaseEntity implements IIdentity
 	protected $password;
 
 	/**
-	 * @ORM\Column(type="string", length=100)
-	 * @var string
+	 * @var Role
+	 * @ORM\ManyToOne(targetEntity="Role")
+	 * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
 	 */
 	protected $role;
 
@@ -84,6 +84,24 @@ class User extends BaseEntity implements IIdentity
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getPhoto()
+	{
+		return $this->photo;
+	}
+
+	/**
+	 * @param string $photo
+	 * @return $this
+	 */
+	public function setPhoto($photo)
+	{
+		$this->photo = $photo;
+		return $this;
+	}
+
+	/**
 	 * @return mixed
 	 */
 	public function getLogin()
@@ -120,7 +138,7 @@ class User extends BaseEntity implements IIdentity
 	}
 
 	/**
-	 * @return string
+	 * @return Role
 	 */
 	public function getRole()
 	{
@@ -128,7 +146,7 @@ class User extends BaseEntity implements IIdentity
 	}
 
 	/**
-	 * @param string $role
+	 * @param Role $role
 	 * @return $this
 	 */
 	public function setRole($role)
@@ -139,12 +157,6 @@ class User extends BaseEntity implements IIdentity
 
 	public function getRoles()
 	{
-		return array($this->role);
-	}
-
-	public function getProfilePhoto()
-	{
-		///nvironment::
-		//if (file_exists())
+		return array($this->getRole()->getName());
 	}
 }
