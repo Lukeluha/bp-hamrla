@@ -26,4 +26,9 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	{
 		return new MenuControl($this->em);
 	}
+
+	public function handleLogout()
+	{
+		$this->authenticator->logout();
+	}
 }
