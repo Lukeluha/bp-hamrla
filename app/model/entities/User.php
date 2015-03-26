@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use \Doctrine\ORM\Mapping as ORM;
 use Nette\Security\IIdentity;
+use Nette\Utils\Image;
 
 /**
  * Class represents User in database
@@ -158,5 +159,16 @@ class User extends BaseEntity implements IIdentity
 	public function getRoles()
 	{
 		return array($this->getRole()->getName());
+	}
+
+	public function getProfilePicture()
+	{
+		$path = IMG_DIR . "/users/user-" . $this->id . ".jpg";
+
+		if (file_exists($path)) { // must check filesystem path, but return only relative url
+			return "users/user-" . $this->id . ".jpg";
+		} else {
+			return "users/user-no-picture.jpg";
+		}
 	}
 }

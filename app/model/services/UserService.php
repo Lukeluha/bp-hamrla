@@ -46,7 +46,13 @@ class UserService extends BaseService implements IAuthenticator
 			$this->em->flush();
 		}
 
-		return new Identity($user->getId(), $user->getRole()->getName());
+		$data = array(
+			'profilePicture' => $user->getProfilePicture(),
+			'name' => $user->getName(),
+			'surname' => $user->getSurname()
+		);
+
+		return new Identity($user->getId(), $user->getRole()->getName(), $data);
 	}
 
 	/**

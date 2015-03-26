@@ -1,4 +1,4 @@
-<nav class="top-bar" data-topbar role="navigation">
+<nav class="top-bar" data-topbar role="navigation" id="menu">
 	<ul class="title-area">
 		<li class="name"></li>
 		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
@@ -24,9 +24,17 @@
 			{/if}
 		</ul>
 
-		<ul class="right">
-
-			<li><a href="{plink logout!}">logout</a></li>
+		<ul class="right vertical-center">
+			<li class="left">
+					<a href="#">
+						<img class="img-circle " src="{$basePath}/images/{$user->getIdentity()->profilePicture|img:0,45}" alt=""/>
+						<ul class="unstyled right" id="profile-info">
+							<li>{$user->getIdentity()->name} {$user->getIdentity()->surname}</li>
+							<div class="clearfix"></div>
+							<li>{$user->roles[0]}</li>
+						</ul>
+					</a>
+			</li>
 		</ul>
 
 

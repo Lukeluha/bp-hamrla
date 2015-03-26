@@ -9157,3 +9157,34 @@ th.hide-for-touch {
     display: table-cell !important;
   }
 }
+/* line 9, ../../scss/app.scss */
+#menu ul.vertical-center li {
+  color: white;
+}
+/* line 12, ../../scss/app.scss */
+#menu ul.vertical-center li :hover {
+  background-color: #333333;
+}
+/* line 17, ../../scss/app.scss */
+#menu ul.vertical-center ul#profile-info {
+  padding-top: 5px;
+  padding-left: 5px;
+}
+/* line 21, ../../scss/app.scss */
+#menu ul.vertical-center ul#profile-info li:nth-child(3) {
+  font-size: 11px;
+  color: grey;
+}
+
+/* line 30, ../../scss/app.scss */
+ul.unstyled {
+  list-style-type: none;
+}
+
+/* line 34, ../../scss/app.scss */
+.img-circle {
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+  -ms-border-radius: 150px;
+  border-radius: 150px;
+}

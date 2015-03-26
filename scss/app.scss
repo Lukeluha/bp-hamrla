@@ -1,3 +1,37 @@
 @import "settings";
+@import "functions";
 @import "../vendor/bower_components/foundation/scss/foundation";
+
+
+#menu {
+  ul.vertical-center {
+
+    li {
+      color: white;
+
+      :hover {
+        background-color: $oil;
+      }
+    }
+
+    ul#profile-info {
+      padding-top:5px;
+      padding-left: 5px;
+
+      li:nth-child(3) {
+        font-size: 11px;
+        color:grey;
+      }
+    }
+
+  }
+}
+
+ul.unstyled {
+  list-style-type: none;
+}
+
+.img-circle {
+  @include border-radius(150px);
+}
 

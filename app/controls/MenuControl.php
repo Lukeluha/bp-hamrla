@@ -27,6 +27,8 @@ class MenuControl extends Control
 	public function render()
 	{
 		$template = $this->template;
+		$template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
+
 		$template->setFile(__DIR__ . '/menu.latte');
 		$template->render();
 	}

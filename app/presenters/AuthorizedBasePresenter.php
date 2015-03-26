@@ -2,6 +2,8 @@
 
 namespace App\Presenters;
 use App\Control\MenuControl;
+use App\Model\Entity\User;
+use Nette\Utils\Image;
 
 
 /**
@@ -14,7 +16,7 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	public function startup()
 	{
 		parent::startup();
-		if (!$this->authenticator->isLoggedIn()) {
+		if (!$this->user->isLoggedIn()) {
 			$this->redirect("Login:default");
 		}
 	}
@@ -30,7 +32,7 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	public function handleLogout()
 	{
 		try {
-			$this->authenticator->logout();
+			$this->user->logout();
 			$this->flashMessage("Byl jste úspěšně odhlášen.", "success");
 		} catch (\Exception $e) {
 			$this->flashMessage("Odhlášení se nezdařilo.", "error");
@@ -38,4 +40,11 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 
 		$this->redirect('Login:default');
 	}
+
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		//$this->template->loggedUser = $this->em->getRepository(User::getClassName())->find($this->authenticator->getId());
+	}
+
 }

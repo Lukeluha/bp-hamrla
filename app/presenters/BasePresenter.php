@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use App\Filter\TemplateFilters;
 use Kdyby\Doctrine\EntityManager;
 use Nette,
 	App\Model;
@@ -18,11 +19,14 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	 */
 	public $em;
 
-	/**
-	 * @inject
-	 * @var Nette\Security\User
-	 */
-	public $authenticator;
+
+	protected function createTemplate()
+	{
+		$template = parent::createTemplate();
+		$template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
+
+		return $template;
+	}
 
 	public function beforeRender()
 	{

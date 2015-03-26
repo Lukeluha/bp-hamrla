@@ -24,7 +24,7 @@ class LoginPresenter extends BasePresenter
 	{
 		$values = $form->getValues();
 		try {
-			$this->authenticator->login($values['login'], $values['password']);
+			$this->user->login($values['login'], $values['password']);
 		} catch (\Exception $e) {
 			$this->flashMessage("Nepodařilo se přihlásit. " . $e->getMessage(), "alert");
 		}
@@ -35,7 +35,7 @@ class LoginPresenter extends BasePresenter
 	public function startup()
 	{
 		parent::startup();
-		if ($this->authenticator->isLoggedIn()) {
+		if ($this->user->isLoggedIn()) {
 			$this->redirect("Homepage:default");
 		}
 	}
