@@ -29,6 +29,13 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 
 	public function handleLogout()
 	{
-		$this->authenticator->logout();
+		try {
+			$this->authenticator->logout();
+			$this->flashMessage("Byl jste úspěšně odhlášen.", "success");
+		} catch (\Exception $e) {
+			$this->flashMessage("Odhlášení se nezdařilo.", "error");
+		}
+
+		$this->redirect('Login:default');
 	}
 }

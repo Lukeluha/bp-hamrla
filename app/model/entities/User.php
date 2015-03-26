@@ -4,6 +4,8 @@ namespace App\Model\Entity;
 
 
 use \Doctrine\ORM\Mapping as ORM;
+use Nette\Environment;
+use Nette\Http\Url;
 use Nette\Security\IIdentity;
 
 /**
@@ -26,12 +28,6 @@ class User extends BaseEntity implements IIdentity
 	 * @var string
 	 */
 	protected $surname;
-
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 * @var string Path to photo of user
-	 */
-	protected $photo;
 
 	/**
 	 * @ORM\Column(type="string", length=255)
@@ -84,24 +80,6 @@ class User extends BaseEntity implements IIdentity
 	public function setSurname($surname)
 	{
 		$this->surname = $surname;
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getPhoto()
-	{
-		return $this->photo;
-	}
-
-	/**
-	 * @param string $photo
-	 * @return $this
-	 */
-	public function setPhoto($photo)
-	{
-		$this->photo = $photo;
 		return $this;
 	}
 
@@ -162,5 +140,11 @@ class User extends BaseEntity implements IIdentity
 	public function getRoles()
 	{
 		return array($this->role);
+	}
+
+	public function getProfilePhoto()
+	{
+		///nvironment::
+		//if (file_exists())
 	}
 }

@@ -8,8 +8,10 @@ temp/*
 !web.config
 app/config/config.local.neon
 
-/.sass-cache/*
+.sass-cache/*
 .tmp/*
 node_modules/*
 scss/.sass-cache/*
 vendor/bower_components/*
+
+www/adminer/

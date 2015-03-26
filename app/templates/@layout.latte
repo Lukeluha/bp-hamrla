@@ -34,7 +34,10 @@
 	{control menu}
 </div>
 
-<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+<div n:foreach="$flashes as $flash" data-alert n:class="alert-box, $flash->type">
+	{$flash->message}
+	<a href="#" class="close">&times;</a>
+</div>
 
 {include content}
 
