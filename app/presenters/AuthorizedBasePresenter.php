@@ -1,10 +1,8 @@
 <?php
 
 namespace App\Presenters;
+use App\Control\ChatControl;
 use App\Control\MenuControl;
-use App\Model\Entity\User;
-use Nette\Utils\Image;
-
 
 /**
  * Class AuthorizedBasePresenter
@@ -27,6 +25,14 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	public function createComponentMenu()
 	{
 		return new MenuControl($this->em);
+	}
+
+	/**
+	 * Factory for creating chat component
+	 */
+	public function createComponentChat()
+	{
+		return new ChatControl($this->em);
 	}
 
 	public function handleLogout()

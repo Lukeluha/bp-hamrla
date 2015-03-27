@@ -3,15 +3,23 @@
 @import "../vendor/bower_components/foundation/scss/foundation";
 
 
+body {
+  background-color: whitesmoke;
+}
+
 #menu {
+  .top-bar-section ul li{
+    background: $dark-grey;
+  }
+
   ul.vertical-center {
 
     li {
       color: white;
+    }
 
-      :hover {
-        background-color: $oil;
-      }
+    :hover li {
+      background: $oil;
     }
 
     ul#profile-info {
@@ -25,6 +33,29 @@
     }
 
   }
+}
+
+
+#chat {
+  background-color: $grey;
+  height: calc(100vh - 55px);
+}
+
+.breadcrumbs {
+  border-radius: 0;
+  border:none;
+  border-bottom: 2px solid $grey;
+}
+
+.without-padding {
+  padding:0;
+}
+
+.full-width {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: initial;
 }
 
 ul.unstyled {

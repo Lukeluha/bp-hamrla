@@ -38,8 +38,38 @@
 	{$flash->message}
 	<a href="#" class="close">&times;</a>
 </div>
+<div class="row full-width">
+	<div class="small-10 column without-padding">
+		<div class="hide-for-small small-12 ">
+			<ul class="breadcrumbs">
+				{block breadcrumbs}
+					<li><a href="{link Homepage:default}">Hlavní stránka</a></li>
+				{/block}
+			</ul>
+		</div>
 
-{include content}
+		{block leftMenu}
+			<div class="column small-2">
+				&nbsp;
+			</div>
+		{/block}
+
+
+		<div class="column {block contentWidth}small-10{/block}">
+			{block content}
+
+			{/block}
+		</div>
+	</div>
+
+
+
+	<div class="small-2 column without-padding">
+			{block chat}
+				{control chat}
+			{/block}
+	</div>
+</div>
 
 </body>
 </html>

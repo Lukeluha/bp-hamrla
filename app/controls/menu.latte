@@ -11,6 +11,7 @@
 				<ul class="dropdown">
 					{if isset($userSubjects) && count($userSubjects)}
 						<li n:foreach="$userSubjects as $subject"><a href="#">{$subject->name}</a></li>
+						<li class="divider"></li>
 					{else}
 						<li><a href="#">Nemáte zapsány žádné předměty</a></li>
 					{/if}
@@ -25,15 +26,21 @@
 		</ul>
 
 		<ul class="right vertical-center">
-			<li class="left">
+			<li class="left has-dropdown">
 					<a href="#">
 						<img class="img-circle " src="{$basePath}/images/{$user->getIdentity()->profilePicture|img:0,45}" alt=""/>
 						<ul class="unstyled right" id="profile-info">
-							<li>{$user->getIdentity()->name} {$user->getIdentity()->surname}</li>
+							<li id="aaa">{$user->getIdentity()->name} {$user->getIdentity()->surname}</li>
 							<div class="clearfix"></div>
 							<li>{$user->roles[0]}</li>
 						</ul>
 					</a>
+					<ul class="dropdown text-right">
+						<li class="divider"></li>
+						<li><a href="#">Nastavení profilu</a></li>
+						<li class="divider"></li>
+						<li><a href="{plink logout!}">Odhlásit se</a></li>
+					</ul>
 			</li>
 		</ul>
 
