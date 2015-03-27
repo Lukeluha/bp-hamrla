@@ -5,7 +5,6 @@ namespace App\Model\Entity;
 
 use \Doctrine\ORM\Mapping as ORM;
 use Nette\Security\IIdentity;
-use Nette\Utils\Image;
 
 /**
  * Class represents User in database
