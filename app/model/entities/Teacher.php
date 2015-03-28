@@ -1,31 +1,26 @@
 <?php
 
 namespace App\Model\Entity;
-
 use \Doctrine\ORM\Mapping as ORM;
+use Nette\Security\privilege;
+use Nette\Security\role;
 
 
 /**
  * Class Teacher
  * Entity represents teacher in database
- * @package App\Model\Entity
  * @ORM\Entity()
- * @ORM\Table(name="teachers")
+ * @ORM\Table(name="users")
+ * @package App\Model\Entity
  */
-class Teacher extends BaseEntity
+class Teacher extends User
 {
+
 	/**
 	 * @ORM\Column(type="string")
 	 * @var string
 	 */
 	protected $room;
-
-	/**
-	 * @ORM\OneToOne(targetEntity="User")
-	 * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-	 * @var User
-	 */
-	protected $user;
 
 	/**
 	 * @return string
@@ -45,24 +40,16 @@ class Teacher extends BaseEntity
 		return $this;
 	}
 
-	/**
-	 * @return User
-	 */
-	public function getUser()
-	{
-		return $this->user;
-	}
+
 
 	/**
-	 * @param User $user
-	 * @return $this
+	 * Get role of user
+	 * @return string
 	 */
-	public function setUser($user)
+	public function getRoles()
 	{
-		$this->user = $user;
-		return $this;
+		return array(self::ROLE_TEACHER);
 	}
-
 
 
 }

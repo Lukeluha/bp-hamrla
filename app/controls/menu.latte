@@ -30,9 +30,17 @@
 					<a href="#">
 						<img class="img-circle " src="{$basePath}/images/{$user->getIdentity()->profilePicture|img:0,45}" alt=""/>
 						<ul class="unstyled right" id="profile-info">
-							<li id="aaa">{$user->getIdentity()->name} {$user->getIdentity()->surname}</li>
+							<li>{$user->getIdentity()->name} {$user->getIdentity()->surname}</li>
 							<div class="clearfix"></div>
-							<li>{$user->roles[0]}</li>
+							<li>
+								{if $user->isInRole(\App\Model\Entity\User::ROLE_ADMIN)}
+									admin
+								{elseif $user->isInRole(\App\Model\Entity\User::ROLE_TEACHER)}
+									učitel
+								{else}
+									student
+								{/if}
+							</li>
 						</ul>
 					</a>
 					<ul class="dropdown text-right">

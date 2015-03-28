@@ -4,16 +4,24 @@ namespace App\Model\Entity;
 
 
 use \Doctrine\ORM\Mapping as ORM;
-use Nette\Security\IIdentity;
 
 /**
  * Class represents User in database
  * @package App\Model\Entities
  * @ORM\Entity
  * @ORM\Table(name="users")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="role", type="string")
+ * @ORM\DiscriminatorMap( {"admin" = "Admin", "teacher" = "Teacher", "student" = "Student"} )
  */
-class User extends BaseEntity implements IIdentity
+
+
+abstract class User extends BaseEntity
 {
+
+	const ROLE_STUDENT = "student";
+	const ROLE_TEACHER = "teacher";
+	const ROLE_ADMIN = "admin";
 
 	/**
 	 * @ORM\Column(type="string", length=255)
@@ -39,13 +47,6 @@ class User extends BaseEntity implements IIdentity
 	 * @var string
 	 */
 	protected $password;
-
-	/**
-	 * @var Role
-	 * @ORM\ManyToOne(targetEntity="Role")
-	 * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
-	 */
-	protected $role;
 
 	/**
 	 * @return string
@@ -137,28 +138,7 @@ class User extends BaseEntity implements IIdentity
 		return $this;
 	}
 
-	/**
-	 * @return Role
-	 */
-	public function getRole()
-	{
-		return $this->role;
-	}
 
-	/**
-	 * @param Role $role
-	 * @return $this
-	 */
-	public function setRole($role)
-	{
-		$this->role = $role;
-		return $this;
-	}
-
-	public function getRoles()
-	{
-		return array($this->getRole()->getName());
-	}
 
 	public function getProfilePicture()
 	{
@@ -170,4 +150,11 @@ class User extends BaseEntity implements IIdentity
 			return "users/user-no-picture.jpg";
 		}
 	}
+
+	/**
+	 * Get roles of user
+	 * @return array
+	 */
+	abstract public function getRoles();
+
 }

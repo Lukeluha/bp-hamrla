@@ -52,7 +52,7 @@ class UserService extends BaseService implements IAuthenticator
 			'surname' => $user->getSurname()
 		);
 
-		return new Identity($user->getId(), $user->getRole()->getName(), $data);
+		return new Identity($user->getId(), $user->getRoles(), $data);
 	}
 
 	/**
