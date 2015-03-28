@@ -14,15 +14,20 @@
 		<script src="{$basePath}/js/app.min.js"></script>
 	{else}
 		<!-- build:css {$basePath}/css/screen.min.css -->
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+		<link rel="stylesheet" href="{$basePath}/css/foundation-datepicker.css" />
 		<link rel="stylesheet" href="{$basePath}/css/app.css" />
 		<!-- endbuild -->
 
 		<!-- build:js {$basePath}/js/app.min.js -->
-		<script src="{$basePath}/js/modernizr.js"></script>
-		<script src="{$basePath}/js/jquery.min.js"></script>
-		<script src="{$basePath}/js/foundation.min.js"></script>
-		<script src="{$basePath}/js/live-form-validation.js"></script>
-		<script src="{$basePath}/js/app.js"></script>
+		{block scripts}
+			<script src="{$basePath}/js/modernizr.js"></script>
+			<script src="{$basePath}/js/jquery.min.js"></script>
+			<script src="{$basePath}/js/foundation.min.js"></script>
+			<script src="{$basePath}/js/foundation-datepicker.js"></script>
+			<script src="//nette.github.io/resources/js/netteForms.min.js"></script>
+			<script src="{$basePath}/js/app.js"></script>
+		{/block}
 		<!-- endbuild -->
 	{/if}
 
@@ -35,17 +40,13 @@
 </div>
 
 <div n:foreach="$flashes as $flash" data-alert n:class="alert-box, $flash->type">
-	{$flash->message}
+	{$flash->message|noescape}
 	<a href="#" class="close">&times;</a>
 </div>
 <div class="row full-width">
 	<div class="small-10 column without-padding">
 		<div class="hide-for-small small-12 ">
-			<ul class="breadcrumbs">
-				{block breadcrumbs}
-					<li><a href="{link Homepage:default}">Hlavní stránka</a></li>
-				{/block}
-			</ul>
+			{control breadcrumbs}
 		</div>
 
 		{block leftMenu}

@@ -1,0 +1,47 @@
+{block content}
+
+	{if $user->isAllowed('settings', 'students')}
+		<h2>Správa studentů</h2>
+		<div id="students">
+			<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+		</div>
+	{/if}
+
+
+	{if $user->isAllowed('settings', 'classes')}
+		<h2>Správa tříd a skupin</h2>
+		<div id="classes">
+			<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+		</div>
+	{/if}
+
+	{if $user->isAllowed('settings', 'school-years')}
+		<h2>Správa školních roků</h2>
+		<a href="{link schoolYear}"><button class="button tiny">Přidat školní rok</button></a>
+		<div class="clearfix"></div>
+		{if $schoolYears}
+			<table>
+				<thead>
+				<tr>
+					<th>Školní rok</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach $schoolYears as $year}
+					<tr>
+						<td>{$year->getFrom()|date:'j. n. Y'} - {$year->getTo()|date:'j. n. Y'} {if $year->isClosed()} <span class="label alert">uzavřený</span> {elseif $year->isCurrent()} <span class="label">probíhá</span> {/if}</td>
+						<td>
+							<a class="button secondary tiny" n:href="SchoolYear:default $year->getId()">Editovat</a>
+							<button class="button alert tiny">Uzavřít</button>
+						</td>
+					</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		{else}
+			<p>Nenalezeny žádné školní roky</p>
+		{/if}
+	{/if}
+
+{/block}

@@ -9223,3 +9223,23 @@ ul.unstyled {
   -ms-border-radius: 150px;
   border-radius: 150px;
 }
+
+/* line 70, ../../scss/app.scss */
+input.form-control-error {
+  margin-bottom: 0;
+}
+
+/* line 75, ../../scss/app.scss */
+.alert-box.success a {
+  color: #005938;
+}
+
+/* line 79, ../../scss/app.scss */
+.alert-box.success a:hover {
+  color: #003823;
+}
+
+/* line 84, ../../scss/app.scss */
+td > .button {
+  margin: 0 !important;
+}
