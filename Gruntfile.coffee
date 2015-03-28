@@ -1,14 +1,14 @@
 module.exports = (grunt) ->
   grunt.initConfig
     useminPrepare:
-      html: ['app/templates/@layout.latte']
+      html: ['app/presenters/templates/@layout.latte']
       options:
         dest: '.'
 
     netteBasePath:
       basePath: 'www'
       options:
-        removeFromPath: ['app/templates/']
+        removeFromPath: ['app/presenters/templates/']
 
   # These plugins provide necessary tasks.
   grunt.loadNpmTasks 'grunt-contrib-concat'
