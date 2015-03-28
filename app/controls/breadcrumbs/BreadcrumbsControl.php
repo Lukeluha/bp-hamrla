@@ -19,6 +19,8 @@ class BreadcrumbsControl extends Control
 	public function render()
 	{
 		$this->template->links = $this->links;
+		$this->template->setFile(__DIR__ . "/breadcrumbs.latte");
+		$this->template->render();
 	}
 
 	public function addLink($title, $link)

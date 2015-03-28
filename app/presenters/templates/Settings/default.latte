@@ -17,7 +17,7 @@
 
 	{if $user->isAllowed('settings', 'school-years')}
 		<h2>Správa školních roků</h2>
-		<a href="{link schoolYear}"><button class="button tiny">Přidat školní rok</button></a>
+		<a n:href="SchoolYear:default"><button class="button tiny">Přidat školní rok</button></a>
 		<div class="clearfix"></div>
 		{if $schoolYears}
 			<table>

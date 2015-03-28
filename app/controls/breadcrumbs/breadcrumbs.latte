@@ -1,0 +1,5 @@
+<ul class="breadcrumbs">
+	{foreach $links as $link}
+		<li {if $iterator->last}class="current" {/if}><a href="{$link['link']}">{$link['title']}</a></li>
+	{/foreach}
+</ul>

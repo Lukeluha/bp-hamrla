@@ -20,11 +20,16 @@ session:
 
 services:
 	- App\Forms\SignFormFactory
+	- App\Controls\IMenuControlFactory
+	- App\Controls\IChatControlFactory
 	router: App\RouterFactory::createRouter
 	authenticator: App\Model\Services\UserService
 	authorizator:
 	    class: Nette\Security\Permission
 	    factory: App\Security\AclFactory::createAcl
+
+
+
 
 
 extensions:

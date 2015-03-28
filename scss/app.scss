@@ -66,3 +66,21 @@ ul.unstyled {
   @include border-radius(150px);
 }
 
+
+input.form-control-error {
+  margin-bottom: 0;
+}
+
+
+.alert-box.success a {
+  color: #005938;
+}
+
+.alert-box.success a:hover {
+  color: #003823;
+}
+
+
+td > .button {
+  margin:0 !important;
+}
