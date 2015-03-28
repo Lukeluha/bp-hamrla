@@ -6,7 +6,7 @@
  * Time: 20:38
  */
 
-namespace App\Control;
+namespace App\Controls;
 
 
 use Nette\Application\UI\Control;

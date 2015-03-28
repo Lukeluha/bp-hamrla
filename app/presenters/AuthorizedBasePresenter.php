@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Presenters;
-use App\Control\ChatControl;
-use App\Control\MenuControl;
+use App\Controls\ChatControl;
+use App\Controls\MenuControl;
 
 /**
  * Class AuthorizedBasePresenter

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Entity;
+namespace App\Model\Entities;
 
 
 use \Doctrine\ORM\Mapping as ORM;

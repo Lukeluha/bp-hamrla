@@ -2,7 +2,7 @@
 
 namespace App\Model\Services;
 
-use App\Model\Entity\User;
+use App\Model\Entities\User;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Security\AuthenticationException;
 use Nette\Security\IAuthenticator;
@@ -38,7 +38,7 @@ class UserService extends BaseService implements IAuthenticator
 		$user = $this->users->findOneByLogin($login);
 
 		if (!$user) {
-			throw new AuthenticationException("Nenalazen žádný uživatel.");
+			throw new AuthenticationException("Nenalezen žádný uživatel.");
 		} elseif (!Passwords::verify($password, $user->getPassword())) {
 			throw new AuthenticationException("Špatné heslo.");
 		} elseif (Passwords::needsRehash($user->getPassword())) {

@@ -20,8 +20,8 @@
 			<li class="divider"></li>
 			<li><a href="#">Vyhledávání</a></li>
 			<li class="divider"></li>
-			{if $user->isInRole('admin')}
-				<li><a href="#">Nastavení</a></li>
+			{if $user->isAllowed('settings')}
+				<li><a href="{plink Settings:default}">Nastavení</a></li>
 			{/if}
 		</ul>
 
@@ -33,9 +33,9 @@
 							<li>{$user->getIdentity()->name} {$user->getIdentity()->surname}</li>
 							<div class="clearfix"></div>
 							<li>
-								{if $user->isInRole(\App\Model\Entity\User::ROLE_ADMIN)}
+								{if $user->isInRole(\App\Model\Entities\User::ROLE_ADMIN)}
 									admin
-								{elseif $user->isInRole(\App\Model\Entity\User::ROLE_TEACHER)}
+								{elseif $user->isInRole(\App\Model\Entities\User::ROLE_TEACHER)}
 									učitel
 								{else}
 									student

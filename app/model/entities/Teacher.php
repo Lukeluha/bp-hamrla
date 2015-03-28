@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Entity;
+namespace App\Model\Entities;
 use \Doctrine\ORM\Mapping as ORM;
 use Nette\Security\privilege;
 use Nette\Security\role;
@@ -11,7 +11,7 @@ use Nette\Security\role;
  * Entity represents teacher in database
  * @ORM\Entity()
  * @ORM\Table(name="users")
- * @package App\Model\Entity
+ * @package App\Model\Entities
  */
 class Teacher extends User
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Entity;
+namespace App\Model\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Entity represents teacher in database
  * @ORM\Entity()
  * @ORM\Table(name="users")
- * @package App\Model\Entity
+ * @package App\Model\Entities
  */
 class Student extends User
 {

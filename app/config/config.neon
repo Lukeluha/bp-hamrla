@@ -22,6 +22,9 @@ services:
 	- App\Forms\SignFormFactory
 	router: App\RouterFactory::createRouter
 	authenticator: App\Model\Services\UserService
+	authorizator:
+	    class: Nette\Security\Permission
+	    factory: App\Security\AclFactory::createAcl
 
 
 extensions:
