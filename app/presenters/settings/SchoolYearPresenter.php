@@ -111,14 +111,14 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 			$schoolYear = new SchoolYear();
 			$schoolYear->setFrom($from)
 				->setTo($to);
-			try {
+//			try {
 				$this->em->persist($schoolYear);
 				$this->em->flush();
 				$this->flashMessage("Školní rok byl úspěšně vytvořen. Přejete si přejít na <a href='".$this->link("classesManagement")."'>vytvoření studentů a skupin</a>?", "success");
-			} catch (\Exception $e) {
+//			} catch (\Exception $e) {
 				$this->flashMessage("Školní rok nebyl vytvořen.", "alert");
 				$this->redirect("this");
-			}
+//			}
 		}
 
 		$this->redirect('Settings:default');

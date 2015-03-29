@@ -22,6 +22,7 @@ services:
 	- App\Forms\SignFormFactory
 	- App\Controls\IMenuControlFactory
 	- App\Controls\IChatControlFactory
+	- App\Model\Services\StudentService
 	router: App\RouterFactory::createRouter
 	authenticator: App\Model\Services\UserService
 	authorizator:

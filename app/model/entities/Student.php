@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Model\Entities;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,6 +14,23 @@ use Doctrine\ORM\Mapping as ORM;
 class Student extends User
 {
 	/**
+	 * Classes which student attends
+	 * @ORM\ManyToMany(targetEntity="ClassEntity", mappedBy="students")
+	 * @ORM\JoinTable(name="student_class",
+	 *      joinColumns={@ORM\JoinColumn(name="student_id", referencedColumnName="id")},
+	 *		inverseJoinColumns={@ORM\JoinColumn(name="class_id", referencedColumnName="id")}
+	 *		)
+	 * @var ArrayCollection
+	 */
+	protected $classes;
+
+
+	public function __construct()
+	{
+		$this->classes = new ArrayCollection();
+	}
+
+	/**
 	 * Get role of user
 	 * @return array
 	 */
@@ -20,5 +38,59 @@ class Student extends User
 	{
 		return array(self::ROLE_STUDENT);
 	}
+
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getClasses()
+	{
+		return $this->classes;
+	}
+
+	/**
+	 * @param ArrayCollection $classes
+	 * @return $this
+	 */
+	public function setClasses($classes)
+	{
+		$this->classes = $classes;
+		return $this;
+	}
+
+	public function addClass(ClassEntity $class)
+	{
+		$this->classes[] = $class;
+		return $this;
+	}
+
+	/**
+	 * Get main class of student (e.g. 4.B)
+	 * @return ClassEntity
+	 */
+	public function getMainClass()
+	{
+		foreach ($this->classes as $class) {
+			if ($class->getType() == ClassEntity::TYPE_CLASS) {
+				return $class;
+			}
+		}
+
+		return null;
+	}
+
+	public function isInClass($classId)
+	{
+		foreach ($this->classes as $class) {
+			if ($class->getId() == $classId) return true;
+		}
+
+		return false;
+	}
+
+	public function removeFromClass(ClassEntity $class)
+	{
+		$this->classes->removeElement($class);
+	}
+
 
 }

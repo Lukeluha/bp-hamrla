@@ -140,7 +140,7 @@ abstract class User extends BaseEntity
 
 
 
-	public function getProfilePicture()
+	public function getProfilePicture($size = null)
 	{
 		$path = IMG_DIR . "/users/user-" . $this->id . ".jpg";
 

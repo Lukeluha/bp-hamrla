@@ -32,7 +32,7 @@ class ClassEntity extends BaseEntity
 	protected $type;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Student")
+	 * @ORM\ManyToMany(targetEntity="Student",inversedBy="classes")
 	 * @ORM\JoinTable(name="student_class",
 	 *		joinColumns={@ORM\JoinColumn(name="class_id", referencedColumnName="id")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="student_id", referencedColumnName="id")}
@@ -40,6 +40,7 @@ class ClassEntity extends BaseEntity
 	 * @var ArrayCollection
 	 */
 	protected $students;
+
 
 	public function __construct()
 	{
@@ -87,6 +88,33 @@ class ClassEntity extends BaseEntity
 		return $this;
 	}
 
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getStudents()
+	{
+		return $this->students;
+	}
 
+	/**
+	 * @param ArrayCollection $students
+	 * @return $this
+	 */
+	public function setStudents($students)
+	{
+		$this->students = $students;
+		return $this;
+	}
+
+	public function addStudent(Student $student)
+	{
+		$this->students[] = $student;
+		return $this;
+	}
+
+	public function removeStudent(Student $student)
+	{
+		$this->students->removeElement($student);
+	}
 
 }

@@ -2,8 +2,36 @@
 
 	{if $user->isAllowed('settings', 'students')}
 		<h2>Správa studentů</h2>
-		<div id="students">
-			<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+		<a href="#"><button class="button tiny">Přidat studenta</button></a>
+		<div ng-controller="StudentsController" ng-cloak ng-init="students={=json_encode($students)};searchUrl='{link searchStudent!}'">
+
+			<div class="row collapse prefix-radius">
+				<div class="small-1 columns left">
+					<span class="prefix"><i class="fi-magnifying-glass"></i></span>
+				</div>
+				<div class="small-8 columns left">
+					<input type="text" ng-model="query"/>
+				</div>
+			</div>
+
+			<img ng-show="loading" src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+			<div class="panel" ng-show="!loading && !students.length">Nenalezeny žádní studenti</div>
+			<table ng-show="!loading && students.length" class="small-9">
+				<thead>
+				<tr>
+					<th>Jméno a příjmení</th>
+					<th>Třída</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat="student in students">
+					<td>{{ student.name }} {{ student.surname }}</td>
+					<td>{{ student.class }} </td>
+					<td><a href="#" class="button secondary tiny">Editovat</a></td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
 	{/if}
 
@@ -11,8 +39,36 @@
 	{if $user->isAllowed('settings', 'classes')}
 		<h2>Správa tříd a skupin</h2>
 		<a n:href="Classes:default"><button class="button tiny">Přidat třídu/skupinu</button></a>
-		<div id="classes">
-			<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+		<div ng-controller="ClassesController" ng-cloak ng-init="classes={=json_encode($classes)};searchUrl='{link searchClass!}'">
+
+			<div class="row collapse prefix-radius">
+				<div class="small-1 columns left">
+					<span class="prefix"><i class="fi-magnifying-glass"></i></span>
+				</div>
+				<div class="small-8 columns left">
+					<input type="text" ng-model="query"/>
+				</div>
+			</div>
+
+			<img ng-show="loading" src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+			<div class="panel" ng-show="!loading && !classes.length">Nenalezeny žádné třídy</div>
+			<table ng-show="!loading && classes.length" class="small-9">
+				<thead>
+				<tr>
+					<th>Název</th>
+					<th>Typ</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat="class in classes">
+					<td>{{ class.name }}</td>
+					<td ng-show="{{ class.type = 'class' }}">třída</td>
+					<td ng-show="{{ class.type = 'group' }}">skupina</td>
+					<td><a href="{link Classes:default}?classId={{ class.id }}" class="button secondary tiny">Editovat</a></td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
 	{/if}
 
@@ -21,7 +77,7 @@
 		<a n:href="SchoolYear:default"><button class="button tiny">Přidat školní rok</button></a>
 		<div class="clearfix"></div>
 		{if $schoolYears}
-			<table>
+			<table class="small-9">
 				<thead>
 				<tr>
 					<th>Školní rok</th>

@@ -29,7 +29,7 @@ class SchoolYear extends BaseEntity
 	 * @ORM\Column(type="boolean")
 	 * @var boolean
 	 */
-	protected $closed;
+	protected $closed = false;
 
 	/**
 	 * @return \DateTime

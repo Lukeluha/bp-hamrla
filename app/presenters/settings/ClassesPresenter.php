@@ -4,10 +4,16 @@ namespace App\Presenters;
 
 
 use App\Model\Entities\ClassEntity;
+use App\Model\Entities\Student;
 use Nette\Application\UI\Form;
 
 class ClassesPresenter extends AuthorizedBasePresenter
 {
+	/**
+	 * @var \App\Model\Services\StudentService
+	 * @inject
+	 */
+	public $studentService;
 
 	public function startup()
 	{
@@ -49,7 +55,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$form->addText("name", "Název třídy")->setRequired('Vyplňte prosím název třídy');
 
 		$form->addSelect('type', "Typ", array(0 => "--Vyberte--", ClassEntity::TYPE_CLASS => "Třída", ClassEntity::TYPE_GROUP => "Skupina" ))
-			->addRule(Form::NOT_EQUAL, "Vyberte typ třídy", 0);
+			->addRule(Form::NOT_EQUAL, "Vyberte typ", 0);
 
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = 'p';
@@ -116,6 +122,70 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		} else {
 			$this->redirect("default");
 		}
+	}
+
+	/**
+	 * Find all students for given query and check for availability to adding to given groupId
+	 * @param string $query
+	 * @param null|int $groupId
+	 */
+	public function handleFindStudents($query, $groupId = null)
+	{
+		if ($query) {
+			$students = $this->studentService->findByName($query);
+
+			$studentsArray = array();
+			foreach ($students as $student) {
+				$studentArray = array(
+					'name' => $student->getName(),
+					'surname' => $student->getSurname(),
+				);
+
+				if ($student->getMainClass()) {
+					$studentArray['mainClass']['name'] = $student->getMainClass()->getName();
+					$studentArray['mainClass']['id'] = $student->getMainClass()->getId();
+				} else {
+					$studentArray['mainClass'] = null;
+				}
+
+				if ($groupId) {
+					$studentArray['isInClass'] = $student->isInClass($groupId);
+				}
+
+				$studentArray['profilePicture'] = $student->getProfilePicture();
+				$studentArray['id'] = $student->getId();
+
+				$studentsArray[] = $studentArray;
+			}
+
+			$this->sendJson($studentsArray);
+		}
+	}
+
+	public function handleAddStudentToClass($studentId, $classId)
+	{
+		$class = $this->em->getRepository(ClassEntity::getClassName())->find($classId);
+		$student = $this->em->getRepository(Student::getClassName())->find($studentId);
+		$class->addStudent($student);
+		$this->em->flush();
+
+		$this->terminate();
+	}
+
+	public function handleRemoveStudentFromClass($studentId, $classId)
+	{
+		$class = $this->em->getRepository(ClassEntity::getClassName())->find($classId);
+		$student = $this->em->getRepository(Student::getClassName())->find($studentId);
+		$class->removeStudent($student);
+		$this->em->flush();
+
+		$this->terminate();
+	}
+
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->ngApp = 'app';
 	}
 
 }

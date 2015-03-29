@@ -11,15 +11,134 @@
 	{/if}
 
 	</h2>
+
 	{control classForm}
 
-	<div n:if="isset($class)" class="students">
+	<div n:if="isset($class)">
 		<h2>Studenti ve
 			{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_CLASS}
 				třídě
-			{elseif $class->getType() == App\Model\Entities\ClassEntity::TYPE_CLASS}
+			{else}
 				skupině
 			{/if}
 		</h2>
+		<a class="button small" href="#" data-reveal-id="addStudent">Přidat studenta</a>
+		<a class="button small" href="#">Import studentů z informačního systému Bakaláři</a>
+		{if count($class->getStudents())}
+			<table>
+				<thead>
+					<tr>
+						<th>Jméno a příjmení</th>
+						{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_GROUP}
+							<th>Třída</th>
+						{/if}
+						<th>Login</th>
+						<th>Akce</th>
+					</tr>
+				</thead>
+				<tbody>
+				{foreach $class->getStudents() as $student}
+					<tr>
+						<td>{$student->getName()} {$student->getSurname()}</td>
+						{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_GROUP}
+							<td>
+								{var $mainClass = $student->getMainClass()}
+								{if $mainClass}
+									{$mainClass->getName()}
+								{else}
+									-
+								{/if}
+							</td>
+						{/if}
+						<td>{$student->getLogin()}</td>
+						<td><a class="button secondary tiny" href="#">Editovat</a></td>
+					</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		{else}
+			<p>
+				V této
+				{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_CLASS}
+					třídě
+				{else}
+					skupině
+				{/if}
+				se nenacházejí žádní studenti.
+			</p>
+		{/if}
+
+
+		<div id="addStudent" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog"
+		     ng-controller="StudentsClassesController" ng-cloak
+		     ng-init="
+		        dataUrl='{link findStudents!}';
+		        class.id={$class->getId()};
+		        addStudentUrl='{link addStudentToClass!}';
+		        removeStudentUrl='{link removeStudentFromClass!}';
+		        ">
+			<h2 id="modalTitle">
+				Přidání studenta do
+				{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_CLASS}
+					třídy
+				{else}
+					skupiny
+				{/if}
+				{$class->getName()}
+			</h2>
+
+			<p class="lead">Vybrání z již vytvořených studentů</p>
+
+			<div class="row collapse prefix-radius">
+		        <div class="small-1 columns">
+		            <span class="prefix"><i class="fi-magnifying-glass"></i></span>
+		        </div>
+		        <div class="small-11 columns">
+					<input type="text" ng-model="query"/>
+		        </div>
+	        </div>
+
+			<div class="panel" ng-show="!search || !query">Začněte vyhledávat studenty</div>
+			<div ng-show="search">
+				<div ng-show="loading"><img src="{$basePath}/images/spinner-bubble.svg" alt=""/></div>
+				<div ng-show="!loading && query">
+					<div ng-show="!students.length" class="panel">
+						<p>Nebyly nalezeni žádní studenti</p>
+					</div>
+					<div ng-show="students.length">
+						<table class="small-12">
+							<thead>
+							<tr>
+								<th>Jméno a příjmení</th>
+								<th>Třída</th>
+								<th></th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="student in students">
+								<td><img ng-src="{$basePath}/images/{{ student.profilePicture }}" class="img-circle" width="30" />{{ student.name }} {{ student.surname }}</td>
+								<td><span ng-if="!student.mainClass">-</span><span ng-if="student.mainClass">{{ student.mainClass.name }}</span></td>
+								<td>
+									{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_CLASS}
+										<span class="button tiny" ng-click="addStudent(student.id)" ng-if="!student.mainClass">Přidat</span>
+										<span ng-show="student.mainClass && student.mainClass.id == class.id" class="button tiny" ng-click="removeStudent(student.id)">Odebrat</span>
+										<span ng-show="student.mainClass && student.mainClass.id != class.id" class="button tiny disabled" title="Student již navštěvuje jinou třídu">Nelze přidat</span>
+									{else}
+										<span class="button tiny" ng-if="!student.isInClass" ng-click="addStudent(student.id, this)">Přidat</span>
+										<span class="button tiny" ng-if="student.isInClass" ng-click="removeStudent(student.id)">Odebrat</span>
+									{/if}
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<p class="lead">Vytvoření nového studenta</p>
+			<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+		</div>
 	</div>
+
+
 {/block}

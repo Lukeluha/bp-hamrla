@@ -12,6 +12,7 @@ use Nette\Security\Passwords;
 
 class UserService extends BaseService implements IAuthenticator
 {
+
 	/**
 	 * @var \Kdyby\Doctrine\EntityRepository
 	 */
@@ -63,5 +64,4 @@ class UserService extends BaseService implements IAuthenticator
 	{
 		$user->setPassword(Passwords::hash($user->getPassword()));
 	}
-
 }

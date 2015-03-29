@@ -3,7 +3,7 @@
  * @param array    $flashes  flash messages
  *}
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" {if isset($ngApp)}ng-app="{$ngApp}"{/if}>
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,8 +14,9 @@
 		<script src="{$basePath}/js/app.min.js"></script>
 	{else}
 		<!-- build:css {$basePath}/css/screen.min.css -->
-		<link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+
 		<link rel="stylesheet" href="{$basePath}/css/foundation-datepicker.css" />
+		<link rel="stylesheet" href="{$basePath}/css/foundation-icons/foundation-icons.css" />
 		<link rel="stylesheet" href="{$basePath}/css/app.css" />
 		<!-- endbuild -->
 
@@ -24,8 +25,11 @@
 			<script src="{$basePath}/js/jquery.min.js"></script>
 			<script src="{$basePath}/js/foundation.min.js"></script>
 			<script src="{$basePath}/js/foundation-datepicker.js"></script>
-			<script src="//nette.github.io/resources/js/netteForms.min.js"></script>
+			<script src="{$basePath}/js/netteForms.js"></script>
+			<script src="{$basePath}/js/angular.min.js"></script>
 			<script src="{$basePath}/js/app.js"></script>
+			<script src="{$basePath}/js/angularApp.js"></script>
+
 		<!-- endbuild -->
 	{/if}
 

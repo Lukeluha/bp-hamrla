@@ -2,7 +2,9 @@
 
 namespace App\Presenters;
 
+use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
+use App\Model\Services\BaseService;
 
 /**
  * Class SettingsPresenter
@@ -11,6 +13,12 @@ use App\Model\Entities\SchoolYear;
  */
 class SettingsPresenter extends AuthorizedBasePresenter
 {
+	/**
+	 * @var \App\Model\Services\StudentService
+	 * @inject
+	 */
+	public $studentService;
+
 	public function startup()
 	{
 		parent::startup();
@@ -21,16 +29,39 @@ class SettingsPresenter extends AuthorizedBasePresenter
 		}
 
 		$this->addLinkToNav('Nastavení', 'Settings:default');
+
+		$this->template->ngApp = 'app';
 	}
 
+	public function handleSearchStudent($query)
+	{
+		$students = $this->studentService->findByName($query, BaseService::FORMAT_ARRAY);
+		$this->sendJson($students);
+	}
+
+	public function handleSearchClass($query)
+	{
+		$classes = $this->em->createQueryBuilder()
+						->select('c')
+						->from(ClassEntity::getClassName(), 'c')
+						->where('c.name LIKE :query')
+						->orderBy('c.name')
+						->setParameter('query', "%$query%")
+						->getQuery()->getArrayResult();
+
+		$this->sendJson($classes);
+	}
 
 	/**
 	 * Main page with all available settings
 	 */
 	public function renderDefault()
 	{
-		$this->template->schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array(), array('from' => 'ASC'));
+		$this->template->classes = $this->em->createQueryBuilder()->select('c')->from(ClassEntity::getClassName(), 'c')->orderBy('c.name')->getQuery()->getArrayResult();
+		$this->template->students = $this->studentService->findByName(null, BaseService::FORMAT_ARRAY);
+		$this->template->schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array(), array('from' => 'DESC'));
 	}
+
 
 
 	/*
