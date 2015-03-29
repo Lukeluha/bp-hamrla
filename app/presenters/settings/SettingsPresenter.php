@@ -3,7 +3,6 @@
 namespace App\Presenters;
 
 use App\Model\Entities\SchoolYear;
-use Nette\Application\UI\Form;
 
 /**
  * Class SettingsPresenter

@@ -5,7 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Teacher
- * Entity represents teacher in database
+ * Entity represents student in database
  * @ORM\Entity()
  * @ORM\Table(name="users")
  * @package App\Model\Entities

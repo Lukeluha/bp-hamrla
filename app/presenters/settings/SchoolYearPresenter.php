@@ -59,6 +59,12 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 
 		$form->onSuccess[] = $this->saveSchoolYear;
 
+		$renderer = $form->getRenderer();
+		$renderer->wrappers['controls']['container'] = 'p';
+		$renderer->wrappers['pair']['container'] = null;
+		$renderer->wrappers['label']['container'] = null;
+		$renderer->wrappers['control']['container'] = null;
+
 		return $form;
 	}
 

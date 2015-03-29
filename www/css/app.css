@@ -9243,3 +9243,8 @@ input.form-control-error {
 td > .button {
   margin: 0 !important;
 }
+
+/* line 88, ../../scss/app.scss */
+.alert-box {
+  margin-bottom: 0;
+}

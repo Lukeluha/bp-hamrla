@@ -1,0 +1,25 @@
+{block content}
+	<h2>Nastavení
+	{if isset($class)}
+		{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_CLASS}
+			třídy
+		{else}
+			skupiny
+		{/if}
+	{else}
+		třídy/skupiny
+	{/if}
+
+	</h2>
+	{control classForm}
+
+	<div n:if="isset($class)" class="students">
+		<h2>Studenti ve
+			{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_CLASS}
+				třídě
+			{elseif $class->getType() == App\Model\Entities\ClassEntity::TYPE_CLASS}
+				skupině
+			{/if}
+		</h2>
+	</div>
+{/block}

@@ -10,6 +10,7 @@
 
 	{if $user->isAllowed('settings', 'classes')}
 		<h2>Správa tříd a skupin</h2>
+		<a n:href="Classes:default"><button class="button tiny">Přidat třídu/skupinu</button></a>
 		<div id="classes">
 			<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
 		</div>
