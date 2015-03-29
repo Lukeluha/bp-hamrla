@@ -9157,53 +9157,53 @@ th.hide-for-touch {
     display: table-cell !important;
   }
 }
-/* line 6, ../../scss/app.scss */
+/* line 7, ../../scss/app.scss */
 body {
   background-color: whitesmoke;
 }
 
-/* line 11, ../../scss/app.scss */
+/* line 12, ../../scss/app.scss */
 #menu .top-bar-section ul li {
   background: #4D4D4D;
 }
-/* line 17, ../../scss/app.scss */
+/* line 18, ../../scss/app.scss */
 #menu ul.vertical-center li {
   color: white;
 }
-/* line 21, ../../scss/app.scss */
+/* line 22, ../../scss/app.scss */
 #menu ul.vertical-center :hover li {
   background: #333333;
 }
-/* line 25, ../../scss/app.scss */
+/* line 26, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info {
   padding-top: 5px;
   padding-left: 5px;
 }
-/* line 29, ../../scss/app.scss */
+/* line 30, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info li:nth-child(3) {
   font-size: 11px;
   color: grey;
 }
 
-/* line 39, ../../scss/app.scss */
+/* line 40, ../../scss/app.scss */
 #chat {
   background-color: #ECECEC;
   height: calc(100vh - 55px);
 }
 
-/* line 44, ../../scss/app.scss */
+/* line 45, ../../scss/app.scss */
 .breadcrumbs {
   border-radius: 0;
   border: none;
   border-bottom: 2px solid #ECECEC;
 }
 
-/* line 50, ../../scss/app.scss */
+/* line 51, ../../scss/app.scss */
 .without-padding {
   padding: 0;
 }
 
-/* line 54, ../../scss/app.scss */
+/* line 55, ../../scss/app.scss */
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -9211,12 +9211,12 @@ body {
   max-width: initial;
 }
 
-/* line 61, ../../scss/app.scss */
+/* line 62, ../../scss/app.scss */
 ul.unstyled {
   list-style-type: none;
 }
 
-/* line 65, ../../scss/app.scss */
+/* line 66, ../../scss/app.scss */
 .img-circle {
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
@@ -9224,27 +9224,27 @@ ul.unstyled {
   border-radius: 150px;
 }
 
-/* line 70, ../../scss/app.scss */
+/* line 71, ../../scss/app.scss */
 input.form-control-error {
   margin-bottom: 0;
 }
 
-/* line 75, ../../scss/app.scss */
+/* line 76, ../../scss/app.scss */
 .alert-box.success a {
   color: #005938;
 }
 
-/* line 79, ../../scss/app.scss */
+/* line 80, ../../scss/app.scss */
 .alert-box.success a:hover {
   color: #003823;
 }
 
-/* line 84, ../../scss/app.scss */
+/* line 85, ../../scss/app.scss */
 td > .button {
   margin: 0 !important;
 }
 
-/* line 88, ../../scss/app.scss */
+/* line 89, ../../scss/app.scss */
 .alert-box {
   margin-bottom: 0;
 }
