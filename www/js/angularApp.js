@@ -2,7 +2,7 @@ var app = angular.module('app', []);
 
 
 
-app.controller('StudentsClassesController', function($scope, $http, $timeout) {
+app.controller('StudentsClassesController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
     /**
      * All students
      * @type {Array}
@@ -91,9 +91,9 @@ app.controller('StudentsClassesController', function($scope, $http, $timeout) {
             });
     }
 
-});
+}]);
 
-app.controller('ClassesController', function($scope, $http, $timeout) {
+app.controller('ClassesController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
     $scope.loading = false;
 
     $scope.classes = [];
@@ -127,9 +127,9 @@ app.controller('ClassesController', function($scope, $http, $timeout) {
                 },500);
         }
     });
-});
+}]);
 
-app.controller('StudentsController', function($scope, $http, $timeout) {
+app.controller('StudentsController', ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
     $scope.loading = false;
 
     $scope.students = [];
@@ -164,4 +164,4 @@ app.controller('StudentsController', function($scope, $http, $timeout) {
             },500);
         }
     });
-});
+}]);
