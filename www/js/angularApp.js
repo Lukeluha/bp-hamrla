@@ -164,4 +164,5 @@ app.controller('StudentsController', ['$scope', '$http', '$timeout', function($s
             },500);
         }
     });
+    
 }]);
