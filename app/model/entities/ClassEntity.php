@@ -10,9 +10,9 @@ use Nette\InvalidArgumentException;
 /**
  * Class ClassEntity
  * Class representing 'class' entity with students in database
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Model\Repositories\Classes")
  * @ORM\Table(name="classes")
- * @package App\Entities
+ * @package App\Model\Entities
  */
 class ClassEntity extends BaseEntity
 {
@@ -41,6 +41,13 @@ class ClassEntity extends BaseEntity
 	 */
 	protected $students;
 
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="SchoolYear")
+	 * @ORM\JoinColumn(name="school_year_id", referencedColumnName="id")
+	 * @var SchoolYear
+	 */
+	protected $schoolYear;
 
 	public function __construct()
 	{
@@ -109,12 +116,31 @@ class ClassEntity extends BaseEntity
 	public function addStudent(Student $student)
 	{
 		$this->students[] = $student;
+		$student->addClass($this);
 		return $this;
 	}
 
 	public function removeStudent(Student $student)
 	{
 		$this->students->removeElement($student);
+		$student->removeFromClass($this);
 	}
 
+	/**
+	 * @return SchoolYear
+	 */
+	public function getSchoolYear()
+	{
+		return $this->schoolYear;
+	}
+
+	/**
+	 * @param SchoolYear $schoolYear
+	 * @return $this
+	 */
+	public function setSchoolYear($schoolYear)
+	{
+		$this->schoolYear = $schoolYear;
+		return $this;
+	}
 }

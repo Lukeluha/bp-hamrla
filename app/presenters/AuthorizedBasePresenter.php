@@ -41,11 +41,16 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 		$qb = $this->em->createQueryBuilder();
 		$this->actualYear = $qb	->select('y')
 								->from(SchoolYear::getClassName(), 'y')
-								->where(
-									$qb->expr()->lte('y.from', 'CURRENT_DATE()')
-								)->andWhere(
-									$qb->expr()->gte('y.to', 'CURRENT_DATE()')
-								)->getQuery()->getOneOrNullResult();
+								->where($qb->expr()->lte('y.from', 'CURRENT_DATE()'))
+								->andWhere($qb->expr()->gte('y.to', 'CURRENT_DATE()'))
+								->getQuery()->getOneOrNullResult();
+
+		if (!$this->actualYear) {
+			$this->actualYear = $qb	->select('y')
+									->from(SchoolYear::getClassName(), 'y')
+									->where($qb->expr()->gte('y.from', 'CURRENT_DATE()'))
+									->getQuery()->getOneOrNullResult();
+		}
 	}
 
 	/**
@@ -105,5 +110,11 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 		} else {
 			$this['breadcrumbs']->addLink($title, $this->link($link));
 		}
+	}
+
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->actualYear = $this->actualYear;
 	}
 }

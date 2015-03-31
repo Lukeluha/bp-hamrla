@@ -107,4 +107,9 @@ class SchoolYear extends BaseEntity
 	{
 		return $this->closed;
 	}
+
+	public function __toString()
+	{
+		return $this->getFrom()->format("Y") . "/" . $this->getTo()->format("Y");
+	}
 }

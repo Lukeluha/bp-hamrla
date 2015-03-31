@@ -2,7 +2,12 @@
 
 	{if $user->isAllowed('settings', 'students')}
 		<h2>Správa studentů</h2>
-		<a href="#"><button class="button tiny">Přidat studenta</button></a>
+		{if $actualYear}
+			<a n:href="Students:default"><button class="button tiny">Přidat studenta</button></a>
+		{else}
+			<button data-tooltip aria-haspopup="true" class="button tiny disabled" title="Pro přidání vytvořte školní rok">Přidat studenta</button>
+		{/if}
+
 		<div ng-controller="StudentsController" ng-cloak ng-init="students={=json_encode($students)};searchUrl='{link searchStudent!}'">
 
 			<div class="row collapse prefix-radius">
@@ -28,7 +33,7 @@
 				<tr ng-repeat="student in students">
 					<td>{{ student.name }} {{ student.surname }}</td>
 					<td>{{ student.class }} </td>
-					<td><a href="#" class="button secondary tiny">Editovat</a></td>
+					<td><a href="{link Students:default}?studentId={{ student.id }}" class="button secondary tiny">Editovat</a></td>
 				</tr>
 				</tbody>
 			</table>
@@ -38,7 +43,11 @@
 
 	{if $user->isAllowed('settings', 'classes')}
 		<h2>Správa tříd a skupin</h2>
-		<a n:href="Classes:default"><button class="button tiny">Přidat třídu/skupinu</button></a>
+		{if $actualYear}
+			<a n:href="Classes:default"><button class="button tiny">Přidat třídu/skupinu</button></a>
+		{else}
+			<button data-tooltip aria-haspopup="true" class="button tiny disabled" title="Pro přidání vytvořte školní rok">Přidat třídu/skupinu</button>
+		{/if}
 		<div ng-controller="ClassesController" ng-cloak ng-init="classes={=json_encode($classes)};searchUrl='{link searchClass!}'">
 
 			<div class="row collapse prefix-radius">
@@ -87,10 +96,12 @@
 				<tbody>
 				{foreach $schoolYears as $year}
 					<tr>
-						<td>{$year->getFrom()|date:'j. n. Y'} - {$year->getTo()|date:'j. n. Y'} {if $year->isClosed()} <span class="label alert">uzavřený</span> {elseif $year->isCurrent()} <span class="label">probíhá</span> {/if}</td>
+						<td>{$year->getFrom()|date:'Y'}/{$year->getTo()|date:'Y'} {if $year->isClosed()} <span class="label alert">uzavřený</span> {elseif $year->isCurrent()} <span class="label">probíhá</span> {/if}</td>
 						<td>
 							<a class="button secondary tiny" n:href="SchoolYear:default $year->getId()">Editovat</a>
-							<button class="button alert tiny">Uzavřít</button>
+							{if !$year->getClosed()}
+								<button class="button alert tiny">Uzavřít</button>
+							{/if}
 						</td>
 					</tr>
 				{/foreach}

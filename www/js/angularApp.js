@@ -154,7 +154,6 @@ app.controller('StudentsController', ['$scope', '$http', '$timeout', function($s
                     }
                 )
                     .success(function(data) {
-                        console.log(data);
                         $scope.students = data;
                         $scope.loading = false;
                     }).error(function() {

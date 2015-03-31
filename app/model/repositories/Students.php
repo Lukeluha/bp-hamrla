@@ -1,16 +1,25 @@
 <?php
 
-namespace App\Model\Services;
+namespace App\Model\Repositories;
+
 
 use App\Model\Entities\Student;
-use Nette\InvalidArgumentException;
+use Kdyby\Doctrine\EntityRepository;
 
-class StudentService extends BaseService
+/**
+ * Class Students
+ * Repository for student entity
+ * @package App\Model\Repositories
+ */
+class Students extends EntityRepository
 {
+	const FORMAT_OBJECT = 'object';
+	const FORMAT_ARRAY = 'array';
+
 	public function findByName($query, $format = self::FORMAT_OBJECT)
 	{
-		$students = $this->em->createQueryBuilder()
-			->select("s.name, s.surname, c.name as class")
+		$students = $this->createQueryBuilder()
+			->select("s.id, s.name, s.surname, c.name as class")
 			->from(Student::getClassName(), 's')
 			->leftJoin('s.classes', 'c')
 			->where("CONCAT(s.name, CONCAT(' ', s.surname)) LIKE :query OR CONCAT(s.surname, CONCAT(' ', s.name)) LIKE :query")
@@ -28,5 +37,4 @@ class StudentService extends BaseService
 			throw new InvalidArgumentException('Bad format');
 		}
 	}
-
 }

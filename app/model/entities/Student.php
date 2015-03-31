@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Teacher
  * Entity represents student in database
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Model\Repositories\Students")
  * @ORM\Table(name="users")
  * @package App\Model\Entities
  */
@@ -57,6 +57,10 @@ class Student extends User
 		return $this;
 	}
 
+	/**
+	 * @param ClassEntity $class
+	 * @return $this
+	 */
 	public function addClass(ClassEntity $class)
 	{
 		$this->classes[] = $class;
@@ -91,6 +95,5 @@ class Student extends User
 	{
 		$this->classes->removeElement($class);
 	}
-
 
 }

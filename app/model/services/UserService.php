@@ -2,6 +2,7 @@
 
 namespace App\Model\Services;
 
+use App\Model\Entities\Student;
 use App\Model\Entities\User;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Security\AuthenticationException;
@@ -9,6 +10,8 @@ use Nette\Security\IAuthenticator;
 use Nette\Security\Identity;
 use Nette\Security\IIdentity;
 use Nette\Security\Passwords;
+use Nette\Utils\Random;
+use Nette\Utils\Strings;
 
 class UserService extends BaseService implements IAuthenticator
 {
@@ -59,9 +62,36 @@ class UserService extends BaseService implements IAuthenticator
 	/**
 	 * Method for creating new user, hashing password, ...
 	 * @param $user User
+	 * @return string New user password
 	 */
-	public function addUser($user)
+	public function addUser(&$user)
 	{
+		$login = substr($user->getSurname(), 0, 5) . substr($user->getName(), 0, 3);
+		$i = 1;
+		do {
+			$sameLogin = $this->em->getRepository(Student::getClassName())->findBy(array("login" => Strings::webalize($login)));
+			$i++;
+			if ($i > 2) {
+				$login[strlen($login)] = $i;
+			}
+		} while ($sameLogin);
+
+		$user->setLogin(Strings::webalize($login));
+		$password = $this->generateNewPassword($user);
 		$user->setPassword(Passwords::hash($user->getPassword()));
+		return $password;
+	}
+
+	/**
+	 * Generate and save new password for user
+	 * @param $user
+	 * @return string New user password
+	 */
+	public function generateNewPassword(&$user)
+	{
+		$password = Random::generate(8);
+		$user->setPassword($password);
+
+		return $password;
 	}
 }

@@ -4,21 +4,21 @@ namespace App\Presenters;
 
 
 use App\Model\Entities\ClassEntity;
+use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
 use Nette\Application\UI\Form;
 
 class ClassesPresenter extends AuthorizedBasePresenter
 {
-	/**
-	 * @var \App\Model\Services\StudentService
-	 * @inject
-	 */
-	public $studentService;
-
 	public function startup()
 	{
 		parent::startup();
 		$this->checkPermissions("settings", "classes");
+
+		if (!$this->actualYear) {
+			$this->flashMessage("Nebyl nalezen aktuální školní rok", 'alert');
+			$this->redirect('Settings:default');
+		}
 		$this->addLinkToNav('Nastavení', 'Settings:default');
 	}
 
@@ -57,6 +57,17 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$form->addSelect('type', "Typ", array(0 => "--Vyberte--", ClassEntity::TYPE_CLASS => "Třída", ClassEntity::TYPE_GROUP => "Skupina" ))
 			->addRule(Form::NOT_EQUAL, "Vyberte typ", 0);
 
+		$schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array('closed' => 0), array('from' => 'DESC'));
+
+		$schoolYearSelect = array();
+		foreach ($schoolYears as $year) {
+			$schoolYearSelect[$year->getId()] = $year->getFrom()->format("Y") . "/" . $year->getTo()->format("Y");
+		}
+
+		$form->addSelect('schoolYear', "Školní rok", $schoolYearSelect)->setDefaultValue($this->actualYear->getId());
+
+
+
 		$renderer = $form->getRenderer();
 		$renderer->wrappers['controls']['container'] = 'p';
 		$renderer->wrappers['pair']['container'] = null;
@@ -81,7 +92,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 				$this->redirect("this");
 			}
 
-			$class->setName($values['name'])->setType($values['type']);
+			$class->setName($values['name'])->setType($values['type'])->setSchoolYear($this->em->getReference(SchoolYear::getClassName(), $values['schoolYear']));
 
 			try {
 				$this->em->flush();
@@ -99,7 +110,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			}
 		} else {
 			$class = new ClassEntity();
-			$class->setName($values['name'])->setType($values['type']);
+			$class->setName($values['name'])->setType($values['type'])->setSchoolYear($this->em->getReference(SchoolYear::getClassName(), $values['schoolYear']));
 			try {
 				$this->em->persist($class);
 				$this->em->flush();
@@ -132,7 +143,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	public function handleFindStudents($query, $groupId = null)
 	{
 		if ($query) {
-			$students = $this->studentService->findByName($query);
+			$students = $this->em->getRepository(Student::getClassName())->findByName($query);
 
 			$studentsArray = array();
 			foreach ($students as $student) {

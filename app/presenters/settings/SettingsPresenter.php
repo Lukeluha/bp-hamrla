@@ -4,6 +4,7 @@ namespace App\Presenters;
 
 use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
+use App\Model\Entities\Student;
 use App\Model\Services\BaseService;
 
 /**
@@ -13,12 +14,6 @@ use App\Model\Services\BaseService;
  */
 class SettingsPresenter extends AuthorizedBasePresenter
 {
-	/**
-	 * @var \App\Model\Services\StudentService
-	 * @inject
-	 */
-	public $studentService;
-
 	public function startup()
 	{
 		parent::startup();
@@ -35,7 +30,7 @@ class SettingsPresenter extends AuthorizedBasePresenter
 
 	public function handleSearchStudent($query)
 	{
-		$students = $this->studentService->findByName($query, BaseService::FORMAT_ARRAY);
+		$students = $this->em->getRepository(Student::getClassName())->findByName($query, BaseService::FORMAT_ARRAY);
 		$this->sendJson($students);
 	}
 
@@ -58,23 +53,9 @@ class SettingsPresenter extends AuthorizedBasePresenter
 	public function renderDefault()
 	{
 		$this->template->classes = $this->em->createQueryBuilder()->select('c')->from(ClassEntity::getClassName(), 'c')->orderBy('c.name')->getQuery()->getArrayResult();
-		$this->template->students = $this->studentService->findByName(null, BaseService::FORMAT_ARRAY);
+		$this->template->students = $this->em->getRepository(Student::getClassName())->findByName(null, BaseService::FORMAT_ARRAY);
 		$this->template->schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array(), array('from' => 'DESC'));
 	}
 
-
-
-	/*
-	 *
-	 * CLASSES MANAGEMENT
-	 *
-	 */
-
-
-
-	public function renderClassesManagement()
-	{
-
-	}
 
 }

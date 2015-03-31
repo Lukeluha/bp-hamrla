@@ -4,6 +4,7 @@ namespace App\Presenters;
 
 
 use App\Model\Entities\SchoolYear;
+use App\Model\FoundationRenderer;
 use Nette\Application\UI\Form;
 
 class SchoolYearPresenter extends AuthorizedBasePresenter
@@ -56,14 +57,12 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 		$form->addText("to", "Konec školního roku")->addRule(Form::FILLED, "Zvolte datum konce školního roku")->getControlPrototype()->class('fdatepicker');
 		$form->addHidden("id");
 		$form->addSubmit("save", "Uložit")->getControlPrototype()->class('button');
+		$form->setRenderer(new FoundationRenderer());
 
 		$form->onSuccess[] = $this->saveSchoolYear;
 
-		$renderer = $form->getRenderer();
-		$renderer->wrappers['controls']['container'] = 'p';
-		$renderer->wrappers['pair']['container'] = null;
-		$renderer->wrappers['label']['container'] = null;
-		$renderer->wrappers['control']['container'] = null;
+
+
 
 		return $form;
 	}
@@ -80,45 +79,51 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 		$from = \DateTime::createFromFormat('j. n. Y', $values['from']);
 		$to = \DateTime::createFromFormat('j. n. Y', $values['to']);
 
+		if ($from > $to) {
+			$this->flashMessage("Datum 'od' nemůže být později než datum 'do'", 'alert');
+			$this->redirect('this');
+		}
 
 		if ($values['id']) {
 			$schoolYear = $this->em->getRepository(SchoolYear::getClassName())->find($values['id']);
-
-			if (!$schoolYear) {
-				$this->flashMessage("Školní rok nebyl nalezen", "error");
-				$this->redirect("Settings:default");
-			}
-
-			$schoolYear->setFrom($from)
-				->setTo($to);
-
-			try {
-				$this->em->flush();
-				$this->flashMessage("Školní rok byl úspěšně upraven.", "success");
-			} catch (\Exception $e) {
-				$this->flashMessage("Školní rok nebyl upraven.", "alert");
-				$this->redirect("this");
-			}
-
 		} else {
-			$existingYear = $this->em->getRepository(SchoolYear::getClassName())->findBy(array('from' => $from, 'to' => $to));
-			if ($existingYear) {
-				$this->flashMessage("Školní rok s tímto začátečním a koncovým datem již existuje", "alert");
-				$this->redirect('this');
-			}
-
-
 			$schoolYear = new SchoolYear();
-			$schoolYear->setFrom($from)
-				->setTo($to);
-//			try {
-				$this->em->persist($schoolYear);
-				$this->em->flush();
-				$this->flashMessage("Školní rok byl úspěšně vytvořen. Přejete si přejít na <a href='".$this->link("classesManagement")."'>vytvoření studentů a skupin</a>?", "success");
-//			} catch (\Exception $e) {
+		}
+
+		$existingYear = $this->em->createQueryBuilder()
+			->select('y')
+			->from(SchoolYear::getClassName(), 'y')
+			->where('y.from < :from AND y.to > :from')
+			->orWhere('y.to > :to AND y.from < :to')
+			->andWhere('y.id != :id')
+			->setParameters(array('from' => $from, 'to' => $to, 'id' => $values['id']))
+			->getQuery()->getOneOrNullResult();
+
+
+
+		if ($existingYear) {
+			$this->flashMessage("Školní rok se již kryje se školním rokem od " . $existingYear->getFrom()->format("j. n. Y") . " do ".$existingYear->getTo()->format('j. n. Y'), "alert");
+			$this->redirect('this');
+		}
+
+		$schoolYear->setFrom($from)
+			->setTo($to);
+
+		try {
+			$this->em->persist($schoolYear);
+			$this->em->flush();
+			if ($values['id']) {
+				$this->flashMessage("Školní rok byl úspěšně upraven.", "success");
+			} else {
+				$this->flashMessage("Školní rok byl úspěšně vytvořen. Přejete si přejít na <a href='" . $this->link("classesManagement") . "'>vytvoření studentů a skupin</a>?", "success");
+			}
+		} catch (\Exception $e) {
+			if ($values['id']) {
+				$this->flashMessage("Školní rok nebyl upraven.", "alert");
+			} else {
 				$this->flashMessage("Školní rok nebyl vytvořen.", "alert");
-				$this->redirect("this");
-//			}
+			}
+			$this->redirect("this");
 		}
 
 		$this->redirect('Settings:default');
