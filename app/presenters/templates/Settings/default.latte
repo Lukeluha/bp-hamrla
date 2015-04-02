@@ -98,7 +98,11 @@
 					<tr>
 						<td>{$year->getFrom()|date:'Y'}/{$year->getTo()|date:'Y'} {if $year->isClosed()} <span class="label alert">uzavřený</span> {elseif $year->isCurrent()} <span class="label">probíhá</span> {/if}</td>
 						<td>
-							<a class="button secondary tiny" n:href="SchoolYear:default $year->getId()">Editovat</a>
+							{if $year->getClosed()}
+								<span class="button secondary tiny disabled">Editovat</span>
+							{else}
+								<a class="button secondary tiny" n:href="SchoolYear:default $year->getId()">Editovat</a>
+							{/if}
 							{if !$year->getClosed()}
 								<button class="button alert tiny">Uzavřít</button>
 							{/if}

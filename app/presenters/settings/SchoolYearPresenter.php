@@ -30,6 +30,11 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 				$this->redirect("Settings:default");
 			}
 
+			if ($schoolYear->getClosed()) {
+				$this->flashMessage("Školní rok již byl uzavřen.", "alert");
+				$this->redirect("Settings:default");
+			}
+
 			$this['schoolYearForm']
 				->setDefaults(array(
 						"id" => $schoolYearId,

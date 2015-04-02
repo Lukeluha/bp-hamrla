@@ -1,16 +1,14 @@
 {block content}
-	<h2>Nastavení
 	{if isset($class)}
+		<h2>Nastavení
 		{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_CLASS}
 			třídy
 		{else}
 			skupiny
 		{/if}
-	{else}
-		třídy/skupiny
+		</h2>
 	{/if}
 
-	</h2>
 
 	{control classForm}
 

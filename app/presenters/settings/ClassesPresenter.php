@@ -42,8 +42,11 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			}
 
 			$this['classForm']->setDefaults(array(
-					'id' => $class->getId(), 'name' => $class->getName(), 'type' => $class->getType()
-				));
+				'id' => $class->getId(),
+				'name' => $class->getName(),
+				'type' => $class->getType(),
+				'schoolYear' => $class->getSchoolYear()->getId()
+			));
 		}
 	}
 
@@ -54,7 +57,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 		$form->addText("name", "Název třídy")->setRequired('Vyplňte prosím název třídy');
 
-		$form->addSelect('type', "Typ", array(0 => "--Vyberte--", ClassEntity::TYPE_CLASS => "Třída", ClassEntity::TYPE_GROUP => "Skupina" ))
+		$form->addSelect('type', "Typ", array(0 => "--Vyberte--", ClassEntity::TYPE_CLASS => "Třída", ClassEntity::TYPE_GROUP => "Skupina"))
 			->addRule(Form::NOT_EQUAL, "Vyberte typ", 0);
 
 		$schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array('closed' => 0), array('from' => 'DESC'));
@@ -65,7 +68,6 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		}
 
 		$form->addSelect('schoolYear', "Školní rok", $schoolYearSelect)->setDefaultValue($this->actualYear->getId());
-
 
 
 		$renderer = $form->getRenderer();
@@ -87,52 +89,54 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 		if ($values['id']) {
 			$class = $this->em->getRepository(ClassEntity::getClassName())->find($values['id']);
-			if (!$class) {
-				$this->flashMessage("Třída nebyla nalezena.", "alert");
-				$this->redirect("this");
-			}
-
-			$class->setName($values['name'])->setType($values['type'])->setSchoolYear($this->em->getReference(SchoolYear::getClassName(), $values['schoolYear']));
-
-			try {
-				$this->em->flush();
-				if ($class->getType() == ClassEntity::TYPE_CLASS) {
-					$this->flashMessage("Třída byla úspěšně upravena", "success");
-				} else {
-					$this->flashMessage("Skupina byla úspěšně upravena", "success");
-				}
-			} catch (\Exception $e) {
-				if ($class->getType() == ClassEntity::TYPE_CLASS) {
-					$this->flashMessage("Třída nebyla upravena", "alert");
-				} else {
-					$this->flashMessage("Skupina nebyla upravena", "alert");
-				}
-			}
 		} else {
 			$class = new ClassEntity();
-			$class->setName($values['name'])->setType($values['type'])->setSchoolYear($this->em->getReference(SchoolYear::getClassName(), $values['schoolYear']));
-			try {
-				$this->em->persist($class);
-				$this->em->flush();
-				if ($class->getType() == ClassEntity::TYPE_CLASS) {
-					$this->flashMessage("Třída byla úspěšně vytvořena", "success");
-				} else {
-					$this->flashMessage("Skupina byla úspěšně vytvořena", "success");
-				}
-			} catch (\Exception $e) {
-				if ($class->getType() == ClassEntity::TYPE_CLASS) {
-					$this->flashMessage("Třída nebyla vytvořena", "alert");
-				} else {
-					$this->flashMessage("Skupina nebyla vytvořena", "alert");
-				}
-			}
 		}
 
-		if ($class->getId()) {
-			$this->redirect("default", array($class->getId()));
-		} else {
-			$this->redirect("default");
+		$class->setName($values['name'])->setType($values['type'])->setSchoolYear($this->em->getReference(SchoolYear::getClassName(), $values['schoolYear']));
+
+		$sameClass = $this->checkSameClass($class);
+
+		if ($sameClass) {
+			$this->flashMessage("Třída s tímto názvem se již v tomto školním roce vyskytuje", 'alert');
+			return;
 		}
+
+
+		try {
+			$this->em->persist($class);
+			$this->em->flush();
+			if ($class->getType() == ClassEntity::TYPE_CLASS) {
+				$this->flashMessage("Třída byla úspěšně uložena", "success");
+			} else {
+				$this->flashMessage("Skupina byla úspěšně uložena", "success");
+			}
+		} catch (\Exception $e) {
+			if ($class->getType() == ClassEntity::TYPE_CLASS) {
+				$this->flashMessage("Třída nebyla uložena", "alert");
+			} else {
+				$this->flashMessage("Skupina nebyla uložena", "alert");
+			}
+
+			return;
+		}
+
+		$this->redirect('Classes:default', $class->getId());
+	}
+
+	public function checkSameClass(ClassEntity $class)
+	{
+		if ($class->getId()) {
+			return $this->em->createQueryBuilder()
+					->select('c.id')
+					->from(ClassEntity::getClassName(), 'c')
+					->where('c.name = :name AND c.schoolYear = :schoolYear AND c.id != :id')
+					->setParameters(array('name' => $class->getName(), 'schoolYear' => $class->getSchoolYear()->getId(), 'id' => $class->getId()))
+					->getQuery()->getOneOrNullResult();
+		} else {
+			return $this->em->getRepository(ClassEntity::getClassName())->findOneBy(array('name' => $class->getName(), 'schoolYear' => $class->getSchoolYear()->getId()));
+		}
+
 	}
 
 	/**
