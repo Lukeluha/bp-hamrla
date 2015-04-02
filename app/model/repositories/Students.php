@@ -3,6 +3,7 @@
 namespace App\Model\Repositories;
 
 
+use App\Model\Entities\ClassEntity;
 use App\Model\Entities\Student;
 use Kdyby\Doctrine\EntityRepository;
 
@@ -36,5 +37,17 @@ class Students extends EntityRepository
 		} else {
 			throw new InvalidArgumentException('Bad format');
 		}
+	}
+
+	public function findByStudentNameInClass(Student $student, ClassEntity $class)
+	{
+		$student = $this->createQueryBuilder()
+				->select('s.id')
+				->from(Student::getClassName(), 's')
+				->join('s.classes', 'c')
+				->where("s.name = '" . $student->getName() . "' AND s.surname = '" . $student->getSurname() . "' AND c.id = " . $class->getId())
+				->getQuery()->getOneOrNullResult();
+
+		return $student;
 	}
 }

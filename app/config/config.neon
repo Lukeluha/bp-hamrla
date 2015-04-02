@@ -22,7 +22,10 @@ services:
 	- App\Forms\SignFormFactory
 	- App\Controls\IMenuControlFactory
 	- App\Controls\IChatControlFactory
-	- App\Forms\StudentFormFactory
+	actualityFactory:
+		class: App\Forms\StudentForm(%id%, ...)
+		implement: App\Forms\IStudentFormFactory
+		parameters: [id]
 	router: App\RouterFactory::createRouter
 	authenticator: App\Model\Services\UserService
 	authorizator:

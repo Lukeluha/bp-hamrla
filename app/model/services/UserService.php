@@ -67,14 +67,16 @@ class UserService extends BaseService implements IAuthenticator
 	public function addUser(&$user)
 	{
 		$login = substr($user->getSurname(), 0, 5) . substr($user->getName(), 0, 3);
+
+		$sameLogin = $this->em->getRepository(Student::getClassName())->findBy(array("login" => Strings::webalize($login)));
+
 		$i = 1;
-		do {
-			$sameLogin = $this->em->getRepository(Student::getClassName())->findBy(array("login" => Strings::webalize($login)));
+		while ($sameLogin) {
 			$i++;
-			if ($i > 2) {
-				$login[strlen($login)] = $i;
-			}
-		} while ($sameLogin);
+			$login[7] = $i;
+			$sameLogin = $this->em->getRepository(Student::getClassName())->findBy(array("login" => Strings::webalize($login)));
+		}
+
 
 		$user->setLogin(Strings::webalize($login));
 		$password = $this->generateNewPassword($user);
