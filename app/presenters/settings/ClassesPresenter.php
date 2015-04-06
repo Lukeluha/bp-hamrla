@@ -62,24 +62,45 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			));
 		}
 	}
-
-	public function renderDefault()
-	{
-		if (!isset($this->template->students)) {
-			$this->template->students = $this->em->getRepository(Student::getClassName())->findAll();
-		}
-	}
-
 	/**
 	 * Find all students for given query
 	 * @param string $query
 	 */
 	public function handleFindStudents($query)
 	{
-		if ($query) {
+		if ($this->isAjax()) {
 			$students = $this->em->getRepository(Student::getClassName())->findByName($query);
 			$this->template->students = $students;
 			$this->redrawControl('students');
+		}
+	}
+
+	public function handleRemoveStudentFromGroup($studentId)
+	{
+		if ($this->class->getType() == ClassEntity::TYPE_GROUP) {
+			if ($this->isAjax()) {
+				$student = $this->em->getRepository(Student::getClassName())->find($studentId);
+				$this->class->removeStudent($student);
+				$this->em->persist($this->class);
+				$this->em->flush();
+				$this->template->students = array($student->getId() => $student);
+				$this->redrawControl('studentsContainer');
+				$this->redrawControl('studentsInClass');
+			}
+		}
+	}
+
+	public function handleAddStudentToGroup($studentId)
+	{
+		if ($this->isAjax()) {
+			$student = $this->em->getRepository(Student::getClassName())->find($studentId);
+
+			$this->class->addStudent($student);
+			$this->em->persist($this->class);
+			$this->em->flush();
+			$this->template->students = array($studentId => $student);
+			$this->redrawControl('studentsContainer');
+			$this->redrawControl('studentsInClass');
 		}
 	}
 
@@ -88,13 +109,19 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$form = $this->studenFormFactory->create(null, $this->actualYear);
 		if (!$this->class) return;
 
-		$disabledClass = array(0);
-		foreach ($form['form']['class']->getItems() as $classId => $class) {
-			if ($classId != $this->class->getId()) $disabledClass[] = $classId;
+		if ($this->class->getType() == ClassEntity::TYPE_CLASS) {
+			$disabledClass = array(0);
+			foreach ($form['form']['class']->getItems() as $classId => $class) {
+				if ($classId != $this->class->getId()) $disabledClass[] = $classId;
+			}
+
+			$form['form']['class']->setDisabled($disabledClass);
 		}
 
-		$form['form']['class']->setDisabled($disabledClass);
 
+		if ($this->class->getType() == ClassEntity::TYPE_GROUP) {
+			$form['form']->setDefaults(array('groupId' => $this->class->getId()));
+		}
 
 		$that = $this;
 
@@ -117,17 +144,47 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 		$form->addText("name", "Název třídy")->setRequired('Vyplňte prosím název třídy');
 
-		$form->addSelect('type', "Typ", array(0 => "--Vyberte--", ClassEntity::TYPE_CLASS => "Třída", ClassEntity::TYPE_GROUP => "Skupina"))
+		$classSelect = array();
+
+		if (!$this->class) {
+			$classSelect[0] = '--Vyberte--';
+		}
+
+		$classSelect[ClassEntity::TYPE_CLASS] = "Třída";
+		$classSelect[ClassEntity::TYPE_GROUP] = "Skupina";
+
+		$form->addSelect('type', "Typ", $classSelect)
 			->addRule(Form::NOT_EQUAL, "Vyberte typ", 0);
+
+
+		if ($this->class && count($this->class->getStudents())) {
+			if ($this->class->getType() == ClassEntity::TYPE_CLASS) {
+				$disabled = array(ClassEntity::TYPE_GROUP);
+			} else {
+				$disabled = array(ClassEntity::TYPE_CLASS);
+			}
+
+			$form['type']->setDisabled($disabled);
+		}
 
 		$schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array('closed' => 0), array('from' => 'DESC'));
 
 		$schoolYearSelect = array();
+		$disabledSchoolYear = array();
 		foreach ($schoolYears as $year) {
+			if ($this->class && count($this->class->getStudents())) {
+				if ($year != $this->class->getSchoolYear()) {
+					$disabledSchoolYear[] = $year->getId();
+				}
+			}
 			$schoolYearSelect[$year->getId()] = $year->getFrom()->format("Y") . "/" . $year->getTo()->format("Y");
 		}
 
 		$form->addSelect('schoolYear', "Školní rok", $schoolYearSelect)->setDefaultValue($this->actualYear->getId());
+
+		if (count($disabledSchoolYear)) {
+			$form['schoolYear']->setDisabled($disabledSchoolYear);
+		}
 
 
 		$form->setRenderer(new FoundationRenderer());

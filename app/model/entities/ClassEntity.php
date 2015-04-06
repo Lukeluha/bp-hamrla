@@ -143,4 +143,9 @@ class ClassEntity extends BaseEntity
 		$this->schoolYear = $schoolYear;
 		return $this;
 	}
+
+	public function isGroup()
+	{
+		return (bool) $this->type == self::TYPE_GROUP;
+	}
 }

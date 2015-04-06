@@ -68,7 +68,7 @@ class StudentForm extends Control
 		$form->addText("name", "Jméno")->setRequired("Zadejte prosím jméno studenta");
 		$form->addText("surname", "Příjmení")->setRequired("Zadejte prosím příjmení studenta");
 
-		$classes = $this->em->getRepository(ClassEntity::getClassName())->findBy(array('schoolYear' => $this->schoolYear->getId(), 'type' => 'class'));
+		$classes = $this->em->getRepository(ClassEntity::getClassName())->findBy(array('schoolYear' => $this->schoolYear->getId(), 'type' => 'class'), array('name' => "ASC"));
 
 		$classesSelect = array("0" => "--Vyberte--");
 		foreach ($classes as $class) {
@@ -83,6 +83,7 @@ class StudentForm extends Control
 
 		$form->onSuccess[] = $this->saveStudent;
 		$form->addHidden('studentId');
+		$form->addHidden('groupId');
 
 		if ($this->student) {
 			$form->setDefaults(array(
@@ -142,6 +143,11 @@ class StudentForm extends Control
 
 			$this->studentPassword = $this->userService->addUser($student);
 			$class->addStudent($student);
+		}
+
+		if ($values['groupId']) {
+			$group = $this->em->getRepository(ClassEntity::getClassName())->find($values['groupId']);
+			$group->addStudent($student);
 		}
 
 

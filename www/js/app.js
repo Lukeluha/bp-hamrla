@@ -13,9 +13,18 @@ $(document).ready(function(){
         var that = $(this);
         delay(function() {
             liveSearch(that);
-        }, 1000);
+        }, 700);
     })
 })
+
+
+var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+    };
+})();
 
 function loadView(elementId, url)
 {
@@ -28,22 +37,24 @@ function loadView(elementId, url)
     }
 }
 
-var delay = (function(){
-    var timer = 0;
-    return function(callback, ms){
-        clearTimeout (timer);
-        timer = setTimeout(callback, ms);
-    };
-})();
-
 function liveSearch(element)
 {
     var url = $(element).data('url');
     var query = $(element).val();
+    var spinner = $(element).data('spinner');
+
+    if (spinner) {
+        $("#" + spinner).show();
+    }
+
     $.nette.ajax({
         'url': url,
         'data': {
             query: query
+        }
+    }).success(function(){
+        if (spinner) {
+           $("#" + spinner).hide();
         }
     });
 }

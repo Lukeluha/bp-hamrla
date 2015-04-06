@@ -9248,3 +9248,8 @@ td > .button {
 .alert-box {
   margin-bottom: 0;
 }
+
+/* line 93, ../../scss/app.scss */
+.hide {
+  display: none;
+}
