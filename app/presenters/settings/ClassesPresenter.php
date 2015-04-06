@@ -62,6 +62,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			));
 		}
 	}
+
 	/**
 	 * Find all students for given query
 	 * @param string $query

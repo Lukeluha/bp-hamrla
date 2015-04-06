@@ -146,6 +146,6 @@ class ClassEntity extends BaseEntity
 
 	public function isGroup()
 	{
-		return (bool) $this->type == self::TYPE_GROUP;
+		return (bool) ($this->type == self::TYPE_GROUP);
 	}
 }

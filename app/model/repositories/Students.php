@@ -14,29 +14,27 @@ use Kdyby\Doctrine\EntityRepository;
  */
 class Students extends EntityRepository
 {
-	const FORMAT_OBJECT = 'object';
-	const FORMAT_ARRAY = 'array';
 
-	public function findByName($query, $format = self::FORMAT_OBJECT)
+	/**
+	 * Get students by given query in given school year
+	 * @param $query
+	 * @param $schoolYear
+	 * @return array
+	 */
+	public function findByName($query, $schoolYear)
 	{
-		$students = $this->createQueryBuilder()
-			->select("s")
-			->from(Student::getClassName(), 's')
-			->leftJoin('s.classes', 'c')
-			->where("CONCAT(s.name, CONCAT(' ', s.surname)) LIKE :query OR CONCAT(s.surname, CONCAT(' ', s.name)) LIKE :query")
-			->setParameter(":query", "%$query%")
-			->orderBy("s.surname")
-			->orderBy("s.name")
-			->setMaxResults(10)
-			->getQuery();
-
-		if ($format == self::FORMAT_OBJECT) {
-			return $students->getResult();
-		} elseif ($format == self::FORMAT_ARRAY) {
-			return $students->getArrayResult();
-		} else {
-			throw new InvalidArgumentException('Bad format');
-		}
+		return $this->createQueryBuilder()
+					->select("s")
+					->from(Student::getClassName(), 's')
+					->leftJoin('s.classes', 'c')
+					->where("(CONCAT(s.name, CONCAT(' ', s.surname)) LIKE :query
+								OR CONCAT(s.surname, CONCAT(' ', s.name)) LIKE :query)
+								AND c.type = '". ClassEntity::TYPE_CLASS . "' AND c.schoolYear = " . $schoolYear->getId())
+					->setParameter(":query", "%$query%")
+					->addOrderBy("s.surname")
+					->addOrderBy("s.name")
+					->setMaxResults(10)
+					->getQuery()->getResult();
 	}
 
 	public function findByStudentNameInClass(Student $student, ClassEntity $class)

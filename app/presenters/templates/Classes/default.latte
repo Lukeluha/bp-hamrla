@@ -53,7 +53,7 @@
 							<td>
 								<a class="button secondary tiny" href="#">Editovat</a>
 								{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_GROUP}
-									<a class="button alert tiny ajax" href="{link removeStudentFromGroup! studentId => $student->getId()}">Vymazat ze skupiny</a>
+									<a class="button alert tiny myAjax" href="{link removeStudentFromGroup! studentId => $student->getId()}">Vymazat ze skupiny</a>
 								{/if}
 							</td>
 						</tr>
@@ -124,9 +124,9 @@
 											<td>{if $mainClass}{$mainClass->getName()}{else}-{/if}</td>
 											<td>
 												{if $student->isInClass($class->getId())}
-													<a href="{link removeStudentFromGroup! studentId => $student->getId()}" class="ajax button tiny alert">Odebrat ze skupiny</a>
+													<a href="{link removeStudentFromGroup! studentId => $student->getId()}" class="myAjax button tiny alert">Odebrat ze skupiny</a>
 												{else}
-													<a href="{link addStudentToGroup! studentId => $student->getId()}" class="ajax button tiny success">Přiřadit do skupiny</a>
+													<a href="{link addStudentToGroup! studentId => $student->getId()}" class="myAjax button tiny success">Přiřadit do skupiny</a>
 												{/if}
 											</td>
 										</tr>

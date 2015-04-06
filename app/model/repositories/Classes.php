@@ -25,6 +25,18 @@ class Classes extends EntityRepository
 						->getQuery()->getResult();
 	}
 
+	public function findByName($name, $actualYear)
+	{
+		return $this->createQueryBuilder()
+						->select('c')
+						->from(ClassEntity::getClassName(), 'c')
+						->where("c.schoolYear = " . $actualYear->getId() . " AND c.name LIKE :name")
+						->setParameter("name", "%".$name."%")
+						->addOrderBy('c.name', 'ASC')
+						->setMaxResults(10)
+						->getQuery()->getResult();
+	}
+
 	public function findByYear(SchoolYear $schoolYear)
 	{
 

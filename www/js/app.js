@@ -8,15 +8,33 @@ $(document).ready(function(){
     }).on('keydown', function(){
         return false;
     })
-
-    $(".liveSearch").keyup(function(event){
-        var that = $(this);
-        delay(function() {
-            liveSearch(that);
-        }, 700);
-    })
 })
 
+$(document).on('click', '.myAjax', function(e){
+    if ($(this).hasClass('button')) {
+        $(this).addClass('disabled');
+        $(this).text("Počkejte...");
+    }
+
+    var url = $(this).attr('href')
+
+    $.nette.ajax({
+        'url': url
+    })
+
+    e.preventDefault();
+
+    return false;
+});
+
+$(document).on('keyup', '.liveSearch', function(e){
+    var that = $(this);
+
+    delay(function() {
+        liveSearch(that);
+    }, 700);
+
+})
 
 var delay = (function(){
     var timer = 0;

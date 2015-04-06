@@ -24,27 +24,18 @@ class SettingsPresenter extends AuthorizedBasePresenter
 		}
 
 		$this->addLinkToNav('Nastavení', 'Settings:default');
-
-		$this->template->ngApp = 'app';
 	}
 
 	public function handleSearchStudent($query)
 	{
-		$students = $this->em->getRepository(Student::getClassName())->findByName($query, BaseService::FORMAT_ARRAY);
-		$this->sendJson($students);
+		$this->template->students = $this->em->getRepository(Student::getClassName())->findByName($query, $this->actualYear);
+		$this->redrawControl('students');
 	}
 
 	public function handleSearchClass($query)
 	{
-		$classes = $this->em->createQueryBuilder()
-						->select('c')
-						->from(ClassEntity::getClassName(), 'c')
-						->where('c.name LIKE :query')
-						->orderBy('c.name')
-						->setParameter('query', "%$query%")
-						->getQuery()->getArrayResult();
-
-		$this->sendJson($classes);
+		$this->template->classes = $this->em->getRepository(ClassEntity::getClassName())->findByName($query, $this->actualYear);
+		$this->redrawControl('classes');
 	}
 
 	/**
@@ -52,8 +43,14 @@ class SettingsPresenter extends AuthorizedBasePresenter
 	 */
 	public function renderDefault()
 	{
-		$this->template->classes = $this->em->createQueryBuilder()->select('c')->from(ClassEntity::getClassName(), 'c')->orderBy('c.name')->getQuery()->getArrayResult();
-		$this->template->students = $this->em->getRepository(Student::getClassName())->findByName(null, BaseService::FORMAT_ARRAY);
+		if (!isset($this->template->classes)) {
+			$this->template->classes = $this->em->getRepository(ClassEntity::getClassName())->findByName('', $this->actualYear);
+		}
+
+		if (!isset($this->template->students)) {
+			$this->template->students = $this->em->getRepository(Student::getClassName())->findByName('', $this->actualYear);
+		}
+
 		$this->template->schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array(), array('from' => 'DESC'));
 	}
 

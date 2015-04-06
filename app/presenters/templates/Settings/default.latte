@@ -8,36 +8,42 @@
 			<button data-tooltip aria-haspopup="true" class="button tiny disabled" title="Pro přidání vytvořte školní rok">Přidat studenta</button>
 		{/if}
 
-		<div ng-controller="StudentsController" ng-cloak ng-init="students={=json_encode($students)};searchUrl='{link searchStudent!}'">
 
-			<div class="row collapse prefix-radius">
-				<div class="small-1 columns left">
-					<span class="prefix"><i class="fi-magnifying-glass"></i></span>
-				</div>
-				<div class="small-8 columns left">
-					<input type="text" ng-model="query"/>
-				</div>
+		<div class="row collapse prefix-radius">
+			<div class="small-1 columns left">
+				<span class="prefix"><i class="fi-magnifying-glass"></i></span>
 			</div>
-
-			<img ng-show="loading" src="{$basePath}/images/spinner-bubble.svg" alt=""/>
-			<div class="panel" ng-show="!loading && !students.length">Nenalezeny žádní studenti</div>
-			<table ng-show="!loading && students.length" class="small-9">
-				<thead>
-				<tr>
-					<th>Jméno a příjmení</th>
-					<th>Třída</th>
-					<th></th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr ng-repeat="student in students">
-					<td>{{ student.name }} {{ student.surname }}</td>
-					<td>{{ student.class }} </td>
-					<td><a href="{link Students:default}?studentId={{ student.id }}" class="button secondary tiny">Editovat</a></td>
-				</tr>
-				</tbody>
-			</table>
+			<div class="small-8 columns left">
+				<input type="text" class="liveSearch" data-url="{link searchStudent!}" data-spinner="studentSpinner"/>
+			</div>
 		</div>
+
+		{snippet students}
+			<img src="{$basePath}/images/spinner-bubble.svg" alt="" id="studentSpinner" class="hide"/>
+
+			{if !count($students)}
+				<div class="panel">Nenalezeni žádní studenti</div>
+			{else}
+				<table class="small-9">
+					<thead>
+					<tr>
+						<th>Jméno a příjmení</th>
+						<th>Třída</th>
+						<th></th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $students as $student}
+						<tr>
+							<td>{$student->getSurname()} {$student->getName()}</td>
+							<td>{$student->getMainClass($actualYear)->getName()} </td>
+							<td><a href="{link Students:default studentId => $student->getId()}" class="button secondary tiny">Editovat</a></td>
+						</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			{/if}
+		{/snippet}
 	{/if}
 
 
@@ -48,20 +54,22 @@
 		{else}
 			<button data-tooltip aria-haspopup="true" class="button tiny disabled" title="Pro přidání vytvořte školní rok">Přidat třídu/skupinu</button>
 		{/if}
-		<div ng-controller="ClassesController" ng-cloak ng-init="classes={=json_encode($classes)};searchUrl='{link searchClass!}'">
 
-			<div class="row collapse prefix-radius">
-				<div class="small-1 columns left">
-					<span class="prefix"><i class="fi-magnifying-glass"></i></span>
-				</div>
-				<div class="small-8 columns left">
-					<input type="text" ng-model="query"/>
-				</div>
+		<div class="row collapse prefix-radius">
+			<div class="small-1 columns left">
+				<span class="prefix"><i class="fi-magnifying-glass"></i></span>
 			</div>
+			<div class="small-8 columns left">
+				<input type="text" class="liveSearch" data-url="{link searchClass!}" data-spinner="classSpinner"/>
+			</div>
+		</div>
 
-			<img ng-show="loading" src="{$basePath}/images/spinner-bubble.svg" alt=""/>
-			<div class="panel" ng-show="!loading && !classes.length">Nenalezeny žádné třídy</div>
-			<table ng-show="!loading && classes.length" class="small-9">
+		{snippet classes}
+		<img src="{$basePath}/images/spinner-bubble.svg" alt="" id="classSpinner" class="hide"/>
+		{if !count($classes)}
+			<div class="panel">Nenalazeny žádné třídy</div>
+		{else}
+			<table class="small-9">
 				<thead>
 				<tr>
 					<th>Název</th>
@@ -70,15 +78,24 @@
 				</tr>
 				</thead>
 				<tbody>
-				<tr ng-repeat="class in classes">
-					<td>{{ class.name }}</td>
-					<td ng-show="{{ class.type = 'class' }}">třída</td>
-					<td ng-show="{{ class.type = 'group' }}">skupina</td>
-					<td><a href="{link Classes:default}?classId={{ class.id }}" class="button secondary tiny">Editovat</a></td>
+				{foreach $classes as $class}
+				<tr>
+					<td>{$class->getName()}</td>
+					<td>
+						{if $class->isGroup()}
+							skupina
+						{else}
+							třída
+						{/if}
+					</td>
+					<td><a href="{link Classes:default classId => $class->getId()}" class="button secondary tiny">Editovat</a></td>
 				</tr>
+				{/foreach}
 				</tbody>
 			</table>
-		</div>
+		{/if}
+		{/snippet}
+
 	{/if}
 
 	{if $user->isAllowed('settings', 'school-years')}
