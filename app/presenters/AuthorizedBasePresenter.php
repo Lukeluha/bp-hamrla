@@ -5,6 +5,7 @@ use App\Controls\BreadcrumbsControl;
 use App\Controls\IMenuControlFactory;
 use App\Controls\IChatControlFactory;
 use App\Model\Entities\SchoolYear;
+use App\Model\Services\SchoolYearService;
 
 /**
  * Class AuthorizedBasePresenter
@@ -27,6 +28,12 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	public $chatControlFactory;
 
 	/**
+	 * @var SchoolYearService
+	 * @inject
+	 */
+	public $schoolYearService;
+
+	/**
 	 * @var \App\Model\Entities\SchoolYear
 	 */
 	protected $actualYear;
@@ -38,19 +45,7 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 			$this->redirect("Login:default");
 		}
 
-		$qb = $this->em->createQueryBuilder();
-		$this->actualYear = $qb	->select('y')
-								->from(SchoolYear::getClassName(), 'y')
-								->where($qb->expr()->lte('y.from', 'CURRENT_DATE()'))
-								->andWhere($qb->expr()->gte('y.to', 'CURRENT_DATE()'))
-								->getQuery()->getOneOrNullResult();
-
-		if (!$this->actualYear) {
-			$this->actualYear = $qb	->select('y')
-									->from(SchoolYear::getClassName(), 'y')
-									->where($qb->expr()->gte('y.from', 'CURRENT_DATE()'))
-									->getQuery()->getOneOrNullResult();
-		}
+		$this->actualYear = $this->schoolYearService->getCurrentSchoolYear();
 	}
 
 	/**

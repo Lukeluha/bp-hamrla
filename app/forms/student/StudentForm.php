@@ -4,6 +4,7 @@ namespace App\Forms;
 
 
 use App\Model\Entities\ClassEntity;
+use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
 use App\Model\FoundationRenderer;
 use Nette\Application\UI\Control;
@@ -34,16 +35,22 @@ class StudentForm extends Control
 	 */
 	private $studentPassword;
 
+	/**
+	 * @var SchoolYear
+	 */
+	private $schoolYear;
+
 	public $onCreate = array();
 	public $onUpdate = array();
 	public $onError = array();
 
 
-	public function __construct($studentId = null, EntityManager $em, UserService $userService)
+	public function __construct($studentId = null, SchoolYear $schoolYear, EntityManager $em, UserService $userService)
 	{
 		parent::__construct();
 		$this->em = $em;
 		$this->userService = $userService;
+		$this->schoolYear = $schoolYear;
 
 		if ($studentId) {
 			$this->student = $this->em->find(Student::getClassName(), $studentId);
@@ -61,7 +68,7 @@ class StudentForm extends Control
 		$form->addText("name", "Jméno")->setRequired("Zadejte prosím jméno studenta");
 		$form->addText("surname", "Příjmení")->setRequired("Zadejte prosím příjmení studenta");
 
-		$classes = $this->em->getRepository(ClassEntity::getClassName())->findByOpenedYears();
+		$classes = $this->em->getRepository(ClassEntity::getClassName())->findBy(array('schoolYear' => $this->schoolYear->getId(), 'type' => 'class'));
 
 		$classesSelect = array("0" => "--Vyberte--");
 		foreach ($classes as $class) {
@@ -81,7 +88,7 @@ class StudentForm extends Control
 			$form->setDefaults(array(
 				"name" => $this->student->getName(),
 				"surname" => $this->student->getSurname(),
-				"class" => $this->student->getMainClass()->getId(),
+				"class" => $this->student->getMainClass($this->schoolYear) ? $this->student->getMainClass($this->schoolYear)->getId() : 0,
 				"studentId" => $this->student->getId(),
 				"login" => $this->student->getLogin()
 			));
@@ -111,7 +118,9 @@ class StudentForm extends Control
 
 
 		if ($values['studentId'] ) {
-			if ($student->getMainClass()->getId() != $class->getId()) {
+			$mainClass = $student->getMainClass($this->schoolYear);
+
+			if ($mainClass && $mainClass->getId() != $class->getId()) {
 				$sameStudent = $this->findSameStudent($student, $class);
 
 				if ($sameStudent) {
@@ -119,9 +128,10 @@ class StudentForm extends Control
 					return;
 				}
 
-				$student->getMainClass()->removeStudent($student);
-				$class->addStudent($student);
+				$student->getMainClass($this->schoolYear)->removeStudent($student);
 			}
+
+			$class->addStudent($student);
 		} else {
 			$sameStudent = $this->findSameStudent($student, $class);
 

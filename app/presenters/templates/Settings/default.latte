@@ -96,7 +96,7 @@
 				<tbody>
 				{foreach $schoolYears as $year}
 					<tr>
-						<td>{$year->getFrom()|date:'Y'}/{$year->getTo()|date:'Y'} {if $year->isClosed()} <span class="label alert">uzavřený</span> {elseif $year->isCurrent()} <span class="label">probíhá</span> {/if}</td>
+						<td>{$year} {if $year->isClosed()} <span class="label alert">uzavřený</span> {elseif $year->getId() == $actualYear->getId()} <span class="label">probíhá</span> {/if}</td>
 						<td>
 							{if $year->getClosed()}
 								<span class="button secondary tiny disabled">Editovat</span>

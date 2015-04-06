@@ -25,4 +25,9 @@ class Classes extends EntityRepository
 						->getQuery()->getResult();
 	}
 
+	public function findByYear(SchoolYear $schoolYear)
+	{
+
+	}
+
 }

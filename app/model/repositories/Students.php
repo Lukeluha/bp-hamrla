@@ -20,7 +20,7 @@ class Students extends EntityRepository
 	public function findByName($query, $format = self::FORMAT_OBJECT)
 	{
 		$students = $this->createQueryBuilder()
-			->select("s.id, s.name, s.surname, c.name as class")
+			->select("s")
 			->from(Student::getClassName(), 's')
 			->leftJoin('s.classes', 'c')
 			->where("CONCAT(s.name, CONCAT(' ', s.surname)) LIKE :query OR CONCAT(s.surname, CONCAT(' ', s.name)) LIKE :query")

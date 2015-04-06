@@ -75,13 +75,6 @@ class SchoolYear extends BaseEntity
 		return $this->active;
 	}
 
-
-	public function isCurrent()
-	{
-		$today = new \DateTime();
-		return (($this->from <= $today) && ($this->to >= $today));
-	}
-
 	/**
 	 * @return boolean
 	 */

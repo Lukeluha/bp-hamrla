@@ -44,7 +44,7 @@ class StudentsPresenter extends AuthorizedBasePresenter
 
 	public function createComponentForm()
 	{
-		$form = $this->studentFormFactory->create($this->getParameter('studentId'));
+		$form = $this->studentFormFactory->create($this->getParameter('studentId'), $this->actualYear);
 		$that = $this;
 
 		$form->onCreate[] = function ($component, $student) use ($that) {

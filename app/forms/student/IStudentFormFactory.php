@@ -7,6 +7,6 @@ interface IStudentFormFactory {
 	/**
 	 * @return StudentForm
 	 */
-	function create($studentId);
+	function create($studentId, $schoolYear);
 
 }

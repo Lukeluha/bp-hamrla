@@ -68,13 +68,14 @@ class Student extends User
 	}
 
 	/**
-	 * Get main class of student (e.g. 4.B)
+	 * Get main class of student (e.g. 4.B) for given school year
+	 * @param SchoolYear $schoolYear
 	 * @return ClassEntity
 	 */
-	public function getMainClass()
+	public function getMainClass(SchoolYear $schoolYear)
 	{
 		foreach ($this->classes as $class) {
-			if ($class->getType() == ClassEntity::TYPE_CLASS) {
+			if ($class->getType() == ClassEntity::TYPE_CLASS && $class->getSchoolYear()->getId() == $schoolYear->getId()) {
 				return $class;
 			}
 		}

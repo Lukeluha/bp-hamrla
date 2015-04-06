@@ -6,10 +6,23 @@ namespace App\Presenters;
 use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
+use App\Model\FoundationRenderer;
 use Nette\Application\UI\Form;
+use App\Forms\IStudentFormFactory;
 
 class ClassesPresenter extends AuthorizedBasePresenter
 {
+	/**
+	 * @var IStudentFormFactory
+	 * @inject
+	 */
+	public $studenFormFactory;
+
+	/**
+	 * @var ClassEntity
+	 */
+	private $class;
+
 	public function startup()
 	{
 		parent::startup();
@@ -27,27 +40,74 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		if (!$classId) {
 			$this->addLinkToNav('Vytvoření nové třídy/skupiny', 'Classes:default');
 		} else {
-			$class = $this->em->getRepository(ClassEntity::getClassName())->find($classId);
-			if (!$class) {
+			$this->class = $this->em->getRepository(ClassEntity::getClassName())->find($classId);
+			if (!$this->class) {
 				$this->flashMessage("Nenalezena žádná třída.", "alert");
 				$this->redirect("Settings:default");
 			}
 
-			$this->template->class = $class;
+			$this->template->class = $this->class;
 
-			if ($class->getType() == ClassEntity::TYPE_CLASS) {
+			if ($this->class->getType() == ClassEntity::TYPE_CLASS) {
 				$this->addLinkToNav('Editace třídy', 'Classes:default', array($classId));
 			} else {
 				$this->addLinkToNav('Editace skupiny', 'Classes:default', array($classId));
 			}
 
 			$this['classForm']->setDefaults(array(
-				'id' => $class->getId(),
-				'name' => $class->getName(),
-				'type' => $class->getType(),
-				'schoolYear' => $class->getSchoolYear()->getId()
+				'id' => $this->class->getId(),
+				'name' => $this->class->getName(),
+				'type' => $this->class->getType(),
+				'schoolYear' => $this->class->getSchoolYear()->getId()
 			));
 		}
+	}
+
+	public function renderDefault()
+	{
+		if (!isset($this->template->students)) {
+			$this->template->students = $this->em->getRepository(Student::getClassName())->findAll();
+		}
+	}
+
+	/**
+	 * Find all students for given query
+	 * @param string $query
+	 */
+	public function handleFindStudents($query)
+	{
+		if ($query) {
+			$students = $this->em->getRepository(Student::getClassName())->findByName($query);
+			$this->template->students = $students;
+			$this->redrawControl('students');
+		}
+	}
+
+	public function createComponentStudentForm()
+	{
+		$form = $this->studenFormFactory->create(null, $this->actualYear);
+		if (!$this->class) return;
+
+		$disabledClass = array(0);
+		foreach ($form['form']['class']->getItems() as $classId => $class) {
+			if ($classId != $this->class->getId()) $disabledClass[] = $classId;
+		}
+
+		$form['form']['class']->setDisabled($disabledClass);
+
+
+		$that = $this;
+
+		$form->onCreate[] = function ($component, $student) use ($that) {
+			$that->flashMessage("Student byl úspěšně vytvořen. <strong>Jeho login je: " . $student->getLogin() . " a heslo je: " . $component->getStudentPassword() . "</strong>", "success");
+			$that->redirect("this");
+		};
+
+		$form->onError[] = function () use ($that) {
+			$that->flashMessage("Student nebyl uložen.", 'alert');
+		};
+
+		return $form;
 	}
 
 
@@ -70,11 +130,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$form->addSelect('schoolYear', "Školní rok", $schoolYearSelect)->setDefaultValue($this->actualYear->getId());
 
 
-		$renderer = $form->getRenderer();
-		$renderer->wrappers['controls']['container'] = 'p';
-		$renderer->wrappers['pair']['container'] = null;
-		$renderer->wrappers['label']['container'] = null;
-		$renderer->wrappers['control']['container'] = null;
+		$form->setRenderer(new FoundationRenderer());
 
 		$form->addSubmit("save", "Uložit")->setAttribute('class', 'button small');
 		$form->addHidden("id");
@@ -139,43 +195,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 	}
 
-	/**
-	 * Find all students for given query and check for availability to adding to given groupId
-	 * @param string $query
-	 * @param null|int $groupId
-	 */
-	public function handleFindStudents($query, $groupId = null)
-	{
-		if ($query) {
-			$students = $this->em->getRepository(Student::getClassName())->findByName($query);
 
-			$studentsArray = array();
-			foreach ($students as $student) {
-				$studentArray = array(
-					'name' => $student->getName(),
-					'surname' => $student->getSurname(),
-				);
-
-				if ($student->getMainClass()) {
-					$studentArray['mainClass']['name'] = $student->getMainClass()->getName();
-					$studentArray['mainClass']['id'] = $student->getMainClass()->getId();
-				} else {
-					$studentArray['mainClass'] = null;
-				}
-
-				if ($groupId) {
-					$studentArray['isInClass'] = $student->isInClass($groupId);
-				}
-
-				$studentArray['profilePicture'] = $student->getProfilePicture();
-				$studentArray['id'] = $student->getId();
-
-				$studentsArray[] = $studentArray;
-			}
-
-			$this->sendJson($studentsArray);
-		}
-	}
 
 	public function handleAddStudentToClass($studentId, $classId)
 	{
@@ -196,11 +216,4 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 		$this->terminate();
 	}
-
-	public function beforeRender()
-	{
-		parent::beforeRender();
-		$this->template->ngApp = 'app';
-	}
-
 }
