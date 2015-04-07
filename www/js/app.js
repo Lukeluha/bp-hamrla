@@ -77,3 +77,11 @@ function liveSearch(element)
     });
 }
 
+function printData(divId)
+{
+    var divToPrint=document.getElementById(divId);
+    newWin= window.open("");
+    newWin.document.write(divToPrint.outerHTML);
+    newWin.print();
+    newWin.close();
+}

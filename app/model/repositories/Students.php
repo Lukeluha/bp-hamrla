@@ -4,6 +4,7 @@ namespace App\Model\Repositories;
 
 
 use App\Model\Entities\ClassEntity;
+use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
 use Kdyby\Doctrine\EntityRepository;
 
@@ -21,8 +22,10 @@ class Students extends EntityRepository
 	 * @param $schoolYear
 	 * @return array
 	 */
-	public function findByName($query, $schoolYear)
+	public function findByName($query, SchoolYear $schoolYear = null)
 	{
+		if (!$schoolYear) return false;
+
 		return $this->createQueryBuilder()
 					->select("s")
 					->from(Student::getClassName(), 's')
@@ -35,6 +38,19 @@ class Students extends EntityRepository
 					->addOrderBy("s.name")
 					->setMaxResults(10)
 					->getQuery()->getResult();
+	}
+
+	public function findByNameInClass($name, $surname, $className, SchoolYear $schoolYear = null)
+	{
+		if (!$schoolYear) return false;
+
+		return $this->createQueryBuilder()
+					->select('s')
+					->from(Student::getClassName(), 's')
+					->join(ClassEntity::getClassName(), 'c')
+					->where('s.name = :name AND s.surname = :surname AND c.schoolYear = ' . $schoolYear->getId() .' AND c.name = :className')
+					->setParameters(array('name' => $name, 'surname' => $surname, 'className' => $className))
+					->getQuery()->getOneOrNullResult();
 	}
 
 	public function findByStudentNameInClass(Student $student, ClassEntity $class)

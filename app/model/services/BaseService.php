@@ -11,6 +11,11 @@ abstract class BaseService
 	 */
 	protected $em;
 
+	/**
+	 * @var SchoolYear
+	 */
+	private $actualYear;
+
 	public function __construct(EntityManager $em)
 	{
 		$this->em = $em;

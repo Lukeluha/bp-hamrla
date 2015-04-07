@@ -23,6 +23,7 @@ services:
 	- App\Controls\IMenuControlFactory
 	- App\Controls\IChatControlFactory
 	- App\Model\Services\SchoolYearService
+	- App\Model\Services\StudentService
 	actualityFactory:
 		class: App\Forms\StudentForm(%id%, %currentSchoolYear%, ...)
 		implement: App\Forms\IStudentFormFactory

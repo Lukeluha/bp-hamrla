@@ -234,9 +234,9 @@ class QueryBuilder extends Doctrine\ORM\QueryBuilder implements \IteratorAggrega
 				continue;
 			}
 
-			$aliasLength = 1;
+			$j = 0;
 			do {
-				$joinAs = substr($property, 0, $aliasLength++);
+				$joinAs = substr($property, 0, 1) . (string) $j++;
 			} while (isset($this->criteriaJoins[$joinAs]));
 			$this->criteriaJoins[$joinAs] = array();
 

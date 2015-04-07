@@ -21,7 +21,7 @@
 			{/if}
 		</h2>
 		<a class="button small" href="#" data-reveal-id="addStudent">Přidat studenta</a>
-		<a class="button small" href="#">Import studentů z informačního systému Bakaláři</a>
+		<a class="button small" href="#" data-reveal-id="importStudents">Import studentů z informačního systému Bakaláři</a>
 		{snippet studentsInClass}
 			{if count($class->getStudents())}
 				<table>
@@ -145,5 +145,22 @@
 		</div>
 	</div>
 
+	<div id="importStudents" class="reveal-modal" data-reveal aria-labelledby="importStudents" aria-hidden="true" role="dialog">
+		<h2 id="modalTitle">Importování studentů z informačního systému Bakaláři</h2>
+		<div class="panel">
+			<p>Zde můžete naimportovat studenty ze souboru, který si můžete vyexportovat v systému Bakaláři. Soubor získáte následujícím zpsůobem:</p>
+			<ol>
+				<li>Otevřete si okno pro zápis průběžné klasifikace</li>
+				<li>Vyberete si správný předmět a jeho skupinu</li>
+				<li>Ve spodní části klikněte na tlačítko s ikonou Excelu (zelené X)</li>
+				<li>Pro příjmení a jméno žáka zvolte možnost "Ve dvou buňkách (Novák, Jaromír)"</li>
+				<li>Potvrďte kliknutím na OK</li>
+			</ol>
+			<p>Poté stačí stažený soubor zvolit níže a kliknout na tlačítko import. Po chvilce se Vám objeví výsledek operace.</p>
+		</div>
+
+		{control importForm}
+		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+	</div>
 
 {/block}

@@ -7,8 +7,12 @@ use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
 use App\Model\FoundationRenderer;
+use App\Model\Services\BadClassNameException;
+use App\Model\Services\BadFormatException;
 use Nette\Application\UI\Form;
 use App\Forms\IStudentFormFactory;
+use App\Model\Services\StudentService;
+use App\Model\Services\UserService;
 
 class ClassesPresenter extends AuthorizedBasePresenter
 {
@@ -16,12 +20,20 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	 * @var IStudentFormFactory
 	 * @inject
 	 */
-	public $studenFormFactory;
+	public $studentFormFactory;
 
 	/**
+	 * @var StudentService
+	 * @inject
+	 */
+	public $studentService;
+
+	/**
+	 * Current loaded class
 	 * @var ClassEntity
 	 */
 	private $class;
+
 
 	public function startup()
 	{
@@ -63,6 +75,79 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		}
 	}
 
+	public function createComponentImportForm()
+	{
+		$form = new Form();
+		$form->addUpload('file', 'Soubor pro import')->setRequired('Vyberte prosím soubor pro import');
+		$form->addSubmit('import', 'Importovat')->getControlPrototype()->class('button');
+		$form->onSuccess[] = $this->importStudents;
+		$form->setRenderer(new FoundationRenderer());
+
+		return $form;
+	}
+
+	public function importStudents(Form $form)
+	{
+		$file = $form->getValues()->file;
+
+		try {
+			$passwords = $this->studentService->importStudents($file->getTemporaryFile(), $this->class);
+
+			$text = "<p>Import byl proveden úspěšně.";
+			$count = count($passwords);
+			if ($count == 1) {
+				$text .= " Byl vytvořen 1 student.";
+			} elseif ($count > 1 && $count < 5) {
+				$text .= " Byli vytvořeni $count studenti.";
+			} else {
+				$text .= " Bylo vytvořeno $count studentů.";
+			}
+
+			$text .= "</p>";
+			$text .= "<div id='passwordsPrint' class='print-only'>";
+			$text .= "<table border='1' cellpadding='8' style='border-collapse: collapse'>";
+			$text .= "
+				<thead>
+					<tr>
+						<th>Jméno a příjmení</th>
+						<th>Login</th>
+						<th>Heslo</th>
+					</tr>
+				</thead>";
+
+			$text .= "<tbody>";
+
+			foreach ($passwords as $id => $password) {
+				$student = $this->em->getRepository(Student::getClassName())->find($id);
+				$text .= "
+				<tr>
+					<td>".$student->getName()." " . $student->getSurname() . "</td>
+					<td>".$student->getLogin()."</td>
+					<td>".$password."</td>
+				</tr>
+				";
+			}
+			$text .= "</tbody></table>";
+			$text .= "</div>";
+
+			if ($count) {
+				$text .= "<button class='button' onclick='printData(\"passwordsPrint\")'>Tisk hesel studentů</button>";
+			}
+
+			$this->flashMessage($text, "success");
+		} catch (BadClassNameException $e) {
+			$this->flashMessage('Název třídy ze souboru se neshoduje s názvem třídy v aplikaci. Název třídy v souboru je: ' . $e->getMessage(), 'alert');
+		} catch (BadFormatException $e) {
+			$this->flashMessage('Nesprávný formát souboru.', 'alert');
+		} catch (\Exception $e) {
+			dump($e);die;
+			$this->flashMessage('Import nebyl proveden.', 'alert');
+		}
+
+		$this->redirect('this');
+
+	}
+
 	/**
 	 * Find all students for given query
 	 * @param string $query
@@ -70,7 +155,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	public function handleFindStudents($query)
 	{
 		if ($this->isAjax()) {
-			$students = $this->em->getRepository(Student::getClassName())->findByName($query);
+			$students = $this->em->getRepository(Student::getClassName())->findByName($query, $this->actualYear);
 			$this->template->students = $students;
 			$this->redrawControl('students');
 		}
@@ -107,7 +192,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 	public function createComponentStudentForm()
 	{
-		$form = $this->studenFormFactory->create(null, $this->actualYear);
+		$form = $this->studentFormFactory->create(null, $this->actualYear);
 		if (!$this->class) return;
 
 		if ($this->class->getType() == ClassEntity::TYPE_CLASS) {

@@ -18,4 +18,15 @@ class SchoolYearService extends BaseService
 				->getQuery()->getOneOrNullResult();
 	}
 
+	public function getPreviousSchoolYear(SchoolYear $schoolYear)
+	{
+		return $this->em->createQueryBuilder()
+				->select('s')
+				->from(SchoolYear::getClassName(), 's')
+				->where("s.to < '" . $schoolYear->getFrom()->format("Y-m-d") . "'")
+				->orderBy('s.from', 'DESC')
+				->setMaxResults(1)
+				->getQuery()->getOneOrNullResult();
+	}
+
 }

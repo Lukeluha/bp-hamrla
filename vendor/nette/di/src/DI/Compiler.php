@@ -46,8 +46,8 @@ class Compiler extends Nette\Object
 	 */
 	public function addExtension($name, CompilerExtension $extension)
 	{
-		if (isset(self::$reserved[$name])) {
-			throw new Nette\InvalidArgumentException("Name '$name' is reserved.");
+		if (isset($this->extensions[$name]) || isset(self::$reserved[$name])) {
+			throw new Nette\InvalidArgumentException("Name '$name' is already used or reserved.");
 		}
 		$this->extensions[$name] = $extension->setCompiler($this, $name);
 		return $this;
@@ -173,7 +173,7 @@ class Compiler extends Nette\Object
 			if (isset($this->config[$name]['services'])) {
 				trigger_error("Support for inner section 'services' inside extension was removed (used in '$name').", E_USER_DEPRECATED);
 			}
-			$extension->setConfig($this->config[$name]);
+			$extension->setConfig($this->config[$name] ?: array());
 		}
 
 		foreach ($extensions as $extension) {
