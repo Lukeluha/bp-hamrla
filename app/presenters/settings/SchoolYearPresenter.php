@@ -120,7 +120,7 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 			if ($values['id']) {
 				$this->flashMessage("Školní rok byl úspěšně upraven.", "success");
 			} else {
-				$this->flashMessage("Školní rok byl úspěšně vytvořen. Přejete si přejít na <a href='" . $this->link("classesManagement") . "'>vytvoření studentů a skupin</a>?", "success");
+				$this->flashMessage("Školní rok byl úspěšně vytvořen. Přejete si přejít na <a href='" . $this->link("Classes:default") . "'>vytvoření studentů a skupin</a>?", "success");
 			}
 		} catch (\Exception $e) {
 			if ($values['id']) {
