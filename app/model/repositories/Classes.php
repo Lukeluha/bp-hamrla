@@ -25,8 +25,9 @@ class Classes extends EntityRepository
 						->getQuery()->getResult();
 	}
 
-	public function findByName($name, $actualYear)
+	public function findByName($name, $actualYear = null)
 	{
+		if (!$actualYear) return null;
 		return $this->createQueryBuilder()
 						->select('c')
 						->from(ClassEntity::getClassName(), 'c')

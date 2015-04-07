@@ -18,8 +18,9 @@ class SchoolYearService extends BaseService
 				->getQuery()->getOneOrNullResult();
 	}
 
-	public function getPreviousSchoolYear(SchoolYear $schoolYear)
+	public function getPreviousSchoolYear(SchoolYear $schoolYear = null)
 	{
+		if (!$schoolYear) return null;
 		return $this->em->createQueryBuilder()
 				->select('s')
 				->from(SchoolYear::getClassName(), 's')

@@ -24,7 +24,7 @@ class Students extends EntityRepository
 	 */
 	public function findByName($query, SchoolYear $schoolYear = null)
 	{
-		if (!$schoolYear) return false;
+		if (!$schoolYear) return null;
 
 		return $this->createQueryBuilder()
 					->select("s")
@@ -42,7 +42,7 @@ class Students extends EntityRepository
 
 	public function findByNameInClass($name, $surname, $className, SchoolYear $schoolYear = null)
 	{
-		if (!$schoolYear) return false;
+		if (!$schoolYear) return null;
 
 		return $this->createQueryBuilder()
 					->select('s')
