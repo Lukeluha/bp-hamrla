@@ -76,6 +76,17 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		}
 	}
 
+
+	public function createComponentTeachingForm()
+	{
+		$form = new Form();
+
+
+		$form->setRenderer(new FoundationRenderer());
+
+		return $form;
+	}
+
 	public function createComponentImportForm()
 	{
 		$form = new Form();

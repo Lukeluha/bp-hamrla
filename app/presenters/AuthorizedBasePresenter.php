@@ -27,11 +27,6 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	 */
 	public $chatControlFactory;
 
-	/**
-	 * @var SchoolYearService
-	 * @inject
-	 */
-	public $schoolYearService;
 
 	/**
 	 * @var \App\Model\Entities\SchoolYear
@@ -45,7 +40,7 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 			$this->redirect("Login:default");
 		}
 
-		$this->actualYear = $this->schoolYearService->getCurrentSchoolYear();
+		$this->actualYear = $this->em->getRepository(SchoolYear::getClassName())->findCurrentSchoolYear();
 	}
 
 	/**

@@ -25,11 +25,11 @@ class StudentService extends BaseService
 	 */
 	private $userService;
 
-	public function __construct(SchoolYearService $schoolYearService, EntityManager $em, UserService $userService)
+	public function __construct(EntityManager $em, UserService $userService)
 	{
 		parent::__construct($em);
-		$this->actualYear = $schoolYearService->getCurrentSchoolYear();
-		$this->prevYear = $schoolYearService->getPreviousSchoolYear($this->actualYear);
+		$this->actualYear = $this->em->getRepository(SchoolYear::getClassName())->findCurrentSchoolYear();
+		$this->prevYear = $this->em->getRepository(SchoolYear::getClassName())->findPreviousSchoolYear($this->actualYear);
 		$this->userService = $userService;
 	}
 

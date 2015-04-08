@@ -8,7 +8,7 @@ use \Doctrine\ORM\Mapping as ORM;
 /**
  * Class SchoolYear
  * @package App\Model\Entities
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Model\Repositories\SchoolYears")
  * @ORM\Table(name="school_years")
  */
 class SchoolYear extends BaseEntity
