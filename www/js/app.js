@@ -8,6 +8,7 @@ $(document).ready(function(){
     }).on('keydown', function(){
         return false;
     })
+
 })
 
 $(document).on('click', '.myAjax', function(e){
@@ -21,6 +22,8 @@ $(document).on('click', '.myAjax', function(e){
     $.nette.ajax({
         'url': url
     })
+
+
 
     e.preventDefault();
 

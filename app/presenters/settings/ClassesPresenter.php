@@ -6,15 +6,17 @@ namespace App\Presenters;
 use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
+use App\Model\Entities\Subject;
+use App\Model\Entities\Teacher;
+use App\Model\Entities\Teaching;
+use App\Model\Entities\TeachingTime;
 use App\Model\FoundationRenderer;
 use App\Model\Services\BadClassNameException;
 use App\Model\Services\BadFormatException;
 use Nette\Application\UI\Form;
 use App\Forms\IStudentFormFactory;
 use App\Model\Services\StudentService;
-use App\Model\Services\UserService;
 use Nette\Forms\Container;
-use Nette\Forms\Controls\SubmitButton;
 
 class ClassesPresenter extends AuthorizedBasePresenter
 {
@@ -81,26 +83,118 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 	public function createComponentTeachingForm()
 	{
+		$that = $this;
+
 		$form = new Form();
 
-		$users = $form->addDynamic('users', function (Container $user) {
-			$user->addText('fdfd', 'fdfd');
+
+
+		$form->addGroup('Předmět');
+		$subjects = $this->em->getRepository(Subject::getClassName())->findBy(array(), array('name' => "ASC"));
+		$subjectList = array();
+
+		foreach ($subjects as $subject) {
+			$subjectList[$subject->getId()] = $subject;
+		}
+
+		$subjectList[0] = "Nový předmět...";
+
+		$form->addSelect('subject', "Předmět", $subjectList)
+			->addCondition(Form::EQUAL, 0)
+			->toggle('newSubject-name')
+			->toggle('newSubject-abbreviation');
+
+
+		$form->addText("subjectName", "Název předmětu")
+				->setOption('id', 'newSubject-name')
+				->addConditionOn($form['subject'], Form::EQUAL, 0)
+				->setRequired("Vyplňte název předmětu");
+
+		$form->addText("abbreviation", "Zkratka předmětu")
+			->setOption('id', 'newSubject-abbreviation')
+			->addConditionOn($form['subject'], Form::EQUAL, 0)
+			->setRequired("Vyplňte zkratku předmětu");
+
+
+
+
+
+		$form->addGroup('Doba výuky')->setOption('id', 'teachingTimeFiledset');
+
+		$days = $this->days;
+
+		$teachingTimes = $form->addDynamic('teachingTime', function (Container $teachingTime) use ($days) {
+			$teachingTime->addSelect("weekDay", "Den v týdnu", $days);
+			$teachingTime->addText("from", "Od")->setType('time')->setRequired('Vyplňte čas výuky od');
+			$teachingTime->addText("to", "Do")->setType('time')->setRequired('Vyplňte čas výuky do');
+			$teachingTime->addSelect("weekParity", "Parita týdne", array('0' => "oba týdny", TeachingTime::WEEK_EVEN => "sudý", TeachingTime::WEEK_ODD => "lichý"))->setAttribute('class', 'borderBottom');
 		}, 1);
 
-		$users->addSubmit('add', 'Add next person')
-			->setValidationScope(FALSE)
-			->setAttribute('class', 'ajax')
-			->onClick[] = callback($this, 'MyFormAddElementClicked');
 
+		$teachingTimes->addSubmit('add', 'Přidat další dobu výuky')
+						->setValidationScope(FALSE)
+						->setAttribute('class', 'ajax button success tiny')
+						->setAttribute('id', 'addTime')
+						->onClick[] = callback($this, 'addElement');
+
+		$teachingTimes['add']->onClick[] = function() use ($that) {$that->redrawControl('teachingForm');};
+
+
+		$form->addGroup('Učitelé');
+
+		$teachers = $this->em->getRepository(Teacher::getClassName())->findBy(array(), array('surname' => "ASC"));
+		$teachersSelect = array();
+		foreach ($teachers as $teacher) {
+			$teachersSelect[$teacher->getId()] = $teacher->getSurname() . " " . $teacher->getName();
+		}
+
+
+		$teachers = $form->addDynamic('teachers', function (Container $teacher) use ($teachersSelect) {
+			$teacher->addSelect('teacher', 'Učitel', $teachersSelect);
+		}, 1);
+
+		$teachers->addSubmit('addTeacher', "Přidat učitele")
+				->setValidationScope(FALSE)
+				->setAttribute('class', 'ajax button success tiny')
+				->onClick[] = callback($this, 'addElement');
+
+		$teachers['addTeacher']->onClick[] = function() use ($that) {$that->redrawControl('teachingForm');};
+
+
+		$form->setCurrentGroup();
+		$form->addSubmit('save', 'Uložit')->setAttribute('class', 'button');
+		$form->onSuccess[] = callback($this, 'saveTeaching');
 		$form->setRenderer(new FoundationRenderer());
 
 		return $form;
 	}
 
-	public function MyFormAddElementClicked(SubmitButton $button)
+	public function saveTeaching(Form $form)
 	{
-		$button->parent->createOne();
-		$this->redrawControl('teachingForm');
+		$values = $form->getHttpData();
+
+		if (!isset($values['save'])) return false;
+
+		$values = $form->getValues();
+
+		$teaching = new Teaching();
+		$teaching->setClass($this->class);
+
+		if (!$values['subject']) {
+			$subject = new Subject();
+			$subject->setName($values['subjectName'])->setAbbreviation($values['abbreviation']);
+
+			$this->em->persist($subject);
+			$this->em->flush();
+		} else {
+			$subject = $this->em->getRepository(Subject::getClassName())->find($values['subject']);
+		}
+		$teaching->setSubject($subject);
+
+
+
+		$this->em->persist($teaching);
+		$this->em->flush();
 	}
 
 	public function createComponentImportForm()

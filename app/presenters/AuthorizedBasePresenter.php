@@ -6,6 +6,8 @@ use App\Controls\IMenuControlFactory;
 use App\Controls\IChatControlFactory;
 use App\Model\Entities\SchoolYear;
 use App\Model\Services\SchoolYearService;
+use Nette\Forms\Controls\SubmitButton;
+
 
 /**
  * Class AuthorizedBasePresenter
@@ -32,6 +34,8 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	 * @var \App\Model\Entities\SchoolYear
 	 */
 	protected $actualYear;
+
+	protected $days = array("Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek");
 
 	public function startup()
 	{
@@ -106,5 +110,10 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	{
 		parent::beforeRender();
 		$this->template->actualYear = $this->actualYear;
+	}
+
+	public function addElement(SubmitButton $button)
+	{
+		$button->parent->createOne();
 	}
 }

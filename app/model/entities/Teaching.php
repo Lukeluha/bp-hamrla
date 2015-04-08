@@ -45,7 +45,7 @@ class Teaching extends BaseEntity
 	 * @var string
 	 * @ORM\Column(type="enum")
 	 */
-	protected $chat;
+	protected $chat = self::CHAT_ALLOWED;
 
 
 	public function __construct()

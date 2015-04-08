@@ -206,6 +206,11 @@
 
 		{snippet teachingForm}
 		{control teachingForm}
+			<script>
+				$("#addTime").insertAfter("#teachingTimeFiledset");
+			</script>
+
+			{* hack because nette put submits at the end *}
 		{/snippet}
 		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 	</div>
