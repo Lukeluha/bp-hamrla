@@ -149,7 +149,7 @@
 			{if $class->isGroup()}skupiny{else}třídy{/if}
 		</h2>
 
-		<button class="button small">Přidat vyučování</button>
+		<a class="button small" href="#" data-reveal-id="newTeaching">Přidat vyučování</a>
 
 		{var $teachings = $class->getTeachings()}
 		{if !count($teachings)}
@@ -198,6 +198,15 @@
 		</div>
 
 		{control importForm}
+		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+	</div>
+
+	<div id="newTeaching" class="reveal-modal" data-reveal aria-labelledby="newTeaching" aria-hidden="true" role="dialog">
+		<h2 id="modalTitle">Vyučování</h2>
+
+		{snippet teachingForm}
+		{control teachingForm}
+		{/snippet}
 		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 	</div>
 

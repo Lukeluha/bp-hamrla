@@ -13,6 +13,8 @@ use Nette\Application\UI\Form;
 use App\Forms\IStudentFormFactory;
 use App\Model\Services\StudentService;
 use App\Model\Services\UserService;
+use Nette\Forms\Container;
+use Nette\Forms\Controls\SubmitButton;
 
 class ClassesPresenter extends AuthorizedBasePresenter
 {
@@ -81,10 +83,24 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	{
 		$form = new Form();
 
+		$users = $form->addDynamic('users', function (Container $user) {
+			$user->addText('fdfd', 'fdfd');
+		}, 1);
+
+		$users->addSubmit('add', 'Add next person')
+			->setValidationScope(FALSE)
+			->setAttribute('class', 'ajax')
+			->onClick[] = callback($this, 'MyFormAddElementClicked');
 
 		$form->setRenderer(new FoundationRenderer());
 
 		return $form;
+	}
+
+	public function MyFormAddElementClicked(SubmitButton $button)
+	{
+		$button->parent->createOne();
+		$this->redrawControl('teachingForm');
 	}
 
 	public function createComponentImportForm()

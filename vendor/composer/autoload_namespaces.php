@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
     'PHPExcel' => array($vendorDir . '/phpoffice/phpexcel/Classes'),
+    'Kdyby\\Replicator\\' => array($vendorDir . '/kdyby/forms-replicator/src'),
     'Kdyby\\Persistence\\' => array($vendorDir . '/kdyby/doctrine/src'),
     'Kdyby\\Events\\' => array($vendorDir . '/kdyby/events/src'),
     'Kdyby\\Doctrine\\' => array($vendorDir . '/kdyby/doctrine/src'),
