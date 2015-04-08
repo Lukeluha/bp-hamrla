@@ -101,33 +101,36 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 		$form->addSelect('subject', "Předmět", $subjectList)
 			->addCondition(Form::EQUAL, 0)
-			->toggle('newSubject-name')
-			->toggle('newSubject-abbreviation');
+			->toggle('newSubject');
 
 
 		$form->addText("subjectName", "Název předmětu")
-				->setOption('id', 'newSubject-name')
 				->addConditionOn($form['subject'], Form::EQUAL, 0)
 				->setRequired("Vyplňte název předmětu");
 
 		$form->addText("abbreviation", "Zkratka předmětu")
-			->setOption('id', 'newSubject-abbreviation')
 			->addConditionOn($form['subject'], Form::EQUAL, 0)
 			->setRequired("Vyplňte zkratku předmětu");
 
 
 
 
-
-		$form->addGroup('Doba výuky')->setOption('id', 'teachingTimeFiledset');
-
 		$days = $this->days;
+		$removeCallback = callback($this, 'removeElement');
+		$redrawCallback = function() use ($that) {$that->redrawControl('teachingForm');};
 
-		$teachingTimes = $form->addDynamic('teachingTime', function (Container $teachingTime) use ($days) {
+		$teachingTimes = $form->addDynamic('teachingTime', function (Container $teachingTime) use ($days, $redrawCallback, $removeCallback) {
 			$teachingTime->addSelect("weekDay", "Den v týdnu", $days);
 			$teachingTime->addText("from", "Od")->setType('time')->setRequired('Vyplňte čas výuky od');
 			$teachingTime->addText("to", "Do")->setType('time')->setRequired('Vyplňte čas výuky do');
 			$teachingTime->addSelect("weekParity", "Parita týdne", array('0' => "oba týdny", TeachingTime::WEEK_EVEN => "sudý", TeachingTime::WEEK_ODD => "lichý"))->setAttribute('class', 'borderBottom');
+
+			$teachingTime->addSubmit('remove', "Odebrat")
+				->setValidationScope(FALSE)
+				->setAttribute('class', 'ajax button alert tiny')
+				->onClick[] = $removeCallback;
+
+			$teachingTime['remove']->onClick[] = $redrawCallback;
 		}, 1);
 
 
@@ -137,7 +140,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 						->setAttribute('id', 'addTime')
 						->onClick[] = callback($this, 'addElement');
 
-		$teachingTimes['add']->onClick[] = function() use ($that) {$that->redrawControl('teachingForm');};
+		$teachingTimes['add']->onClick[] = $redrawCallback;
 
 
 		$form->addGroup('Učitelé');
@@ -148,17 +151,23 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			$teachersSelect[$teacher->getId()] = $teacher->getSurname() . " " . $teacher->getName();
 		}
 
-
-		$teachers = $form->addDynamic('teachers', function (Container $teacher) use ($teachersSelect) {
+		$teachers = $form->addDynamic('teachers', function (Container $teacher) use ($teachersSelect, $removeCallback, $redrawCallback) {
 			$teacher->addSelect('teacher', 'Učitel', $teachersSelect);
+			$teacher->addSubmit('remove', "Odebrat")
+				->setValidationScope(FALSE)
+				->setAttribute('class', 'ajax button alert tiny')
+				->onClick[] = $removeCallback;
+
+			$teacher['remove']->onClick[] = $redrawCallback;
+
 		}, 1);
 
-		$teachers->addSubmit('addTeacher', "Přidat učitele")
+		$teachers->addSubmit('add', "Přidat dalšího učitele")
 				->setValidationScope(FALSE)
 				->setAttribute('class', 'ajax button success tiny')
 				->onClick[] = callback($this, 'addElement');
 
-		$teachers['addTeacher']->onClick[] = function() use ($that) {$that->redrawControl('teachingForm');};
+		$teachers['add']->onClick[] = $redrawCallback;
 
 
 		$form->setCurrentGroup();

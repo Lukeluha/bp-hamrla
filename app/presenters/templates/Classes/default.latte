@@ -205,12 +205,91 @@
 		<h2 id="modalTitle">Vyučování</h2>
 
 		{snippet teachingForm}
-		{control teachingForm}
-			<script>
-				$("#addTime").insertAfter("#teachingTimeFiledset");
-			</script>
+			{form teachingForm}
+				<fieldset>
+					<legend>Předmět</legend>
+					<div class="column small-12">
 
-			{* hack because nette put submits at the end *}
+						<p>
+							{label subject /}
+							{input subject}
+						</p>
+					</div>
+
+
+					<div id="newSubject">
+						<div class="column small-6">
+							{label subjectName /}
+							{input subjectName}
+						</div>
+
+						<div class="column small-6">
+							{label abbreviation /}
+							{input abbreviation}
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend>Doba výuky</legend>
+					{foreach $form['teachingTime']->containers as $time}
+						<div class="row">
+							<div class="column small-12 medium-3">
+								{$time['weekDay']->label}
+								{$time['weekDay']->control}
+							</div>
+
+							<div class="column small-6 medium-3">
+								{$time['from']->label}
+								{$time['from']->control}
+							</div>
+
+							<div class="column small-6 medium-3">
+								{$time['to']->label}
+								{$time['to']->control}
+							</div>
+
+							<div class="column small-12 medium-3">
+								{$time['weekParity']->label}
+								{$time['weekParity']->control}
+							</div>
+
+
+							{if !$iterator->isLast()}
+								<div class="column small-12">
+									{$time['remove']->control}
+								</div>
+								<hr />
+							{/if}
+						</div>
+					{/foreach}
+
+					<div class="column small-12">
+						{$form['teachingTime']['add']->control}
+					</div>
+				</fieldset>
+
+
+				<fieldset>
+					<legend>Učitelé</legend>
+					{foreach $form['teachers']->containers as $teacher}
+					<div class="row">
+						<div class="column small-12">
+							{$teacher['teacher']->label}
+							{$teacher['teacher']->control}
+							{if !$iterator->isLast()}
+								{$teacher['remove']->control}
+							{/if}
+						</div>
+
+					{/foreach}
+					<div class="column small-12">
+						{$form['teachers']['add']->control}
+					</div>
+
+				</fieldset>
+			{/form}
+
 		{/snippet}
 		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 	</div>

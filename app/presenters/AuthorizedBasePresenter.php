@@ -116,4 +116,9 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	{
 		$button->parent->createOne();
 	}
+
+	public function removeElement(SubmitButton $button)
+	{
+		$button->parent->parent->remove($button->parent, TRUE);
+	}
 }
