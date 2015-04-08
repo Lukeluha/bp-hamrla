@@ -53,6 +53,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			$this->addLinkToNav('Vytvoření nové třídy/skupiny', 'Classes:default');
 		} else {
 			$this->class = $this->em->getRepository(ClassEntity::getClassName())->find($classId);
+//			dump($this->class->getTeachings());die;
 			if (!$this->class) {
 				$this->flashMessage("Nenalezena žádná třída.", "alert");
 				$this->redirect("Settings:default");

@@ -143,6 +143,44 @@
 			{control studentForm}
 			<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 		</div>
+
+		<h2>
+			Vyučování
+			{if $class->isGroup()}skupiny{else}třídy{/if}
+		</h2>
+
+		<button class="button small">Přidat vyučování</button>
+
+		{var $teachings = $class->getTeachings()}
+		{if !count($teachings)}
+			<div class="panel">Tato {if $class->isGroup()}skupina{else}třída{/if} nemá žádné vyučování.</div>
+		{else}
+			<table>
+				<thead>
+					<tr>
+						<th>Předmět</th>
+						<th>Doba výuky</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				{foreach $teachings as $teaching}
+					<tr>
+						<td>
+							{$teaching->getSubject()}
+						</td>
+						<td>
+							fdfd
+						</td>
+						<td>
+							fdfd
+						</td>
+					</tr>
+				{/foreach}
+				</tbody>
+			</table>
+
+		{/if}
 	</div>
 
 	<div id="importStudents" class="reveal-modal" data-reveal aria-labelledby="importStudents" aria-hidden="true" role="dialog">

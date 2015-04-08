@@ -49,10 +49,18 @@ class ClassEntity extends BaseEntity
 	 */
 	protected $schoolYear;
 
+
+	/**
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="Teaching", mappedBy="class")
+	 */
+	protected $teachings;
+
 	public function __construct()
 	{
 		parent::__construct();
 		$this->students = new ArrayCollection();
+		$this->teachings = new ArrayCollection();
 	}
 
 	/**
@@ -148,4 +156,24 @@ class ClassEntity extends BaseEntity
 	{
 		return (bool) ($this->type == self::TYPE_GROUP);
 	}
+
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getTeachings()
+	{
+		return $this->teachings;
+	}
+
+	/**
+	 * @param ArrayCollection $teachings
+	 * @return $this
+	 */
+	public function setTeachings($teachings)
+	{
+		$this->teachings = $teachings;
+		return $this;
+	}
+
+
 }
