@@ -19,6 +19,11 @@ use App\Model\Services\StudentService;
 use Nette\Forms\Container;
 use App\Model\Services\LessonService;
 
+/**
+ * Class ClassesPresenter
+ * Page with class management, creating and editing students and teaching
+ * @package App\Presenters
+ */
 class ClassesPresenter extends AuthorizedBasePresenter
 {
 	/**
@@ -58,6 +63,10 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$this->addLinkToNav('Nastavení', 'Settings:default');
 	}
 
+	/**
+	 * Main page for class managing
+	 * @param int|null $classId
+	 */
 	public function actionDefault($classId = null)
 	{
 		if (!$classId) {
@@ -87,13 +96,15 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	}
 
 
+	/**
+	 * Factory for teaching form
+	 * @return Form
+	 */
 	public function createComponentTeachingForm()
 	{
 		$that = $this;
 
 		$form = new Form();
-
-
 
 		$form->addGroup('Předmět');
 		$subjects = $this->em->getRepository(Subject::getClassName())->findBy(array(), array('name' => "ASC"));
@@ -192,6 +203,11 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		return $form;
 	}
 
+	/**
+	 * Save teaching entity from form
+	 * @param Form $form
+	 * @return bool
+	 */
 	public function saveTeaching(Form $form)
 	{
 
@@ -260,7 +276,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			$this->lessonService->createLessons($teaching);
 
 			$this->em->commit();
-			
+
 			$this->flashMessage("Vyučování bylo úspěšně vytvořeno", 'success');
 			if (count($newTeachers)) {
 				$text = "Byli vytvořeni tito učitelé:<br/>";
@@ -279,6 +295,10 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$this->redirect('this');
 	}
 
+	/**
+	 * Factory for import form
+	 * @return Form
+	 */
 	public function createComponentImportForm()
 	{
 		$form = new Form();
@@ -290,6 +310,10 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		return $form;
 	}
 
+	/**
+	 * Handler for import form - import students
+	 * @param Form $form
+	 */
 	public function importStudents(Form $form)
 	{
 		$file = $form->getValues()->file;
@@ -365,6 +389,10 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		}
 	}
 
+	/**
+	 * Removing student from group
+	 * @param $studentId
+	 */
 	public function handleRemoveStudentFromGroup($studentId)
 	{
 		if ($this->class->getType() == ClassEntity::TYPE_GROUP) {
@@ -380,6 +408,10 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		}
 	}
 
+	/**
+	 * Adding student to group
+	 * @param $studentId
+	 */
 	public function handleAddStudentToGroup($studentId)
 	{
 		if ($this->isAjax()) {
@@ -394,6 +426,10 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		}
 	}
 
+	/**
+	 * Factory for student form
+	 * @return \App\Forms\StudentForm|void
+	 */
 	public function createComponentStudentForm()
 	{
 		$form = $this->studentFormFactory->create(null, $this->actualYear);
@@ -428,6 +464,10 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	}
 
 
+	/**
+	 * Factory for class form
+	 * @return Form
+	 */
 	public function createComponentClassForm()
 	{
 		$form = new Form();
@@ -486,6 +526,11 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		return $form;
 	}
 
+	/**
+	 * Save class from form data
+	 * @param Form $form
+	 * @throws \Doctrine\ORM\ORMException
+	 */
 	public function saveClass(Form $form)
 	{
 		$values = $form->getValues();
@@ -527,6 +572,12 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$this->redirect('Classes:default', $class->getId());
 	}
 
+	/**
+	 * Check if there is same class in same school year
+	 * @param ClassEntity $class
+	 * @return mixed|null|object
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
 	public function checkSameClass(ClassEntity $class)
 	{
 		if ($class->getId()) {
@@ -542,6 +593,12 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 	}
 
+	/**
+	 * Adding student to class
+	 * @param $studentId
+	 * @param $classId
+	 * @throws \Nette\Application\AbortException
+	 */
 	public function handleAddStudentToClass($studentId, $classId)
 	{
 		$class = $this->em->getRepository(ClassEntity::getClassName())->find($classId);
@@ -552,6 +609,12 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$this->terminate();
 	}
 
+	/**
+	 * Removing student from class
+	 * @param $studentId
+	 * @param $classId
+	 * @throws \Nette\Application\AbortException
+	 */
 	public function handleRemoveStudentFromClass($studentId, $classId)
 	{
 		$class = $this->em->getRepository(ClassEntity::getClassName())->find($classId);

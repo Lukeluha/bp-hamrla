@@ -8,6 +8,11 @@ use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
 use Kdyby\Doctrine\EntityManager;
 
+/**
+ * Class StudentService
+ * Class for business logic with students entity
+ * @package App\Model\Services
+ */
 class StudentService extends BaseService
 {
 	/**

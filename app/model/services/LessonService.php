@@ -14,7 +14,7 @@ class LessonService extends BaseService
 	protected $holidays = array( '01-01', '05-01', '05-08', '07-05', '07-06', '09-28', '10-28', '11-17', '12-24', '12-25', '12-26' );
 
 	/**
-	 * Creates lessons by given teaching entity
+	 * Creates lessons by given teaching entity - checks for holidays, week parity, etc.
 	 * @param Teaching $teaching
 	 */
 	public function createLessons(Teaching $teaching)
@@ -79,8 +79,6 @@ class LessonService extends BaseService
 			}
 
 		}
-
-
 	}
 
 }

@@ -157,4 +157,10 @@ abstract class User extends BaseEntity
 	 */
 	abstract public function getRoles();
 
+	/**
+	 * Get all teachings of current user
+	 * @return mixed
+	 */
+	abstract public function getTeachings();
+
 }

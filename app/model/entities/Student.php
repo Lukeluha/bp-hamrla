@@ -97,4 +97,21 @@ class Student extends User
 		$this->classes->removeElement($class);
 	}
 
+	/**
+	 * Get all teachings of current user
+	 * @return mixed
+	 */
+	public function getTeachings()
+	{
+		$teachings = new ArrayCollection();
+		foreach ($this->getClasses() as $class) {
+			foreach ($class->getTeachings() as $teaching) {
+				$teachings[] = $teaching;
+			}
+		}
+
+		return $teachings;
+	}
+
+
 }

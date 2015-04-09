@@ -13,6 +13,11 @@ use Nette\Security\Passwords;
 use Nette\Utils\Random;
 use Nette\Utils\Strings;
 
+/**
+ * Class UserService
+ * Class for business logic with users entity and taking care of authenicate logic
+ * @package App\Model\Services
+ */
 class UserService extends BaseService implements IAuthenticator
 {
 

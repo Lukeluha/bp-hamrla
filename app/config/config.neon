@@ -20,7 +20,10 @@ session:
 
 services:
 	- App\Forms\SignFormFactory
-	- App\Controls\IMenuControlFactory
+	menuFactory:
+	    class: App\Controls\MenuControl(%user%, ...)
+	    implement: App\Controls\IMenuControlFactory
+	    parameters: [user]
 	- App\Controls\IChatControlFactory
 	- App\Model\Services\StudentService
 	- App\Model\Services\LessonService

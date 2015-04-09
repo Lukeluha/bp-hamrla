@@ -7,6 +7,11 @@ use App\Model\Entities\SchoolYear;
 use App\Model\FoundationRenderer;
 use Nette\Application\UI\Form;
 
+/**
+ * Class SchoolYearPresenter
+ * Page with school year entity management
+ * @package App\Presenters
+ */
 class SchoolYearPresenter extends AuthorizedBasePresenter
 {
 	public function startup()

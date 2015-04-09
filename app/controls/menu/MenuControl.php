@@ -9,6 +9,7 @@
 namespace App\Controls;
 
 
+use App\Model\Entities\User;
 use Nette\Application\UI\Control;
 use Kdyby\Doctrine\EntityManager;
 
@@ -19,9 +20,16 @@ class MenuControl extends Control
 	 */
 	private $em;
 
-	public function __construct(EntityManager $em)
+	/**
+	 * @var User
+	 */
+	private $user;
+
+
+	public function __construct($userId, EntityManager $em)
 	{
 		$this->em = $em;
+		$this->user = $this->em->getRepository(User::getClassName())->find($userId);
 	}
 
 	public function render()
@@ -29,6 +37,7 @@ class MenuControl extends Control
 		$template = $this->template;
 		$template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
 
+		$template->userEntity = $this->user;
 		$template->setFile(__DIR__ . '/menu.latte');
 		$template->render();
 	}

@@ -88,5 +88,4 @@ class Teacher extends User
 		return array(self::ROLE_TEACHER);
 	}
 
-
 }

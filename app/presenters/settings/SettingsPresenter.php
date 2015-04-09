@@ -26,12 +26,20 @@ class SettingsPresenter extends AuthorizedBasePresenter
 		$this->addLinkToNav('Nastavení', 'Settings:default');
 	}
 
+	/**
+	 * Search for student
+	 * @param $query
+	 */
 	public function handleSearchStudent($query)
 	{
 		$this->template->students = $this->em->getRepository(Student::getClassName())->findByName($query, $this->actualYear);
 		$this->redrawControl('students');
 	}
 
+	/**
+	 * Search for class
+	 * @param $query
+	 */
 	public function handleSearchClass($query)
 	{
 		$this->template->classes = $this->em->getRepository(ClassEntity::getClassName())->findByName($query, $this->actualYear);

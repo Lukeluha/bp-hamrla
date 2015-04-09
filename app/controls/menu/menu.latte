@@ -9,9 +9,11 @@
 			<li class="has-dropdown">
 				<a href="#">Mé předměty</a>
 				<ul class="dropdown">
-					{if isset($userSubjects) && count($userSubjects)}
-						<li n:foreach="$userSubjects as $subject"><a href="#">{$subject->name}</a></li>
-						<li class="divider"></li>
+					{if count($userEntity->getTeachings())}
+						{foreach $userEntity->getTeachings() as $teaching}
+							<li><a href="#">{$teaching->getSubject()} ({$teaching->getClass()->getName()})</a></li>
+							<li class="divider"></li>
+						{/foreach}
 					{else}
 						<li><a href="#">Nemáte zapsány žádné předměty</a></li>
 					{/if}

@@ -5,6 +5,11 @@ use App\Forms\IStudentFormFactory;
 use App\Forms\StudentFormFactory;
 use App\Model\Entities\Student;
 
+/**
+ * Class StudentsPresenter
+ * Page with management of students
+ * @package App\Presenters
+ */
 class StudentsPresenter extends AuthorizedBasePresenter
 {
 
@@ -26,6 +31,13 @@ class StudentsPresenter extends AuthorizedBasePresenter
 		$this->addLinkToNav("Nastavení", "Settings:default");
 	}
 
+	/**
+	 * Main page with info about student
+	 * @param null $studentId
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function actionDefault($studentId = null)
 	{
 		if ($studentId) {
@@ -42,6 +54,10 @@ class StudentsPresenter extends AuthorizedBasePresenter
 		}
 	}
 
+	/**
+	 * Factory for student form
+	 * @return \App\Forms\StudentForm
+	 */
 	public function createComponentForm()
 	{
 		$form = $this->studentFormFactory->create($this->getParameter('studentId'), $this->actualYear);

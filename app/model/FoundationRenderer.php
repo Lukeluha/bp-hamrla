@@ -5,6 +5,11 @@ namespace App\Model;
 
 use Nette\Forms\Rendering\DefaultFormRenderer;
 
+/**
+ * Class FoundationRenderer
+ * Only wrapping Nette renderer - removing table rendering of form
+ * @package App\Model
+ */
 class FoundationRenderer extends DefaultFormRenderer
 {
 	public function __construct()
