@@ -17,6 +17,7 @@ use Nette\Application\UI\Form;
 use App\Forms\IStudentFormFactory;
 use App\Model\Services\StudentService;
 use Nette\Forms\Container;
+use App\Model\Services\LessonService;
 
 class ClassesPresenter extends AuthorizedBasePresenter
 {
@@ -37,6 +38,12 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	 * @var ClassEntity
 	 */
 	private $class;
+
+	/**
+	 * @var LessonService
+	 * @inject
+	 */
+	public $lessonService;
 
 
 	public function startup()
@@ -249,8 +256,11 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			}
 
 			$this->em->flush();
-			$this->em->commit();
 
+			$this->lessonService->createLessons($teaching);
+
+			$this->em->commit();
+			
 			$this->flashMessage("Vyučování bylo úspěšně vytvořeno", 'success');
 			if (count($newTeachers)) {
 				$text = "Byli vytvořeni tito učitelé:<br/>";
@@ -263,8 +273,6 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			}
 		} catch (\Exception $e) {
 			$this->em->rollback();
-			dump($e);die;
-
 			$this->flashMessage('Vyučování nebylo vytvořeno', 'alert');
 		}
 

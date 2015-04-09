@@ -143,6 +143,7 @@ class TeachingTime extends BaseEntity
 	public function setTeaching($teaching)
 	{
 		$this->teaching = $teaching;
+		$teaching->addTeachingTime($this);
 		return $this;
 	}
 
