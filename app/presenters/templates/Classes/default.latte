@@ -155,7 +155,7 @@
 		{if !count($teachings)}
 			<div class="panel">Tato {if $class->isGroup()}skupina{else}třída{/if} nemá žádné vyučování.</div>
 		{else}
-			<table>
+			<table class="small-12">
 				<thead>
 					<tr>
 						<th>Předmět</th>
@@ -170,10 +170,23 @@
 							{$teaching->getSubject()}
 						</td>
 						<td>
-							fdfd
+							{foreach $teaching->getTeachingTimes() as $time}
+								{if !$iterator->isFirst()}, {/if}
+								{$daysInWeek[$time->getWeekDay()]} {$time->getFrom()|date:'H:i'} - {$time->getTo()|date:'H:i'}
+								{if $time->getWeekParity()}
+									{if $time->getWeekParity() == 'even'}
+										(sudý týden)
+									{else}
+										(lichý týden)
+									{/if}
+								{/if}
+							{/foreach}
 						</td>
 						<td>
-							fdfd
+							{foreach $teaching->getTeachers() as $teacher}
+								{if !$iterator->isFirst()}, {/if}
+								{$teacher->getSurname()} {$teacher->getName()}
+							{/foreach}
 						</td>
 					</tr>
 				{/foreach}
@@ -254,11 +267,11 @@
 								{$time['weekParity']->control}
 							</div>
 
+							<div class="column small-12">
+								{$time['remove']->control}
+							</div>
 
 							{if !$iterator->isLast()}
-								<div class="column small-12">
-									{$time['remove']->control}
-								</div>
 								<hr />
 							{/if}
 						</div>
@@ -277,17 +290,41 @@
 						<div class="column small-12">
 							{$teacher['teacher']->label}
 							{$teacher['teacher']->control}
-							{if !$iterator->isLast()}
-								{$teacher['remove']->control}
-							{/if}
 						</div>
+
+						<div id="frm-teachingForm-teachers-{$iterator->getCounter()-1}-teacher-new" style="display: none">
+							<div class="column small-12">
+								{$teacher['teacherName']->label}
+								{$teacher['teacherName']->control}
+							</div>
+
+							<div class="column small-12">
+								{$teacher['teacherSurname']->label}
+								{$teacher['teacherSurname']->control}
+							</div>
+
+							<div class="column small-12">
+								{$teacher['teacherRoom']->label}
+								{$teacher['teacherRoom']->control}
+							</div>
+						</div>
+						{if !$iterator->isFirst()}
+						<div class="column small-12">
+							{$teacher['remove']->control}
+						</div>
+						{/if}
+						{if !$iterator->isLast()}
+							<hr/>
+						{/if}
+					</div>
 
 					{/foreach}
 					<div class="column small-12">
 						{$form['teachers']['add']->control}
 					</div>
-
 				</fieldset>
+
+				{input save}
 			{/form}
 
 		{/snippet}

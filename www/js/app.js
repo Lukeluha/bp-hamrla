@@ -39,6 +39,16 @@ $(document).on('keyup', '.liveSearch', function(e){
 
 })
 
+$(document).on('change', '.teacherSelect', function(){
+    var newTeacher = $(this).attr('id');
+
+    if ($(this).val() == 0) {
+       $("#"+newTeacher+"-new").show();
+   } else {
+        $("#"+newTeacher+"-new").hide();
+   }
+});
+
 var delay = (function(){
     var timer = 0;
     return function(callback, ms){

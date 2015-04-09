@@ -7,6 +7,7 @@ use App\Controls\IChatControlFactory;
 use App\Model\Entities\SchoolYear;
 use App\Model\Services\SchoolYearService;
 use Nette\Forms\Controls\SubmitButton;
+use App\Model\Services\UserService;
 
 
 /**
@@ -34,6 +35,12 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	 * @var \App\Model\Entities\SchoolYear
 	 */
 	protected $actualYear;
+
+	/**
+	 * @var UserService
+	 * @inject
+	 */
+	public $userService;
 
 	protected $days = array("Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek");
 
@@ -110,6 +117,7 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	{
 		parent::beforeRender();
 		$this->template->actualYear = $this->actualYear;
+		$this->template->daysInWeek = $this->days;
 	}
 
 	public function addElement(SubmitButton $button)

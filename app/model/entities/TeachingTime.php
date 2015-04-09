@@ -18,13 +18,13 @@ class TeachingTime extends BaseEntity
 
 	/**
 	 * @var \DateTime
-	 * @ORM\Column(type="time")
+	 * @ORM\Column(type="time", name="`from`")
 	 */
 	protected $from;
 
 	/**
 	 * @var \DateTime
-	 * @ORM\Column(type="time")
+	 * @ORM\Column(type="time", name="`to`")
 	 */
 	protected $to;
 
@@ -61,6 +61,9 @@ class TeachingTime extends BaseEntity
 	 */
 	public function setFrom($from)
 	{
+		if (!is_object($from)) {
+			$from = new \DateTime($from);
+		}
 		$this->from = $from;
 		return $this;
 	}
@@ -79,6 +82,9 @@ class TeachingTime extends BaseEntity
 	 */
 	public function setTo($to)
 	{
+		if (!is_object($to)) {
+			$to = new \DateTime($to);
+		}
 		$this->to = $to;
 		return $this;
 	}

@@ -57,7 +57,6 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			$this->addLinkToNav('Vytvoření nové třídy/skupiny', 'Classes:default');
 		} else {
 			$this->class = $this->em->getRepository(ClassEntity::getClassName())->find($classId);
-//			dump($this->class->getTeachings());die;
 			if (!$this->class) {
 				$this->flashMessage("Nenalezena žádná třída.", "alert");
 				$this->redirect("Settings:default");
@@ -125,16 +124,18 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			$teachingTime->addText("to", "Do")->setType('time')->setRequired('Vyplňte čas výuky do');
 			$teachingTime->addSelect("weekParity", "Parita týdne", array('0' => "oba týdny", TeachingTime::WEEK_EVEN => "sudý", TeachingTime::WEEK_ODD => "lichý"))->setAttribute('class', 'borderBottom');
 
+
 			$teachingTime->addSubmit('remove', "Odebrat")
 				->setValidationScope(FALSE)
 				->setAttribute('class', 'ajax button alert tiny')
 				->onClick[] = $removeCallback;
 
 			$teachingTime['remove']->onClick[] = $redrawCallback;
-		}, 1);
+
+		}, 0);
 
 
-		$teachingTimes->addSubmit('add', 'Přidat další dobu výuky')
+		$teachingTimes->addSubmit('add', 'Přidat dobu výuky')
 						->setValidationScope(FALSE)
 						->setAttribute('class', 'ajax button success tiny')
 						->setAttribute('id', 'addTime')
@@ -150,9 +151,15 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		foreach ($teachers as $teacher) {
 			$teachersSelect[$teacher->getId()] = $teacher->getSurname() . " " . $teacher->getName();
 		}
+		$teachersSelect[0] = 'Nový učitel...';
 
 		$teachers = $form->addDynamic('teachers', function (Container $teacher) use ($teachersSelect, $removeCallback, $redrawCallback) {
-			$teacher->addSelect('teacher', 'Učitel', $teachersSelect);
+			$teacher->addSelect('teacher', 'Učitel', $teachersSelect)->setAttribute('class', 'teacherSelect');
+
+			$teacher->addText('teacherName', 'Jméno')->addConditionOn($teacher['teacher'], Form::EQUAL, 0)->setRequired('Vyplňte jméno učitele');
+			$teacher->addText('teacherSurname', 'Příjmení')->addConditionOn($teacher['teacher'], Form::EQUAL, 0)->setRequired('Vyplňte příjmení učitele');
+			$teacher->addText('teacherRoom', 'Místnost');
+
 			$teacher->addSubmit('remove', "Odebrat")
 				->setValidationScope(FALSE)
 				->setAttribute('class', 'ajax button alert tiny')
@@ -180,30 +187,88 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 	public function saveTeaching(Form $form)
 	{
+
 		$values = $form->getHttpData();
 
 		if (!isset($values['save'])) return false;
 
 		$values = $form->getValues();
 
-		$teaching = new Teaching();
-		$teaching->setClass($this->class);
+		try {
+			$this->em->beginTransaction();
 
-		if (!$values['subject']) {
-			$subject = new Subject();
-			$subject->setName($values['subjectName'])->setAbbreviation($values['abbreviation']);
+			$teaching = new Teaching();
+			$teaching->setClass($this->class);
 
-			$this->em->persist($subject);
+			if (!$values['subject']) {
+				$subject = new Subject();
+				$subject->setName($values['subjectName'])->setAbbreviation($values['abbreviation']);
+
+				$this->em->persist($subject);
+				$this->em->flush();
+			} else {
+				$subject = $this->em->getRepository(Subject::getClassName())->find($values['subject']);
+			}
+			$teaching->setSubject($subject);
+
+			$this->em->persist($teaching);
 			$this->em->flush();
-		} else {
-			$subject = $this->em->getRepository(Subject::getClassName())->find($values['subject']);
+
+			foreach ($values['teachingTime'] as $teachingTime) {
+				$time = new TeachingTime();
+				$time->setFrom($teachingTime['from'])
+						->setTo($teachingTime['to'])
+						->setWeekDay($teachingTime['weekDay'])
+						->setWeekParity($teachingTime['weekParity'])
+						->setTeaching($teaching);
+
+				$this->em->persist($time);
+				$this->em->flush();
+			}
+
+			$newTeachers = array();
+			foreach ($values['teachers'] as $teacher) {
+				if ($teacher['teacher']) {
+					$teacherEntity = $this->em->getRepository(Teacher::getClassName())->find($teacher['teacher']);
+				} else {
+					$teacherEntity = new Teacher();
+					$teacherEntity->setName($teacher['teacherName'])
+									->setSurname($teacher['teacherSurname'])
+									->setRoom($teacher['teacherRoom']);
+
+					$pass = $this->userService->addUser($teacherEntity);
+
+					$this->em->persist($teacherEntity);
+					$this->em->flush();
+
+					$newTeachers[$teacherEntity->getId()] = $pass;
+				}
+
+				$teaching->addTeacher($teacherEntity);
+				$this->em->flush();
+			}
+
+			$this->em->flush();
+			$this->em->commit();
+
+			$this->flashMessage("Vyučování bylo úspěšně vytvořeno", 'success');
+			if (count($newTeachers)) {
+				$text = "Byli vytvořeni tito učitelé:<br/>";
+				foreach ($newTeachers as $id => $pass) {
+					$teacher = $this->em->getRepository(Teacher::getClassName())->find($id);
+					$text .= $teacher->getSurname() . " " . $teacher->getName() . " - <strong>login: " . $teacher->getLogin() . ", heslo: " . $pass . "</strong><br/>";
+				}
+
+				$this->flashMessage($text, "success");
+			}
+		} catch (\Exception $e) {
+			$this->em->rollback();
+			dump($e);die;
+
+			$this->flashMessage('Vyučování nebylo vytvořeno', 'alert');
 		}
-		$teaching->setSubject($subject);
 
-
-
-		$this->em->persist($teaching);
-		$this->em->flush();
+		$this->redirect('this');
 	}
 
 	public function createComponentImportForm()
@@ -468,8 +533,6 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		}
 
 	}
-
-
 
 	public function handleAddStudentToClass($studentId, $classId)
 	{

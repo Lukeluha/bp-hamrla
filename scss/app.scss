@@ -40,6 +40,8 @@ body {
 #chat {
   background-color: $grey;
   height: calc(100vh - 55px);
+  position:fixed;
+  width: 100%;
 }
 
 .breadcrumbs {

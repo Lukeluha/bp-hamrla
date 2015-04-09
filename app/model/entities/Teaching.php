@@ -42,6 +42,12 @@ class Teaching extends BaseEntity
 	protected $teachers;
 
 	/**
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="TeachingTime", mappedBy="teaching")
+	 */
+	protected $teachingTimes;
+
+	/**
 	 * @var string
 	 * @ORM\Column(type="enum")
 	 */
@@ -51,6 +57,7 @@ class Teaching extends BaseEntity
 	public function __construct()
 	{
 		$this->teachers = new ArrayCollection();
+		$this->teachingTimes = new ArrayCollection();
 	}
 
 	/**
@@ -136,8 +143,22 @@ class Teaching extends BaseEntity
 		$teacher->addTeaching($this);
 	}
 
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getTeachingTimes()
+	{
+		return $this->teachingTimes;
+	}
 
-
-
+	/**
+	 * @param ArrayCollection $teachingTimes
+	 * @return $this
+	 */
+	public function setTeachingTimes($teachingTimes)
+	{
+		$this->teachingTimes = $teachingTimes;
+		return $this;
+	}
 
 }

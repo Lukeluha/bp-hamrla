@@ -9189,21 +9189,23 @@ body {
 #chat {
   background-color: #ECECEC;
   height: calc(100vh - 55px);
+  position: fixed;
+  width: 100%;
 }
 
-/* line 45, ../../scss/app.scss */
+/* line 47, ../../scss/app.scss */
 .breadcrumbs {
   border-radius: 0;
   border: none;
   border-bottom: 2px solid #ECECEC;
 }
 
-/* line 51, ../../scss/app.scss */
+/* line 53, ../../scss/app.scss */
 .without-padding {
   padding: 0;
 }
 
-/* line 55, ../../scss/app.scss */
+/* line 57, ../../scss/app.scss */
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -9211,12 +9213,12 @@ body {
   max-width: initial;
 }
 
-/* line 62, ../../scss/app.scss */
+/* line 64, ../../scss/app.scss */
 ul.unstyled {
   list-style-type: none;
 }
 
-/* line 66, ../../scss/app.scss */
+/* line 68, ../../scss/app.scss */
 .img-circle {
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
@@ -9224,32 +9226,32 @@ ul.unstyled {
   border-radius: 150px;
 }
 
-/* line 71, ../../scss/app.scss */
+/* line 73, ../../scss/app.scss */
 input.form-control-error {
   margin-bottom: 0;
 }
 
-/* line 76, ../../scss/app.scss */
+/* line 78, ../../scss/app.scss */
 .alert-box.success a {
   color: #005938;
 }
 
-/* line 80, ../../scss/app.scss */
+/* line 82, ../../scss/app.scss */
 .alert-box.success a:hover {
   color: #003823;
 }
 
-/* line 85, ../../scss/app.scss */
+/* line 87, ../../scss/app.scss */
 td > .button {
   margin: 0 !important;
 }
 
-/* line 89, ../../scss/app.scss */
+/* line 91, ../../scss/app.scss */
 .alert-box {
   margin-bottom: 0;
 }
 
-/* line 93, ../../scss/app.scss */
+/* line 95, ../../scss/app.scss */
 .hide {
   display: none;
 }
