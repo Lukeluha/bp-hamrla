@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Lesson
  * @package App\Model\Entities
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="\App\Model\Repositories\Lessons")
  * @ORM\Table(name="lessons")
  */
 class Lesson extends BaseEntity

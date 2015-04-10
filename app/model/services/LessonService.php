@@ -52,6 +52,8 @@ class LessonService extends BaseService
 				$interval = new \DateInterval("P1W");
 			}
 
+			$startDate->setTime($teachingTime->getFrom()->format("G"), $teachingTime->getFrom()->format("i"));
+
 			while ($startDate <= $endDate) {
 				if (in_array($startDate->format("m-d"), $this->holidays)) {
 					$startDate->add($interval);

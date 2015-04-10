@@ -95,3 +95,29 @@ td > .button {
 .hide {
   display:none;
 }
+
+.post {
+  .post-header {
+    background-color: $grey;
+    width: 24.5%;
+    text-align: center;
+
+    i {
+      line-height: 1em;
+      font-size: 90px;
+    }
+  }
+
+  .post-content {
+    padding: 20px;
+    background-color: #BFBFBF;
+
+    .button {
+      margin:0
+    }
+  }
+}
+
+hr.white {
+  border: 1px solid white;
+}

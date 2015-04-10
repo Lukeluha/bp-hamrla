@@ -292,7 +292,7 @@
 							{$teacher['teacher']->control}
 						</div>
 
-						<div id="frm-teachingForm-teachers-{$iterator->getCounter()-1}-teacher-new" style="display: none">
+						<div id="{$teacher->getName()}"> {* name of container, not of the teacher *}
 							<div class="column small-12">
 								{$teacher['teacherName']->label}
 								{$teacher['teacherName']->control}

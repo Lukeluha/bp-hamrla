@@ -172,7 +172,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$teachersSelect[0] = 'Nový učitel...';
 
 		$teachers = $form->addDynamic('teachers', function (Container $teacher) use ($teachersSelect, $removeCallback, $redrawCallback) {
-			$teacher->addSelect('teacher', 'Učitel', $teachersSelect)->setAttribute('class', 'teacherSelect');
+			$teacher->addSelect('teacher', 'Učitel', $teachersSelect)->addCondition(Form::EQUAL, 0)->toggle($teacher->getName());
 
 			$teacher->addText('teacherName', 'Jméno')->addConditionOn($teacher['teacher'], Form::EQUAL, 0)->setRequired('Vyplňte jméno učitele');
 			$teacher->addText('teacherSurname', 'Příjmení')->addConditionOn($teacher['teacher'], Form::EQUAL, 0)->setRequired('Vyplňte příjmení učitele');

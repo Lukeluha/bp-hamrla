@@ -9255,3 +9255,29 @@ td > .button {
 .hide {
   display: none;
 }
+
+/* line 100, ../../scss/app.scss */
+.post .post-header {
+  background-color: #ECECEC;
+  width: 24.5%;
+  text-align: center;
+}
+/* line 105, ../../scss/app.scss */
+.post .post-header i {
+  line-height: 1em;
+  font-size: 90px;
+}
+/* line 111, ../../scss/app.scss */
+.post .post-content {
+  padding: 20px;
+  background-color: #BFBFBF;
+}
+/* line 115, ../../scss/app.scss */
+.post .post-content .button {
+  margin: 0;
+}
+
+/* line 121, ../../scss/app.scss */
+hr.white {
+  border: 1px solid white;
+}

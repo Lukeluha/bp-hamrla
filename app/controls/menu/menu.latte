@@ -11,7 +11,7 @@
 				<ul class="dropdown">
 					{if count($userEntity->getTeachings())}
 						{foreach $userEntity->getTeachings() as $teaching}
-							<li><a href="#">{$teaching->getSubject()} ({$teaching->getClass()->getName()})</a></li>
+							<li><a href="{plink Teaching:default $teaching->getId()}">{$teaching->getSubject()} ({$teaching->getClass()->getName()})</a></li>
 							<li class="divider"></li>
 						{/foreach}
 					{else}

@@ -2,7 +2,10 @@
 
 namespace App\Model\Services;
 
+use App\Model\Entities\ClassEntity;
 use App\Model\Entities\Student;
+use App\Model\Entities\Teacher;
+use App\Model\Entities\Teaching;
 use App\Model\Entities\User;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Security\AuthenticationException;
@@ -101,5 +104,25 @@ class UserService extends BaseService implements IAuthenticator
 		$user->setPassword($password);
 
 		return $password;
+	}
+
+	public function isUserInTeaching(\Nette\Security\User $user, Teaching $teaching)
+	{
+		if ($user->isInRole('teacher')) {
+			return $this->em->createQueryBuilder()
+					->select('t')
+					->from(Teaching::getClassName(), 't')
+					->join(Teacher::getClassName(), 'tr')
+					->where('tr.id = ' . $user->getId() . " AND t.id = " . $teaching->getId())
+					->getQuery()->getOneOrNullResult();
+		} elseif ($user->isInRole('student')) {
+			return $this->em->createQueryBuilder()
+					->select('s')
+					->from(Student::getClassName(), 's')
+					->join(ClassEntity::getClassName(), 'c')
+					->join(Teaching::getClassName(), 't')
+					->where('t.id = ' . $teaching->getId() . " AND s.id = " . $user->getId());
+		}
+
 	}
 }
