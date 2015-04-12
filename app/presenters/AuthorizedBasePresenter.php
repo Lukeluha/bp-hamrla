@@ -136,4 +136,12 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	{
 		return $this->em->getRepository(User::getClassName())->findForChat($this->user, $this->actualYear);
 	}
+
+	public function handleStillOnline()
+	{
+		$user = $this->em->getRepository(User::getClassName())->find($this->user->getId());
+		$user->setLastActivity(new \DateTime());
+		$this->em->flush();
+		$this->terminate();
+	}
 }

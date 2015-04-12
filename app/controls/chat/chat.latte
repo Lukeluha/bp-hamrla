@@ -1,9 +1,7 @@
-<div id="chat">
+<div id="chat" ng-init="init({$user->getId()});">
 	<ul class="unstyled">
 		{foreach $users as $user}
 			<li><img class="img-circle" src="{$basePath}/images/{$user->getProfilePicture()}" alt="" width="30"/>{$user->getName()} {$user->getSurname()} <span class="right status {if $user->isOnline()}online{/if}">&#9679;</span></li>
 		{/foreach}
 	</ul>
 </div>
-
-<div style="background-color: red;position: fixed; bottom: 0">fdfdfdfdf</div>

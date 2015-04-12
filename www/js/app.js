@@ -88,3 +88,7 @@ function printData(divId)
     newWin.print();
     newWin.close();
 }
+
+function stillOnline(url) {
+    $.get(url);
+}

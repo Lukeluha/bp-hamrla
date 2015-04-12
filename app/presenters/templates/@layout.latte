@@ -34,6 +34,17 @@
 	{/if}
 
 	{block head}{/block}
+
+	{if $presenter->name != "Login"}
+		<script>
+			var url = {link stillOnline!};
+			stillOnline(url);
+
+			setInterval(function () {
+				stillOnline(url);
+			}, 30000);
+		</script>
+	{/if}
 </head>
 <body>
 

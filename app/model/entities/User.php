@@ -49,10 +49,10 @@ abstract class User extends BaseEntity
 	protected $password;
 
 	/**
-	 * @ORM\Column(type="integer")
-	 * @var bool
+	 * @ORM\Column(type="datetime")
+	 * @var \DateTime
 	 */
-	protected $online;
+	protected $lastActivity;
 
 	/**
 	 * @return string
@@ -158,30 +158,37 @@ abstract class User extends BaseEntity
 	}
 
 	/**
-	 * @return boolean
-	 */
-	public function getOnline()
-	{
-		return $this->online;
-	}
-
-	/**
+	 * Check if user is currently active and online
 	 * @return boolean
 	 */
 	public function isOnline()
 	{
-		return $this->online;
+		if (!$this->lastActivity) return false;
+
+		$now = new \DateTime();
+		$interval = $now->getTimestamp() - $this->lastActivity->getTimestamp();
+		return ($interval <= 45);
 	}
 
 	/**
-	 * @param boolean $online
+	 * @return \DateTime
+	 */
+	public function getLastActivity()
+	{
+		return $this->lastActivity;
+	}
+
+	/**
+	 * @param \DateTime $lastActivity
 	 * @return $this
 	 */
-	public function setOnline($online)
+	public function setLastActivity($lastActivity)
 	{
-		$this->online = $online;
+		$this->lastActivity = $lastActivity;
 		return $this;
 	}
+
+
 
 
 
