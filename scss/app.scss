@@ -2,6 +2,7 @@
 @import "functions";
 @import "../vendor/bower_components/foundation/scss/foundation";
 
+$chat-width: 200px;
 
 
 body {
@@ -12,6 +13,8 @@ body {
   .top-bar-section ul li{
     background: $dark-grey;
   }
+
+  z-index: 100;
 
   ul.vertical-center {
 
@@ -36,12 +39,46 @@ body {
   }
 }
 
+#chat-wrapper {
+  position:absolute;
+  width:100%;
+  z-index: 10;
+}
 
 #chat {
   background-color: $grey;
   height: calc(100vh - 55px);
   position:fixed;
-  width: 100%;
+  width: $chat-width;
+  overflow-y: scroll;
+  right:0;
+  ul {
+    margin-left: 0;
+    cursor: pointer;
+    li {
+      font-size: 13px !important;
+      padding: 5px;
+      border-bottom: 1px solid white;
+
+      .status {
+        margin-top: 5px;
+        color: grey;
+      }
+
+      .online {
+        color: green;
+      }
+
+    }
+
+    li:hover {
+      background: #dedede;
+    }
+  }
+
+  img {
+    margin-right: 10px;
+  }
 }
 
 .breadcrumbs {
@@ -120,4 +157,10 @@ td > .button {
 
 hr.white {
   border: 1px solid white;
+}
+
+@media #{$small-up} {
+  #main-content-wrapper {
+    padding-right:$chat-width;
+  }
 }

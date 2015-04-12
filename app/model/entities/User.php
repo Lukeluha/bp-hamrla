@@ -8,7 +8,7 @@ use \Doctrine\ORM\Mapping as ORM;
 /**
  * Class represents User in database
  * @package App\Model\Entities
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Model\Repositories\Users")
  * @ORM\Table(name="users")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="role", type="string")
@@ -47,6 +47,12 @@ abstract class User extends BaseEntity
 	 * @var string
 	 */
 	protected $password;
+
+	/**
+	 * @ORM\Column(type="integer")
+	 * @var bool
+	 */
+	protected $online;
 
 	/**
 	 * @return string
@@ -150,6 +156,34 @@ abstract class User extends BaseEntity
 			return "users/user-no-picture.jpg";
 		}
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getOnline()
+	{
+		return $this->online;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isOnline()
+	{
+		return $this->online;
+	}
+
+	/**
+	 * @param boolean $online
+	 * @return $this
+	 */
+	public function setOnline($online)
+	{
+		$this->online = $online;
+		return $this;
+	}
+
+
 
 	/**
 	 * Get roles of user

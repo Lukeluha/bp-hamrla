@@ -5,6 +5,7 @@ use App\Controls\BreadcrumbsControl;
 use App\Controls\IMenuControlFactory;
 use App\Controls\IChatControlFactory;
 use App\Model\Entities\SchoolYear;
+use App\Model\Entities\User;
 use App\Model\Services\SchoolYearService;
 use Nette\Forms\Controls\SubmitButton;
 use App\Model\Services\UserService;
@@ -118,6 +119,7 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 		parent::beforeRender();
 		$this->template->actualYear = $this->actualYear;
 		$this->template->daysInWeek = $this->days;
+		$this['chat']->setUsers($this->getUsersForChat());
 	}
 
 	public function addElement(SubmitButton $button)
@@ -128,5 +130,10 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	public function removeElement(SubmitButton $button)
 	{
 		$button->parent->parent->remove($button->parent, TRUE);
+	}
+
+	protected function getUsersForChat()
+	{
+		return $this->em->getRepository(User::getClassName())->findForChat($this->user, $this->actualYear);
 	}
 }

@@ -3,7 +3,7 @@
  * @param array    $flashes  flash messages
  *}
 <!doctype html>
-<html class="no-js" lang="en" {if isset($ngApp)}ng-app="{$ngApp}"{/if}>
+<html class="no-js" lang="en" {if $presenter->name != "Login"}ng-app="app"{/if}>
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -46,7 +46,7 @@
 	<a href="#" class="close">&times;</a>
 </div>
 <div class="row full-width">
-	<div class="small-12 column without-padding medium-10">
+	<div class="small-12 column without-padding" id="main-content-wrapper">
 		<div n:if="$presenter->name != Login" class="hide-for-small small-12 ">
 			{control breadcrumbs}
 		</div>
@@ -67,11 +67,12 @@
 
 
 
-	<div class="hide-for-small medium-2 column without-padding">
+	<div class="hide-for-small column without-padding" id="chat-wrapper" ng-controller="ChatController">
 		<div n:if="$presenter->name != Login">
 			{block chat}
 				{control chat}
 			{/block}
+			<div class="clearfix"></div>
 		</div>
 	</div>
 </div>

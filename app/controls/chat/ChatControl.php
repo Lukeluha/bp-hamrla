@@ -19,6 +19,8 @@ class ChatControl extends Control
 	 */
 	private $em;
 
+	private $users;
+
 	public function __construct(EntityManager $em)
 	{
 		$this->em = $em;
@@ -30,7 +32,29 @@ class ChatControl extends Control
 		$template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
 
 		$template->setFile(__DIR__ . '/chat.latte');
+
+		$template->users = $this->users;
 		$template->render();
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getUsers()
+	{
+		return $this->users;
+	}
+
+	/**
+	 * @param mixed $users
+	 * @return $this
+	 */
+	public function setUsers($users)
+	{
+		$this->users = $users;
+		return $this;
+	}
+
+
 
 }

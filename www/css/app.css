@@ -9157,55 +9157,96 @@ th.hide-for-touch {
     display: table-cell !important;
   }
 }
-/* line 7, ../../scss/app.scss */
+/* line 8, ../../scss/app.scss */
 body {
   background-color: whitesmoke;
 }
 
 /* line 12, ../../scss/app.scss */
+#menu {
+  z-index: 100;
+}
+/* line 13, ../../scss/app.scss */
 #menu .top-bar-section ul li {
   background: #4D4D4D;
 }
-/* line 18, ../../scss/app.scss */
+/* line 21, ../../scss/app.scss */
 #menu ul.vertical-center li {
   color: white;
 }
-/* line 22, ../../scss/app.scss */
+/* line 25, ../../scss/app.scss */
 #menu ul.vertical-center :hover li {
   background: #333333;
 }
-/* line 26, ../../scss/app.scss */
+/* line 29, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info {
   padding-top: 5px;
   padding-left: 5px;
 }
-/* line 30, ../../scss/app.scss */
+/* line 33, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info li:nth-child(3) {
   font-size: 11px;
   color: grey;
 }
 
-/* line 40, ../../scss/app.scss */
+/* line 42, ../../scss/app.scss */
+#chat-wrapper {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+
+/* line 48, ../../scss/app.scss */
 #chat {
   background-color: #ECECEC;
   height: calc(100vh - 55px);
   position: fixed;
-  width: 100%;
+  width: 200px;
+  overflow-y: scroll;
+  right: 0;
+}
+/* line 55, ../../scss/app.scss */
+#chat ul {
+  margin-left: 0;
+  cursor: pointer;
+}
+/* line 58, ../../scss/app.scss */
+#chat ul li {
+  font-size: 13px !important;
+  padding: 5px;
+  border-bottom: 1px solid white;
+}
+/* line 63, ../../scss/app.scss */
+#chat ul li .status {
+  margin-top: 5px;
+  color: grey;
+}
+/* line 68, ../../scss/app.scss */
+#chat ul li .online {
+  color: green;
+}
+/* line 74, ../../scss/app.scss */
+#chat ul li:hover {
+  background: #dedede;
+}
+/* line 79, ../../scss/app.scss */
+#chat img {
+  margin-right: 10px;
 }
 
-/* line 47, ../../scss/app.scss */
+/* line 84, ../../scss/app.scss */
 .breadcrumbs {
   border-radius: 0;
   border: none;
   border-bottom: 2px solid #ECECEC;
 }
 
-/* line 53, ../../scss/app.scss */
+/* line 90, ../../scss/app.scss */
 .without-padding {
   padding: 0;
 }
 
-/* line 57, ../../scss/app.scss */
+/* line 94, ../../scss/app.scss */
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -9213,12 +9254,12 @@ body {
   max-width: initial;
 }
 
-/* line 64, ../../scss/app.scss */
+/* line 101, ../../scss/app.scss */
 ul.unstyled {
   list-style-type: none;
 }
 
-/* line 68, ../../scss/app.scss */
+/* line 105, ../../scss/app.scss */
 .img-circle {
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
@@ -9226,58 +9267,65 @@ ul.unstyled {
   border-radius: 150px;
 }
 
-/* line 73, ../../scss/app.scss */
+/* line 110, ../../scss/app.scss */
 input.form-control-error {
   margin-bottom: 0;
 }
 
-/* line 78, ../../scss/app.scss */
+/* line 115, ../../scss/app.scss */
 .alert-box.success a {
   color: #005938;
 }
 
-/* line 82, ../../scss/app.scss */
+/* line 119, ../../scss/app.scss */
 .alert-box.success a:hover {
   color: #003823;
 }
 
-/* line 87, ../../scss/app.scss */
+/* line 124, ../../scss/app.scss */
 td > .button {
   margin: 0 !important;
 }
 
-/* line 91, ../../scss/app.scss */
+/* line 128, ../../scss/app.scss */
 .alert-box {
   margin-bottom: 0;
 }
 
-/* line 95, ../../scss/app.scss */
+/* line 132, ../../scss/app.scss */
 .hide {
   display: none;
 }
 
-/* line 100, ../../scss/app.scss */
+/* line 137, ../../scss/app.scss */
 .post .post-header {
   background-color: #ECECEC;
   width: 24.5%;
   text-align: center;
 }
-/* line 105, ../../scss/app.scss */
+/* line 142, ../../scss/app.scss */
 .post .post-header i {
   line-height: 1em;
   font-size: 90px;
 }
-/* line 111, ../../scss/app.scss */
+/* line 148, ../../scss/app.scss */
 .post .post-content {
   padding: 20px;
   background-color: #BFBFBF;
 }
-/* line 115, ../../scss/app.scss */
+/* line 152, ../../scss/app.scss */
 .post .post-content .button {
   margin: 0;
 }
 
-/* line 121, ../../scss/app.scss */
+/* line 158, ../../scss/app.scss */
 hr.white {
   border: 1px solid white;
+}
+
+@media only screen {
+  /* line 163, ../../scss/app.scss */
+  #main-content-wrapper {
+    padding-right: 200px;
+  }
 }
