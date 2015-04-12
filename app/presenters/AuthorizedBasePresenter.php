@@ -134,7 +134,29 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 
 	protected function getUsersForChat()
 	{
-		return $this->em->getRepository(User::getClassName())->findForChat($this->user, $this->actualYear);
+		$usersArray = array();
+		$users = $this->em->getRepository(User::getClassName())->findForChat($this->user, $this->actualYear);
+		foreach ($users as $user) {
+			$usersArray[$user->getId()] = array(
+				"name" => $user->getName(),
+				"surname" => $user->getSurname(),
+				"online" => $user->getOnline(),
+				"profilePicture" => $user->getProfilePicture()
+			);
+		}
+
+
+
+		return $usersArray;
+	}
+
+	public function handleCheckUsersInChat()
+	{
+		$users = $this->getUsersForChat();
+
+		$this->payload->users = $users;
+		$this->sendPayload();
+
 	}
 
 	public function handleStillOnline()

@@ -33,7 +33,7 @@ class ChatControl extends Control
 
 		$template->setFile(__DIR__ . '/chat.latte');
 
-		$template->users = $this->users;
+		$template->users = json_encode($this->users);
 		$template->render();
 	}
 

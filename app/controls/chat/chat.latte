@@ -1,7 +1,10 @@
-<div id="chat" ng-init="init({$user->getId()});">
+<div id="chat" ng-init="init({$user->getId()}, '{plink checkUsersInChat!}');users={$users}">
 	<ul class="unstyled">
-		{foreach $users as $user}
-			<li><img class="img-circle" src="{$basePath}/images/{$user->getProfilePicture()}" alt="" width="30"/>{$user->getName()} {$user->getSurname()} <span class="right status {if $user->isOnline()}online{/if}">&#9679;</span></li>
-		{/foreach}
+		<img ng-src="{$basePath}/images/spinner-bubble.svg" alt="spinner" ng-show="!users"/>
+		<li ng-repeat="user in users">
+			<img class="img-circle" ng-src="{$basePath}/images/{{ user.profilePicture }}" width="30" />
+			<span>{{ user.name }} {{ user.surname }}</span>
+			<span class="right status" ng-class="{ 'online' : user.online }">&#9679;</span>
+		</li>
 	</ul>
 </div>

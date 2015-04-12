@@ -13,6 +13,7 @@ use \Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="role", type="string")
  * @ORM\DiscriminatorMap( {"admin" = "Admin", "teacher" = "Teacher", "student" = "Student"} )
+ * @ORM\HasLifecycleCallbacks
  */
 
 
@@ -53,6 +54,11 @@ abstract class User extends BaseEntity
 	 * @var \DateTime
 	 */
 	protected $lastActivity;
+
+	/**
+	 * @var boolean
+	 */
+	protected $online;
 
 	/**
 	 * @return string
@@ -144,6 +150,12 @@ abstract class User extends BaseEntity
 		return $this;
 	}
 
+	public function __construct()
+	{
+		parent::__construct();
+		$this->online = $this->isOnline();
+	}
+
 
 
 	public function getProfilePicture($size = null)
@@ -159,15 +171,17 @@ abstract class User extends BaseEntity
 
 	/**
 	 * Check if user is currently active and online
-	 * @return boolean
+	 * @ORM\PostLoad()
 	 */
 	public function isOnline()
 	{
-		if (!$this->lastActivity) return false;
-
-		$now = new \DateTime();
-		$interval = $now->getTimestamp() - $this->lastActivity->getTimestamp();
-		return ($interval <= 45);
+		if (!$this->lastActivity) {
+			$this->online = false;
+		} else {
+			$now = new \DateTime();
+			$interval = $now->getTimestamp() - $this->lastActivity->getTimestamp();
+			$this->online = (bool) ($interval <= 45);
+		}
 	}
 
 	/**
@@ -188,9 +202,13 @@ abstract class User extends BaseEntity
 		return $this;
 	}
 
-
-
-
+	/**
+	 * @return boolean
+	 */
+	public function getOnline()
+	{
+		return $this->online;
+	}
 
 	/**
 	 * Get roles of user

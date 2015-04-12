@@ -9218,7 +9218,7 @@ body {
 }
 /* line 63, ../../scss/app.scss */
 #chat ul li .status {
-  margin-top: 5px;
+  font-size: 20px;
   color: grey;
 }
 /* line 68, ../../scss/app.scss */
