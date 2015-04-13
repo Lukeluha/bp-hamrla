@@ -10,8 +10,6 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
     $scope.users = null;
 
 
-    $scope.popupsMax = 0;
-
     $scope.popups = [];
 
     $scope.checkUsersUrl = '';
@@ -20,53 +18,63 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
     $scope.init = function(userId, checkUsersUrl) {
         $scope.userId = userId;
         $scope.checkUsersUrl = checkUsersUrl;
-        countPopups();
+        var popups = localStorage.getItem('popups' + $scope.userId);
+        if ( popups ) {
+            $scope.popups = JSON.parse(popups);
+            //console.log(JSON.parse(popups));
+        }
     }
 
     $scope.openPopup = function(userId) {
 
-        if ($scope.users[userId].popup === undefined || $scope.users[userId].popup != true) {
+        for (var i = 0; i < $scope.popups.length; i++) {
+            if ($scope.popups[i].userId == userId) { // if already opened, push to front
+                var toFront = $scope.popups[i];
+                $scope.popups.splice(i, 1);
+                $scope.popups.unshift(toFront);
 
-            var popup = {
-                "userId" : userId,
-                "status" : 1
-            };
-
-            $scope.users[userId].popup = true;
-            $scope.popups.unshift(popup);
-        } else if ($scope.users[userId].popup == true) { // if opened, push to front
-            for (var i = 0; i < $scope.popups.length; i++) {
-                if ($scope.popups[i].userId == userId) {
-
-                    var toFront = $scope.popups[i];
-                    $scope.popups.splice(i, 1);
-                    $scope.popups.unshift(toFront);
-
-                    break;
-                }
+                return;
             }
         }
+
+        var popup = {
+            "userId" : userId,
+            "status" : 1
+        };
+
+        $scope.popups.unshift(popup);
+
+        console.log($scope.popups);
+
+
+        saveToStorage();
     }
 
     $scope.closePopup = function(userId) {
-        var i = 0;
-        for (i; i < $scope.popups.length; i++) {
+        for (var i = 0; i < $scope.popups.length; i++) {
             if ($scope.popups[i].userId == userId) {
                 $scope.popups.splice(i, 1);
                 $scope.users[userId].popup = false;
                 break;
             }
         }
+
+        saveToStorage();
     }
 
     $scope.minimizeMaximizePopup = function(userId) {
-        var i = 0;
-        for (i; i < $scope.popups.length; i++) {
+        for (var i = 0; i < $scope.popups.length; i++) {
             if ($scope.popups[i].userId == userId) {
                 $scope.popups[i].status = !$scope.popups[i].status;
                 break;
             }
         }
+
+        saveToStorage();
+    }
+
+    function saveToStorage() {
+        localStorage.setItem('popups' + $scope.userId, angular.toJson($scope.popups));
     }
 
     /**
@@ -78,14 +86,5 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
                 $scope.users = data.users;
             })
     },60000);
-
-
-    function countPopups() {
-        //var width = window.innerWidth - 200;
-        //$scope.popupsMax = parseInt(width/270);
-        //console.log($scope.popupsMax);
-    }
-
-    window.addEventListener("resize", countPopups);
 
 }]);
