@@ -9329,3 +9329,48 @@ hr.white {
     padding-right: 200px;
   }
 }
+/* line 168, ../../scss/app.scss */
+#chat-popups {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-right: 200px;
+  height: 280px;
+}
+/* line 175, ../../scss/app.scss */
+#chat-popups .chat-popup {
+  width: 250px;
+  height: 280px;
+  margin-right: 20px;
+}
+/* line 180, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-header {
+  font-size: 12px;
+  font-weight: bold;
+  height: 30px;
+  background: #4D4D4D;
+  padding: 5px 10px;
+  color: white;
+}
+/* line 189, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-header.minimize {
+  position: fixed;
+  bottom: 0;
+  width: 250px;
+}
+/* line 195, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-text {
+  height: 220px;
+  background: white;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+}
+/* line 202, ../../scss/app.scss */
+#chat-popups .chat-popup input {
+  height: 30px;
+}
+
+/* line 210, ../../scss/app.scss */
+.cursor-pointer {
+  cursor: pointer;
+}

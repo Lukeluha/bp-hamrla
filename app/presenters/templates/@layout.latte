@@ -14,9 +14,9 @@
 		<script src="{$basePath}/js/app.min.js"></script>
 	{else}
 		<!-- build:css {$basePath}/css/screen.min.css -->
-		<link rel="stylesheet" href="{$basePath}/css/foundation-icons.css" />
-		<link rel="stylesheet" href="{$basePath}/css/foundation-datepicker.css" />
-		<link rel="stylesheet" href="{$basePath}/css/app.css" />
+			<link rel="stylesheet" href="{$basePath}/css/foundation-icons.css" />
+			<link rel="stylesheet" href="{$basePath}/css/foundation-datepicker.css" />
+			<link rel="stylesheet" href="{$basePath}/css/app.css" />
 		<!-- endbuild -->
 
 		<!-- build:js {$basePath}/js/app.min.js -->
@@ -46,7 +46,7 @@
 		</script>
 	{/if}
 </head>
-<body ng-cloak>
+<body {if $presenter->name != "Login"}ng-cloak{/if}>
 
 <div n:if="$presenter->name != Login" class="fixed">
 	{control menu}
@@ -78,14 +78,14 @@
 
 
 
-	<div class="hide-for-small column without-padding" id="chat-wrapper" ng-controller="ChatController">
-		<div n:if="$presenter->name != Login">
-			{block chat}
-				{control chat}
-			{/block}
-			<div class="clearfix"></div>
+	{if $presenter->name != "Login"}
+		<div class="hide-for-small column without-padding" id="chat-wrapper" ng-controller="ChatController">
+				{block chat}
+					{control chat}
+				{/block}
+				<div class="clearfix"></div>
 		</div>
-	</div>
+	{/if}
 </div>
 
 </body>

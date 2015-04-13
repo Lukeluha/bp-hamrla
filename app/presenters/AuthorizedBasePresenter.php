@@ -145,8 +145,6 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 			);
 		}
 
-
-
 		return $usersArray;
 	}
 
