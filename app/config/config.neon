@@ -24,7 +24,10 @@ services:
 	    class: App\Controls\MenuControl(%user%, ...)
 	    implement: App\Controls\IMenuControlFactory
 	    parameters: [user]
-	- App\Controls\IChatControlFactory
+	chatFactory:
+		class: App\Controls\ChatControl(%user%, %year%, ...)
+		implement: App\Controls\IChatControlFactory
+		parameters: [user, year]
 	- App\Model\Services\StudentService
 	- App\Model\Services\LessonService
 	actualityFactory:

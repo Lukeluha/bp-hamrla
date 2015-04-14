@@ -3,7 +3,6 @@
 namespace App\Controls;
 
 
-use App\Model\Entities\User;
 
 interface IMenuControlFactory {
 	/**

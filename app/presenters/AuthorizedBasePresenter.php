@@ -68,7 +68,7 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	 */
 	public function createComponentChat()
 	{
-		return $this->chatControlFactory->create();
+		return $this->chatControlFactory->create($this->user, $this->actualYear);
 	}
 
 	public function handleLogout()
@@ -119,7 +119,6 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 		parent::beforeRender();
 		$this->template->actualYear = $this->actualYear;
 		$this->template->daysInWeek = $this->days;
-		$this['chat']->setUsers($this->getUsersForChat());
 	}
 
 	public function addElement(SubmitButton $button)
@@ -130,31 +129,6 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	public function removeElement(SubmitButton $button)
 	{
 		$button->parent->parent->remove($button->parent, TRUE);
-	}
-
-	protected function getUsersForChat()
-	{
-		$usersArray = array();
-		$users = $this->em->getRepository(User::getClassName())->findForChat($this->user, $this->actualYear);
-		foreach ($users as $user) {
-			$usersArray[$user->getId()] = array(
-				"name" => $user->getName(),
-				"surname" => $user->getSurname(),
-				"online" => $user->getOnline(),
-				"profilePicture" => $user->getProfilePicture()
-			);
-		}
-
-		return $usersArray;
-	}
-
-	public function handleCheckUsersInChat()
-	{
-		$users = $this->getUsersForChat();
-
-		$this->payload->users = $users;
-		$this->sendPayload();
-
 	}
 
 	public function handleStillOnline()

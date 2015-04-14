@@ -1,18 +1,17 @@
-<div id="chat" ng-init="init({$user->getId()}, '{plink checkUsersInChat!}');users={$users}">
+<div id="chat" ng-init="init({$user->getId()}, '{link checkUsersInChat!}', '{link sendMessage!}', {$users});">
 	<ul class="unstyled">
 		<img ng-src="{$basePath}/images/spinner-bubble.svg" alt="spinner" ng-show="!users"/>
-		<li ng-repeat="(userId, user) in users" ng-click="openPopup(userId)">
+		<li ng-repeat="user in users | orderObjectBy: 'ordering'" ng-click="openPopup(user.id)" ng-class="{ 'chat-teacher' : user.role == 'teacher' }">
 			<img class="img-circle" ng-src="{$basePath}/images/{{ user.profilePicture }}" width="30" />
 			<span>{{ user.name }} {{ user.surname }}</span>
 			<span class="right status" ng-class="{ 'online' : user.online }">&#9679;</span>
 		</li>
 	</ul>
 </div>
-
 <div id="chat-popups" ng-show="popups.length">
 	<div class="chat-popup right" ng-repeat="popup in popups">
 		<div class="chat-header cursor-pointer" ng-class="{ 'minimize' : !popup.status }" ng-click="minimizeMaximizePopup(popup.userId)">{{ users[popup.userId].name }} {{ users[popup.userId].surname }} <span class="right"><i class="fi-x cursor-pointer" ng-click="closePopup(popup.userId)"></i></span></div>
 		<div ng-show="popup.status" class="chat-text"></div>
-		<textarea ng-show="popup.status" rows="1"></textarea>
+		<textarea ng-show="popup.status" rows="1" ng-keypress="chatKeyPress($event, popup.userId)"></textarea>
 	</div>
 </div>

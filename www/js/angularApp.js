@@ -9,19 +9,27 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
 
     $scope.users = null;
 
+    $scope.checkTimeout = 1;
 
     $scope.popups = [];
 
+
+
+
     $scope.checkUsersUrl = '';
 
+    $scope.sendMessageUrl = '';
 
-    $scope.init = function(userId, checkUsersUrl) {
+
+    $scope.init = function(userId, checkUsersUrl, sendMessageUrl, users) {
         $scope.userId = userId;
         $scope.checkUsersUrl = checkUsersUrl;
+        $scope.sendMessageUrl = sendMessageUrl;
+        $scope.users = users;
+
         var popups = localStorage.getItem('popups' + $scope.userId);
         if ( popups ) {
-            $scope.popups = JSON.parse(popups);
-            //console.log(JSON.parse(popups));
+           $scope.popups = JSON.parse(popups);
         }
     }
 
@@ -73,6 +81,20 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
         saveToStorage();
     }
 
+    $scope.chatKeyPress = function (event, userId) {
+        if (event.which != 13) return;
+        var message = event.target.value;
+
+        $http({
+            method: 'POST',
+            url: $scope.sendMessageUrl,
+            data: $.param({message: message, to: userId}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+
+        event.preventDefault();
+    }
+
     function saveToStorage() {
         localStorage.setItem('popups' + $scope.userId, angular.toJson($scope.popups));
     }
@@ -85,6 +107,21 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
             .success(function(data) {
                 $scope.users = data.users;
             })
-    },60000);
+    },30000);
 
 }]);
+
+app.filter('orderObjectBy', function() {
+    return function(items, field, reverse) {
+        var filtered = [];
+        angular.forEach(items, function(item) {
+            filtered.push(item);
+        });
+        filtered.sort(function (a, b) {
+            return (a[field] > b[field] ? 1 : -1);
+        });
+        if(reverse) filtered.reverse();
+        return filtered;
+    };
+});
+
