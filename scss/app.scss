@@ -45,6 +45,14 @@ body {
   z-index: 10;
 }
 
+.status {
+  color: grey;
+}
+
+.online {
+  color: green;
+}
+
 #chat {
   background-color: $grey;
   height: calc(100vh - 55px);
@@ -59,16 +67,10 @@ body {
       font-size: 13px !important;
       padding: 5px;
       border-bottom: 1px solid white;
+    }
 
-      .status {
-        font-size: 20px;
-        color: grey;
-      }
-
-      .online {
-        color: green;
-      }
-
+    .status {
+      font-size: 20px;
     }
 
     li:hover {
@@ -80,6 +82,7 @@ body {
     margin-right: 10px;
   }
 }
+
 
 .breadcrumbs {
   border-radius: 0;
@@ -197,6 +200,65 @@ hr.white {
       background: white;
       border-left: 1px solid lightgray;
       border-right: 1px solid lightgray;
+      overflow-y: scroll;
+    }
+
+    .chat-conversation {
+      list-style-type: none;
+      margin:0;
+      padding:10px;
+
+      li {
+        margin-bottom: 15px;
+      }
+
+      $chatLeftColor: #e0e0e0;
+      $chatRightColor: #DBF4FF;
+
+      .bubble {
+          position: relative;
+          padding: 5px;
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
+          font-size: 12px;
+          width: $chat-width - 10px;
+      }
+
+      .bubble-left {
+        background: $chatLeftColor;
+
+        margin-left: 5px;
+        float:right;
+      }
+
+      .bubble-right {
+        margin-right: 5px;
+        float: left;
+        background: $chatRightColor;
+      }
+
+      .bubble:after {
+        content: "";
+        position: absolute;
+        top: 8px;
+        border-style: solid;
+        display: block;
+        width: 0;
+        z-index: 1;
+      }
+
+      .bubble-left:after {
+        left: -7px;
+        border-width: 5px 7px 5px 0;
+        border-color: transparent $chatLeftColor;
+      }
+
+      .bubble-right:after {
+        right: -7px;
+        border-width: 5px 0 5px 7px;
+        border-color: transparent $chatRightColor;
+      }
     }
 
     input {

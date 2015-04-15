@@ -9197,6 +9197,16 @@ body {
 }
 
 /* line 48, ../../scss/app.scss */
+.status {
+  color: grey;
+}
+
+/* line 52, ../../scss/app.scss */
+.online {
+  color: green;
+}
+
+/* line 56, ../../scss/app.scss */
 #chat {
   background-color: #ECECEC;
   height: calc(100vh - 55px);
@@ -9205,48 +9215,43 @@ body {
   overflow-y: scroll;
   right: 0;
 }
-/* line 55, ../../scss/app.scss */
+/* line 63, ../../scss/app.scss */
 #chat ul {
   margin-left: 0;
   cursor: pointer;
 }
-/* line 58, ../../scss/app.scss */
+/* line 66, ../../scss/app.scss */
 #chat ul li {
   font-size: 13px !important;
   padding: 5px;
   border-bottom: 1px solid white;
 }
-/* line 63, ../../scss/app.scss */
-#chat ul li .status {
+/* line 71, ../../scss/app.scss */
+#chat ul .status {
   font-size: 20px;
-  color: grey;
 }
-/* line 68, ../../scss/app.scss */
-#chat ul li .online {
-  color: green;
-}
-/* line 74, ../../scss/app.scss */
+/* line 76, ../../scss/app.scss */
 #chat ul li:hover {
   background: #dedede;
 }
-/* line 79, ../../scss/app.scss */
+/* line 81, ../../scss/app.scss */
 #chat img {
   margin-right: 10px;
 }
 
-/* line 84, ../../scss/app.scss */
+/* line 87, ../../scss/app.scss */
 .breadcrumbs {
   border-radius: 0;
   border: none;
   border-bottom: 2px solid #ECECEC;
 }
 
-/* line 90, ../../scss/app.scss */
+/* line 93, ../../scss/app.scss */
 .without-padding {
   padding: 0;
 }
 
-/* line 94, ../../scss/app.scss */
+/* line 97, ../../scss/app.scss */
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -9254,12 +9259,12 @@ body {
   max-width: initial;
 }
 
-/* line 101, ../../scss/app.scss */
+/* line 104, ../../scss/app.scss */
 ul.unstyled {
   list-style-type: none;
 }
 
-/* line 105, ../../scss/app.scss */
+/* line 108, ../../scss/app.scss */
 .img-circle {
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
@@ -9267,69 +9272,69 @@ ul.unstyled {
   border-radius: 150px;
 }
 
-/* line 110, ../../scss/app.scss */
+/* line 113, ../../scss/app.scss */
 input.form-control-error {
   margin-bottom: 0;
 }
 
-/* line 115, ../../scss/app.scss */
+/* line 118, ../../scss/app.scss */
 .alert-box.success a {
   color: #005938;
 }
 
-/* line 119, ../../scss/app.scss */
+/* line 122, ../../scss/app.scss */
 .alert-box.success a:hover {
   color: #003823;
 }
 
-/* line 124, ../../scss/app.scss */
+/* line 127, ../../scss/app.scss */
 td > .button {
   margin: 0 !important;
 }
 
-/* line 128, ../../scss/app.scss */
+/* line 131, ../../scss/app.scss */
 .alert-box {
   margin-bottom: 0;
 }
 
-/* line 132, ../../scss/app.scss */
+/* line 135, ../../scss/app.scss */
 .hide {
   display: none;
 }
 
-/* line 137, ../../scss/app.scss */
+/* line 140, ../../scss/app.scss */
 .post .post-header {
   background-color: #ECECEC;
   width: 24.5%;
   text-align: center;
 }
-/* line 142, ../../scss/app.scss */
+/* line 145, ../../scss/app.scss */
 .post .post-header i {
   line-height: 1em;
   font-size: 90px;
 }
-/* line 148, ../../scss/app.scss */
+/* line 151, ../../scss/app.scss */
 .post .post-content {
   padding: 20px;
   background-color: #BFBFBF;
 }
-/* line 152, ../../scss/app.scss */
+/* line 155, ../../scss/app.scss */
 .post .post-content .button {
   margin: 0;
 }
 
-/* line 158, ../../scss/app.scss */
+/* line 161, ../../scss/app.scss */
 hr.white {
   border: 1px solid white;
 }
 
 @media only screen {
-  /* line 163, ../../scss/app.scss */
+  /* line 166, ../../scss/app.scss */
   #main-content-wrapper {
     padding-right: 200px;
   }
 }
-/* line 168, ../../scss/app.scss */
+/* line 171, ../../scss/app.scss */
 #chat-popups {
   position: fixed;
   bottom: 0;
@@ -9337,13 +9342,13 @@ hr.white {
   padding-right: 200px;
   height: 280px;
 }
-/* line 175, ../../scss/app.scss */
+/* line 178, ../../scss/app.scss */
 #chat-popups .chat-popup {
   width: 250px;
   height: 280px;
   margin-right: 20px;
 }
-/* line 180, ../../scss/app.scss */
+/* line 183, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header {
   font-size: 12px;
   font-weight: bold;
@@ -9352,25 +9357,80 @@ hr.white {
   padding: 5px 10px;
   color: white;
 }
-/* line 189, ../../scss/app.scss */
+/* line 192, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header.minimize {
   position: fixed;
   bottom: 0;
   width: 250px;
 }
-/* line 195, ../../scss/app.scss */
+/* line 198, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-text {
   height: 220px;
   background: white;
   border-left: 1px solid lightgray;
   border-right: 1px solid lightgray;
+  overflow-y: scroll;
 }
-/* line 202, ../../scss/app.scss */
+/* line 206, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-conversation {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+}
+/* line 211, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-conversation li {
+  margin-bottom: 15px;
+}
+/* line 218, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-conversation .bubble {
+  position: relative;
+  padding: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  width: 190px;
+}
+/* line 228, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-conversation .bubble-left {
+  background: #e0e0e0;
+  margin-left: 5px;
+  float: right;
+}
+/* line 235, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-conversation .bubble-right {
+  margin-right: 5px;
+  float: left;
+  background: #DBF4FF;
+}
+/* line 241, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-conversation .bubble:after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  border-style: solid;
+  display: block;
+  width: 0;
+  z-index: 1;
+}
+/* line 251, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-conversation .bubble-left:after {
+  left: -7px;
+  border-width: 5px 7px 5px 0;
+  border-color: transparent #e0e0e0;
+}
+/* line 257, ../../scss/app.scss */
+#chat-popups .chat-popup .chat-conversation .bubble-right:after {
+  right: -7px;
+  border-width: 5px 0 5px 7px;
+  border-color: transparent #DBF4FF;
+}
+/* line 264, ../../scss/app.scss */
 #chat-popups .chat-popup input {
   height: 30px;
 }
 
-/* line 210, ../../scss/app.scss */
+/* line 272, ../../scss/app.scss */
 .cursor-pointer {
   cursor: pointer;
 }

@@ -62,13 +62,81 @@ class ChatControl extends Control
 				"online" => $user->getOnline(),
 				"profilePicture" => $user->getProfilePicture(),
 				"ordering" => $i,
-				"role" => in_array(Teacher::ROLE_STUDENT, $roles) ? 'student' : 'teacher'
+				"role" => in_array(\App\Model\Entities\User::ROLE_STUDENT, $roles) ? 'student' : 'teacher'
 			);
 			$i++;
 		}
 
 
 		return $usersArray;
+	}
+
+	public function handleCheckNewMessages()
+	{
+		$messages = $this->em->getRepository(ChatMessage::getClassName())
+						->findBy(array('to' => $this->user->id, 'read' => 0), array('from' => "ASC", 'datetime' => "ASC"));
+
+
+
+		$messagesArray = array();
+		foreach ($messages as $message) {
+			array_unshift($messagesArray, array(
+				'from' => $message->getFrom()->getId(),
+				'message' => $message->getMessage(),
+				'date' => $message->getDatetime()->format('Y-m-d')
+			));
+			$message->setRead(true);
+		}
+
+		$this->em->flush();
+
+		$this->presenter->payload->newMessages = $messagesArray;
+		$this->presenter->sendPayload();
+	}
+
+	public function handleGetConversationWithUser()
+	{
+		$userId = $this->presenter->getParameter('userId');
+		$page = $this->presenter->getParameter('page');
+
+		$messages = $this->em->getRepository(ChatMessage::getClassName())->findChatConversation($this->user->getId(), $userId);
+
+		$messagesArray = array();
+		foreach ($messages as $message) {
+			array_unshift($messagesArray, array(
+				'from' => $message->getFrom()->getId(),
+				'message' => $message->getMessage(),
+				'date' => $message->getDatetime()->format('Y-m-d')
+			));
+		}
+
+		$this->presenter->payload->conversation = $messagesArray;
+		$this->presenter->sendPayload();
+	}
+
+	public function handleGetConversationsWithUsers()
+	{
+		$users = $this->presenter->getRequest()->getPost();
+
+		$conversations = array();
+		foreach ($users['users'] as $user) {
+			$messagesArray = array();
+			$messages = $this->em->getRepository(ChatMessage::getClassName())->findChatConversation($this->user->getId(), $user);
+
+			foreach ($messages as $message) {
+				array_unshift($messagesArray, array(
+					'from' => $message->getFrom()->getId(),
+					'message' => $message->getMessage(),
+					'date' => $message->getDatetime()->format('Y-m-d')
+				));
+			}
+
+			$conversations[$user] = $messagesArray;
+		}
+
+
+		$this->presenter->payload->conversations = $conversations;
+		$this->presenter->sendPayload();
 	}
 
 	public function handleCheckUsersInChat()
@@ -85,20 +153,14 @@ class ChatControl extends Control
 		$message = new ChatMessage();
 		$message->setFrom($this->em->getReference(\App\Model\Entities\User::getClassName(), $this->user->getId()))
 				->setTo($this->em->getReference(\App\Model\Entities\User::getClassName(), (int) $post['to']))
-				->setMessage($post['message']);
-
-
+				->setMessage($post['message'])
+				->setDatetime(new \DateTime());
 
 		$this->em->persist($message);
 		$this->em->flush();
 
 
 		$this->presenter->terminate();
-	}
-
-	public function checkForNewMessages()
-	{
-
 	}
 
 }

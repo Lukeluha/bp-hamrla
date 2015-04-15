@@ -3,26 +3,25 @@
 namespace App\Model\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Model\Entities\User;
 /**
  * Class ChatMessage
  * @package App\Model\Entities
- * @ORM\Entity()
- * @ORM\Table()
+ * @ORM\Entity(repositoryClass="\App\Model\Repositories\ChatMessages")
+ * @ORM\Table(name="chat_messages")
  */
 class ChatMessage extends BaseEntity
 {
 	/**
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
-	 * @ORM\JoinColumn(name="`from`")
+	 * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id")
 	 */
 	protected $from;
 
 	/**
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
-	 * @ORM\JoinColumn(name="`to`")
+	 * @ORM\JoinColumn(name="to_user_id", referencedColumnName="id")
 	 */
 	protected $to;
 
@@ -37,6 +36,12 @@ class ChatMessage extends BaseEntity
 	 * @ORM\Column(type="integer", name="`read`")
 	 */
 	protected $read = 0;
+
+	/**
+	 * @var \DateTime
+	 * @ORM\Column(type="datetime", name="`datetime`")
+	 */
+	protected $datetime;
 
 	/**
 	 * @return User
@@ -117,6 +122,26 @@ class ChatMessage extends BaseEntity
 		$this->read = $read;
 		return $this;
 	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getDatetime()
+	{
+		return $this->datetime;
+	}
+
+	/**
+	 * @param \DateTime $datetime
+	 * @return $this
+	 */
+	public function setDatetime($datetime)
+	{
+		$this->datetime = $datetime;
+		return $this;
+	}
+
+
 
 
 

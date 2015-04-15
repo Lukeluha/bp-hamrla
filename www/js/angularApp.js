@@ -1,36 +1,57 @@
-var app = angular.module('app', []);
+var app = angular.module('app', ['luegg.directives']);
 
-app.controller('ChatController', ['$scope', '$http', '$interval', function($scope, $http, $interval) {
+app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', function($scope, $http, $interval, $timeout) {
 
 
     $scope.userId = null;
+    $scope.userProfilePicture = '';
 
     $scope.onlineCheck = null;
-
     $scope.users = null;
-
-    $scope.checkTimeout = 1;
-
+    $scope.checkTimeout = 0;
     $scope.popups = [];
-
-
-
+    $scope.conversations = {};
+    $scope.unreadCount = {};
 
     $scope.checkUsersUrl = '';
-
     $scope.sendMessageUrl = '';
+    $scope.getConversationUrl = '';
+    $scope.checkNewMessagesUrl = '';
 
 
-    $scope.init = function(userId, checkUsersUrl, sendMessageUrl, users) {
+    $scope.init = function(userId, userProfilePicture, checkUsersUrl, sendMessageUrl, users, getConversationUrl, getAllConversationsUrl, checkNewMessagesUrl) {
         $scope.userId = userId;
+        $scope.userProfilePicture = userProfilePicture;
         $scope.checkUsersUrl = checkUsersUrl;
         $scope.sendMessageUrl = sendMessageUrl;
         $scope.users = users;
+        $scope.getConversationUrl = getConversationUrl;
+        $scope.checkNewMessagesUrl = checkNewMessagesUrl;
 
         var popups = localStorage.getItem('popups' + $scope.userId);
         if ( popups ) {
-           $scope.popups = JSON.parse(popups);
+            $scope.popups = JSON.parse(popups);
+
+            if ($scope.popups.length) {
+                var userIds = new Array;
+
+                for (var i = 0; i < $scope.popups.length; i++) {
+                    userIds.push($scope.popups[i].userId);
+                }
+
+                $http({
+                    method: 'POST',
+                    url: getAllConversationsUrl,
+                    data: $.param({users : userIds}),
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                }).success(function(data) {
+                    $scope.conversations = data.conversations;
+                })
+            }
+
         }
+
+        checkForNewMessages();
     }
 
     $scope.openPopup = function(userId) {
@@ -47,15 +68,20 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
 
         var popup = {
             "userId" : userId,
-            "status" : 1
+            "status" : 1,
+            "loading" : true
         };
 
         $scope.popups.unshift(popup);
 
-        console.log($scope.popups);
 
+        $http.get($scope.getConversationUrl, { params: {userId : userId}})
+            .success(function(data) {
+                $scope.conversations[userId] = data.conversation;
+                popup.loading = false;
+                saveToStorage();
+            });
 
-        saveToStorage();
     }
 
     $scope.closePopup = function(userId) {
@@ -83,14 +109,29 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
 
     $scope.chatKeyPress = function (event, userId) {
         if (event.which != 13) return;
-        var message = event.target.value;
+        var message = event.target.value.trim();
+        if (message.length) {
+            $http({
+                method: 'POST',
+                url: $scope.sendMessageUrl,
+                data: $.param({message: message, to: userId}),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function(){
 
-        $http({
-            method: 'POST',
-            url: $scope.sendMessageUrl,
-            data: $.param({message: message, to: userId}),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
+                var messageObject = {
+                    from: $scope.userId,
+                    message: message
+                }
+
+                $scope.conversations[userId].push(messageObject);
+                event.target.value = '';
+            }).error(function(){
+                alert('Zprávu se nepodařilo odeslat, zkuste to prosím znovu');
+            })
+        }
+
+
+
 
         event.preventDefault();
     }
@@ -98,6 +139,30 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
     function saveToStorage() {
         localStorage.setItem('popups' + $scope.userId, angular.toJson($scope.popups));
     }
+
+    /**
+     * Exponencially check for new mesages
+     */
+    function checkForNewMessages() {
+        $timeout(function() {
+            $http.get($scope.checkNewMessagesUrl)
+                .success(function(data) {
+                    if (data.newMessages && data.newMessages.length) {
+                        angular.forEach(data.newMessages, function(message) {
+                            $scope.conversations[message.from].push(message);
+                        })
+
+                        $scope.checkTimeout = 0;
+                    } else {
+                        if ($scope.checkTimeout < 5) {
+                            $scope.checkTimeout++;
+                        }
+                    }
+                    checkForNewMessages();
+                })
+        }, Math.pow(2, $scope.checkTimeout) * 1000)
+    }
+
 
     /**
      * Check for all online users
@@ -111,6 +176,9 @@ app.controller('ChatController', ['$scope', '$http', '$interval', function($scop
 
 }]);
 
+/**
+ * Source: http://stackoverflow.com/questions/14478106/angularjs-sorting-by-property
+ */
 app.filter('orderObjectBy', function() {
     return function(items, field, reverse) {
         var filtered = [];

@@ -1,0 +1,1 @@
+../../vendor/bower_components/angular-scroll-glue/src/scrollglue.js

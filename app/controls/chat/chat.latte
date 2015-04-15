@@ -1,4 +1,14 @@
-<div id="chat" ng-init="init({$user->getId()}, '{link checkUsersInChat!}', '{link sendMessage!}', {$users});">
+{var $userData = $user->getIdentity()->getData()}
+<div id="chat" ng-init="init(
+							{$user->getId()},
+							'{$userData["profilePicture"]}',
+							'{link checkUsersInChat!}',
+							'{link sendMessage!}',
+							{$users},
+							'{link getConversationWithUser!}',
+							'{link getConversationsWithUsers!}',
+							'{link checkNewMessages!}'
+						);">
 	<ul class="unstyled">
 		<img ng-src="{$basePath}/images/spinner-bubble.svg" alt="spinner" ng-show="!users"/>
 		<li ng-repeat="user in users | orderObjectBy: 'ordering'" ng-click="openPopup(user.id)" ng-class="{ 'chat-teacher' : user.role == 'teacher' }">
@@ -10,8 +20,24 @@
 </div>
 <div id="chat-popups" ng-show="popups.length">
 	<div class="chat-popup right" ng-repeat="popup in popups">
-		<div class="chat-header cursor-pointer" ng-class="{ 'minimize' : !popup.status }" ng-click="minimizeMaximizePopup(popup.userId)">{{ users[popup.userId].name }} {{ users[popup.userId].surname }} <span class="right"><i class="fi-x cursor-pointer" ng-click="closePopup(popup.userId)"></i></span></div>
-		<div ng-show="popup.status" class="chat-text"></div>
+		<div class="chat-header cursor-pointer" ng-class="{ 'minimize' : !popup.status }" ng-click="minimizeMaximizePopup(popup.userId)">
+			<span class="status" ng-class="{ 'online' : users[popup.userId].online }">&#9679;</span>
+			{{ users[popup.userId].name }} {{ users[popup.userId].surname }}
+			<span class="right"><i class="fi-x cursor-pointer" ng-click="closePopup(popup.userId)"></i></span>
+		</div>
+
+		<div ng-show="popup.status" class="chat-text" scroll-glue>
+			<img ng-src="{$basePath}/images/spinner-bubble.svg" alt="spinner" ng-show="popup.loading"/>
+			<ul ng-show="conversations[popup.userId] && conversations[popup.userId].length" class="chat-conversation">
+				<li ng-repeat="message in conversations[popup.userId]" ng-class="{ 'text-right': message.from != userId}">
+					<img class="img-circle right" ng-show="message.from != userId" ng-src="{$basePath}/images/{{ users[popup.userId].profilePicture }}" width="30" />
+					<img class="img-circle left" ng-show="message.from == userId" ng-src="{$basePath}/images/{{ userProfilePicture }}" width="30" />
+					<div class="bubble" ng-class=" message.from == userId ? 'bubble-left' : 'bubble-right'">{{ message.message }}</div>
+					<div class="clearfix"></div>
+				</li>
+			</ul>
+		</div>
+
 		<textarea ng-show="popup.status" rows="1" ng-keypress="chatKeyPress($event, popup.userId)"></textarea>
 	</div>
 </div>
