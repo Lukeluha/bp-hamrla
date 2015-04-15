@@ -48,8 +48,15 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
                     $scope.conversations = data.conversations;
                 })
             }
-
         }
+
+        var unreadCount = localStorage.getItem('unreadCount' + $scope.userId);
+        console.log(unreadCount);
+        if (unreadCount) {
+            $scope.unreadCount = JSON.parse(unreadCount);
+        }
+
+
 
         checkForNewMessages();
     }
@@ -79,7 +86,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
             .success(function(data) {
                 $scope.conversations[userId] = data.conversation;
                 popup.loading = false;
-                saveToStorage();
+                savePopupsToStorage();
             });
 
     }
@@ -93,7 +100,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
             }
         }
 
-        saveToStorage();
+        savePopupsToStorage();
     }
 
     $scope.minimizeMaximizePopup = function(userId) {
@@ -104,7 +111,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
             }
         }
 
-        saveToStorage();
+        savePopupsToStorage();
     }
 
     $scope.chatKeyPress = function (event, userId) {
@@ -136,9 +143,15 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         event.preventDefault();
     }
 
-    function saveToStorage() {
+    function savePopupsToStorage() {
         localStorage.setItem('popups' + $scope.userId, angular.toJson($scope.popups));
     }
+
+    function saveUnreadToStorage() {
+        localStorage.setItem('unreadCount' + $scope.userId, angular.toJson($scope.unreadCount));
+    }
+
+
 
     /**
      * Exponencially check for new mesages
@@ -150,7 +163,16 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
                     if (data.newMessages && data.newMessages.length) {
                         angular.forEach(data.newMessages, function(message) {
                             $scope.conversations[message.from].push(message);
+                            console.log($scope.unreadCount[message.from]);
+                            if ($scope.unreadCount[message.from] === undefined) {
+                                $scope.unreadCount[message.from] = 1;
+                            } else {
+                                $scope.unreadCount[message.from]++;
+                            }
+                            saveUnreadToStorage();
                         })
+
+
 
                         $scope.checkTimeout = 0;
                     } else {
@@ -170,7 +192,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
     $interval(function(){
         $http.get($scope.checkUsersUrl)
             .success(function(data) {
-                $scope.users = data.users;
+              //  $scope.users = data.users;
             })
     },30000);
 
@@ -192,4 +214,31 @@ app.filter('orderObjectBy', function() {
         return filtered;
     };
 });
+
+/**
+ * Source: https://github.com/sparkalow/angular-truncate
+ */
+app.filter('characters', function () {
+    return function (input, chars, breakOnWord) {
+        if (isNaN(chars)) return input;
+        if (chars <= 0) return '';
+        if (input && input.length > chars) {
+            input = input.substring(0, chars);
+
+            if (!breakOnWord) {
+                var lastspace = input.lastIndexOf(' ');
+                //get last space
+                if (lastspace !== -1) {
+                    input = input.substr(0, lastspace);
+                }
+            }else{
+                while(input.charAt(input.length-1) === ' '){
+                    input = input.substr(0, input.length -1);
+                }
+            }
+            return input + '…';
+        }
+        return input;
+    };
+})
 

@@ -59,6 +59,7 @@ class ChatControl extends Control
 				"id" => $user->getId(),
 				"name" => $user->getName(),
 				"surname" => $user->getSurname(),
+				"nameSurname" => $user->getName() . " " . $user->getSurname(),
 				"online" => $user->getOnline(),
 				"profilePicture" => $user->getProfilePicture(),
 				"ordering" => $i,

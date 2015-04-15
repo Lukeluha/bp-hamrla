@@ -9222,36 +9222,38 @@ body {
 }
 /* line 66, ../../scss/app.scss */
 #chat ul li {
+  height: 40px;
+  line-height: 40px;
   font-size: 13px !important;
-  padding: 5px;
+  padding: 0 5px;
   border-bottom: 1px solid white;
 }
-/* line 71, ../../scss/app.scss */
+/* line 74, ../../scss/app.scss */
 #chat ul .status {
   font-size: 20px;
 }
-/* line 76, ../../scss/app.scss */
+/* line 78, ../../scss/app.scss */
 #chat ul li:hover {
   background: #dedede;
 }
-/* line 81, ../../scss/app.scss */
+/* line 83, ../../scss/app.scss */
 #chat img {
-  margin-right: 10px;
+  margin-right: 2px;
 }
 
-/* line 87, ../../scss/app.scss */
+/* line 89, ../../scss/app.scss */
 .breadcrumbs {
   border-radius: 0;
   border: none;
   border-bottom: 2px solid #ECECEC;
 }
 
-/* line 93, ../../scss/app.scss */
+/* line 95, ../../scss/app.scss */
 .without-padding {
   padding: 0;
 }
 
-/* line 97, ../../scss/app.scss */
+/* line 99, ../../scss/app.scss */
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -9259,12 +9261,12 @@ body {
   max-width: initial;
 }
 
-/* line 104, ../../scss/app.scss */
+/* line 106, ../../scss/app.scss */
 ul.unstyled {
   list-style-type: none;
 }
 
-/* line 108, ../../scss/app.scss */
+/* line 110, ../../scss/app.scss */
 .img-circle {
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
@@ -9272,69 +9274,69 @@ ul.unstyled {
   border-radius: 150px;
 }
 
-/* line 113, ../../scss/app.scss */
+/* line 115, ../../scss/app.scss */
 input.form-control-error {
   margin-bottom: 0;
 }
 
-/* line 118, ../../scss/app.scss */
+/* line 120, ../../scss/app.scss */
 .alert-box.success a {
   color: #005938;
 }
 
-/* line 122, ../../scss/app.scss */
+/* line 124, ../../scss/app.scss */
 .alert-box.success a:hover {
   color: #003823;
 }
 
-/* line 127, ../../scss/app.scss */
+/* line 129, ../../scss/app.scss */
 td > .button {
   margin: 0 !important;
 }
 
-/* line 131, ../../scss/app.scss */
+/* line 133, ../../scss/app.scss */
 .alert-box {
   margin-bottom: 0;
 }
 
-/* line 135, ../../scss/app.scss */
+/* line 137, ../../scss/app.scss */
 .hide {
   display: none;
 }
 
-/* line 140, ../../scss/app.scss */
+/* line 142, ../../scss/app.scss */
 .post .post-header {
   background-color: #ECECEC;
   width: 24.5%;
   text-align: center;
 }
-/* line 145, ../../scss/app.scss */
+/* line 147, ../../scss/app.scss */
 .post .post-header i {
   line-height: 1em;
   font-size: 90px;
 }
-/* line 151, ../../scss/app.scss */
+/* line 153, ../../scss/app.scss */
 .post .post-content {
   padding: 20px;
   background-color: #BFBFBF;
 }
-/* line 155, ../../scss/app.scss */
+/* line 157, ../../scss/app.scss */
 .post .post-content .button {
   margin: 0;
 }
 
-/* line 161, ../../scss/app.scss */
+/* line 163, ../../scss/app.scss */
 hr.white {
   border: 1px solid white;
 }
 
 @media only screen {
-  /* line 166, ../../scss/app.scss */
+  /* line 168, ../../scss/app.scss */
   #main-content-wrapper {
     padding-right: 200px;
   }
 }
-/* line 171, ../../scss/app.scss */
+/* line 173, ../../scss/app.scss */
 #chat-popups {
   position: fixed;
   bottom: 0;
@@ -9342,13 +9344,13 @@ hr.white {
   padding-right: 200px;
   height: 280px;
 }
-/* line 178, ../../scss/app.scss */
+/* line 180, ../../scss/app.scss */
 #chat-popups .chat-popup {
   width: 250px;
   height: 280px;
   margin-right: 20px;
 }
-/* line 183, ../../scss/app.scss */
+/* line 185, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header {
   font-size: 12px;
   font-weight: bold;
@@ -9357,13 +9359,13 @@ hr.white {
   padding: 5px 10px;
   color: white;
 }
-/* line 192, ../../scss/app.scss */
+/* line 194, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header.minimize {
   position: fixed;
   bottom: 0;
   width: 250px;
 }
-/* line 198, ../../scss/app.scss */
+/* line 200, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-text {
   height: 220px;
   background: white;
@@ -9371,17 +9373,17 @@ hr.white {
   border-right: 1px solid lightgray;
   overflow-y: scroll;
 }
-/* line 206, ../../scss/app.scss */
+/* line 208, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation {
   list-style-type: none;
   margin: 0;
   padding: 10px;
 }
-/* line 211, ../../scss/app.scss */
+/* line 213, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation li {
   margin-bottom: 15px;
 }
-/* line 218, ../../scss/app.scss */
+/* line 220, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble {
   position: relative;
   padding: 5px;
@@ -9391,19 +9393,19 @@ hr.white {
   font-size: 12px;
   width: 190px;
 }
-/* line 228, ../../scss/app.scss */
+/* line 230, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left {
   background: #e0e0e0;
   margin-left: 5px;
   float: right;
 }
-/* line 235, ../../scss/app.scss */
+/* line 237, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right {
   margin-right: 5px;
   float: left;
   background: #DBF4FF;
 }
-/* line 241, ../../scss/app.scss */
+/* line 243, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble:after {
   content: "";
   position: absolute;
@@ -9413,24 +9415,24 @@ hr.white {
   width: 0;
   z-index: 1;
 }
-/* line 251, ../../scss/app.scss */
+/* line 253, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left:after {
   left: -7px;
   border-width: 5px 7px 5px 0;
   border-color: transparent #e0e0e0;
 }
-/* line 257, ../../scss/app.scss */
+/* line 259, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right:after {
   right: -7px;
   border-width: 5px 0 5px 7px;
   border-color: transparent #DBF4FF;
 }
-/* line 264, ../../scss/app.scss */
+/* line 266, ../../scss/app.scss */
 #chat-popups .chat-popup input {
   height: 30px;
 }
 
-/* line 272, ../../scss/app.scss */
+/* line 274, ../../scss/app.scss */
 .cursor-pointer {
   cursor: pointer;
 }

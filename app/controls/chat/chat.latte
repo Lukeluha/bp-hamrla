@@ -12,10 +12,17 @@
 	<ul class="unstyled">
 		<img ng-src="{$basePath}/images/spinner-bubble.svg" alt="spinner" ng-show="!users"/>
 		<li ng-repeat="user in users | orderObjectBy: 'ordering'" ng-click="openPopup(user.id)" ng-class="{ 'chat-teacher' : user.role == 'teacher' }">
-			<img class="img-circle" ng-src="{$basePath}/images/{{ user.profilePicture }}" width="30" />
-			<span>{{ user.name }} {{ user.surname }}</span>
+			<img class="img-circle" ng-src="{$basePath}/images/{{ user.profilePicture }}" width="25"/>
+			<span ng-show="!unreadCount[user.id]">{{ user.nameSurname | characters: 22 : true }}</span>
+
+			<span ng-show="unreadCount[user.id]">{{ user.nameSurname | characters: 16 : true }}</span>
+			<span class="label warning round" ng-show="unreadCount[user.id]">{{ unreadCount[user.id] }}</span>
+
 			<span class="right status" ng-class="{ 'online' : user.online }">&#9679;</span>
+			<div class="clearfix"></div>
 		</li>
+		<div class="clearfix"></div>
+
 	</ul>
 </div>
 <div id="chat-popups" ng-show="popups.length">
