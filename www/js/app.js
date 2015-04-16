@@ -8,6 +8,8 @@ $(document).ready(function(){
     }).on('keydown', function(){
         return false;
     })
+
+    $(".chat-text").niceScroll();
 })
 
 $(document).on('click', '.myAjax', function(e){
