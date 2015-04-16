@@ -10,6 +10,7 @@ $(document).ready(function(){
     })
 
     $(".chat-text").niceScroll();
+    $("#chat").niceScroll();
 })
 
 $(document).on('click', '.myAjax', function(e){

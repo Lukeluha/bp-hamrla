@@ -98,7 +98,10 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         }
 
 
-        setTimeout(function() { $("#message-input-" + userId).focus(); }, 1); // hack for waiting after angular rendered this input
+        setTimeout(function() {
+            $("#message-input-" + userId).focus();
+            $(".chat-text").niceScroll();
+        }, 1); // hack for waiting after angular rendered this input
 
 
         $http.get($scope.getConversationUrl, { params: {userId : userId}})
@@ -107,7 +110,6 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
                 popup.loading = false;
                 savePopupsToStorage();
             });
-
     }
 
     $scope.closePopup = function(userId) {
