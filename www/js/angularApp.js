@@ -60,11 +60,9 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         checkForNewMessages();
     }
 
-    $scope.openPopup = function(userId, pushToFront) {
-
+    $scope.openPopup = function(userId) {
         for (var i = 0; i < $scope.popups.length; i++) {
             if ($scope.popups[i].userId == userId) { // if already opened, push to front or leave it alone
-                if (!pushToFront) return;
 
                 var toFront = $scope.popups[i];
                 toFront.status = 1;
@@ -101,15 +99,19 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         setTimeout(function() {
             $("#message-input-" + userId).focus();
             $(".chat-text").niceScroll();
-        }, 1); // hack for waiting after angular rendered this input
+        }, 1); // hack for waiting after angular rendered
 
+        if ($scope.conversations[userId] === undefined) {
+            $http.get($scope.getConversationUrl, { params: {userId : userId}})
+                .success(function(data) {
+                    $scope.conversations[userId] = data.conversation;
+                    popup.loading = false;
+                    savePopupsToStorage();
+                });
+        } else {
+            popup.loading = false;
+        }
 
-        $http.get($scope.getConversationUrl, { params: {userId : userId}})
-            .success(function(data) {
-                $scope.conversations[userId] = data.conversation;
-                popup.loading = false;
-                savePopupsToStorage();
-            });
     }
 
     $scope.closePopup = function(userId) {
@@ -164,6 +166,12 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         event.preventDefault();
     }
 
+    $scope.checkEsc = function (event, userId) {
+        if (event.which == 27) {
+            $scope.closePopup(userId);
+        }
+    }
+
     $scope.clickOnPopup = function(popup) {
         if (!popup.status) return;
 
@@ -190,17 +198,29 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
      */
     function checkForNewMessages() {
         $timeout(function() {
+
             $http.get($scope.checkNewMessagesUrl)
                 .success(function(data) {
                     if (data.newMessages && data.newMessages.length) {
                         angular.forEach(data.newMessages, function(message) {
-                            $scope.conversations[message.from].push(message);
                             if ($scope.unreadCount[message.from] === undefined) {
                                 $scope.unreadCount[message.from] = 1;
                             } else {
                                 $scope.unreadCount[message.from]++;
                             }
-                            $scope.openPopup(message.from, false);
+
+                            if ($scope.popups[message.from] === undefined) { // if popup is currently not opened
+
+                                if ($scope.conversations[message.from] !== undefined) { // if popup was already once opened
+                                    $scope.conversations[message.from].push(message);
+                                }
+
+                                $scope.openPopup(message.from);
+                            } else { // if popup is opened
+                                $scope.conversations[message.from].push(message);
+                            }
+
+
                             saveUnreadToStorage();
                         })
 

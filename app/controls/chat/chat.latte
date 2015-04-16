@@ -11,7 +11,7 @@
 						);">
 	<ul class="unstyled">
 		<img ng-src="{$basePath}/images/spinner-bubble.svg" alt="spinner" ng-show="!users"/>
-		<li ng-repeat="user in users | orderObjectBy: 'ordering'" ng-click="openPopup(user.id, true)" ng-class="{ 'chat-teacher' : user.role == 'teacher' }">
+		<li ng-repeat="user in users | orderObjectBy: 'ordering'" ng-click="openPopup(user.id)" ng-class="{ 'chat-teacher' : user.role == 'teacher' }">
 			<img class="img-circle" ng-src="{$basePath}/images/{{ user.profilePicture }}" width="25"/>
 			<span ng-show="!unreadCount[user.id]">{{ user.nameSurname | characters: 22 : true }}</span>
 
@@ -46,11 +46,13 @@
 			</ul>
 		</div>
 
-		<textarea class="message-input"
+		<input type="text" class="message-input"
 		          id="message-input-{{ popup.userId }}"
 		          data-userId="{{ popup.userId }}"
 		          ng-show="popup.status"
 		          rows="1"
-		          ng-keypress="chatKeyPress($event, popup.userId)"></textarea>
+		          ng-keypress="chatKeyPress($event, popup.userId)"
+		          ng-keydown="checkEsc($event, popup.userId)"
+				/>
 	</div>
 </div>
