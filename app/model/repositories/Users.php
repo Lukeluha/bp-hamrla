@@ -20,44 +20,44 @@ class Users extends EntityRepository
 	 */
 	public function findForChat(User $user, SchoolYear $schoolYear)
 	{
-		if ($user->isInRole('admin')) {
+		if ($user->isInRole('teacher')) {
+
 			$students = $this->createQueryBuilder()->select('s')
-				->from(ClassEntity::getClassName(), 'c')
-				->join(Student::getClassName(), 's')
-				->where('c.schoolYear = ' . $schoolYear->getId())
+				->from(Student::getClassName(), 's')
+				->join('s.classes', 'c', 'WITH', 'c.schoolYear = ' . $schoolYear->getId())
+				->join('c.teachings', 'tc')
+				->join('tc.teachers', 't', 'WITH', 't.id = ' . $user->getId())
 				->addOrderBy('s.surname', 'ASC')
 				->addOrderBy('s.name', 'ASC')
 				->getQuery()->getResult();
 
 			$teachers = $this->createQueryBuilder()
-					->select('t')
-					->from(Teacher::getClassName(), 't')
-					->join('t.teachings', 'tc')
-					->join('tc.class', 'c')
-					->where('c.schoolYear = ' . $schoolYear->getId())
-					->andWhere('t.id != ' . $user->getId())
-					->addOrderBy('t.surname', 'ASC')
-					->addOrderBy('t.name', 'ASC')
-					->getQuery()->getResult();
+				->select('t')
+				->from(Teacher::getClassName(), 't')
+				->join('t.teachings', 'tc')
+				->join('tc.class', 'c', 'WITH', 'c.schoolYear = ' . $schoolYear->getId())
+				->where('t.id != ' . $user->getId())
+				->addOrderBy('t.surname', 'ASC')
+				->addOrderBy('t.name', 'ASC')
+				->getQuery()->getResult();
 
 			return array_merge($teachers, $students);
 
-		} elseif ($user->isInRole('teacher')) {
-
 		} elseif ($user->isInRole('student')) {
 			$qb = $this->createQueryBuilder();
+
+
 			$students = $qb
 						->select('s')
 						->from(Student::getClassName(), 's')
-						->join(ClassEntity::getClassName(), 'c')
+						->join('s.classes', 'c')
 						->where( // select all students from all classes in which student participate
 							$qb->expr()->in(
 								'c.id',
 								$this->createQueryBuilder()->select('c2.id')
-									->from(Student::getClassName(), 's2')
-									->join(ClassEntity::getClassName(), 'c2')
-									->where('c2.schoolYear = ' . $schoolYear->getId())
-									->andWhere('s2.id = ' . $user->getId())
+									->from(ClassEntity::getClassName(), 'c2')
+									->join('c2.students', 's2', 'WITH', 's2.id = ' . $user->getId())
+									->where("c2.schoolYear = " . $schoolYear->getId())
 									->getDQL()
 							)
 						)
@@ -68,14 +68,14 @@ class Users extends EntityRepository
 				->select('t')
 				->from(Teacher::getClassName(), 't')
 				->join('t.teachings', 'tc')
+				->join('tc.class', 'c')
 				->where( // select all teachers from all classes in which student participate
 					$qb3->expr()->in(
 						'tc.class',
 						$this->createQueryBuilder()->select('c2.id')
-							->from(Student::getClassName(), 's2')
-							->join(ClassEntity::getClassName(), 'c2')
+							->from(ClassEntity::getClassName(), 'c2')
+							->join('c2.students', 's2', 'WITH', 's2.id = ' . $user->getId())
 							->where('c2.schoolYear = ' . $schoolYear->getId())
-							->andWhere('s2.id = ' . $user->getId())
 							->getDQL()
 					)
 				)->getQuery()->getResult();

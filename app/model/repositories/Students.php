@@ -47,7 +47,7 @@ class Students extends EntityRepository
 		return $this->createQueryBuilder()
 					->select('s')
 					->from(Student::getClassName(), 's')
-					->join(ClassEntity::getClassName(), 'c')
+					->join('s.classes', 'c')
 					->where('s.name = :name AND s.surname = :surname AND c.schoolYear = ' . $schoolYear->getId() .' AND c.name = :className')
 					->setParameters(array('name' => $name, 'surname' => $surname, 'className' => $className))
 					->getQuery()->getOneOrNullResult();

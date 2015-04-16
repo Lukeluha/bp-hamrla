@@ -162,6 +162,9 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
                 $("#message-input-" + userId).focus();
             }
             $(".chat-text").niceScroll();
+            if ($scope.conversations[userId] !== undefined) {
+                $('#chat-text-' + userId).scrollTop($('#chat-text-' + userId)[0].scrollHeight);
+            }
         }, 1); // hack for waiting after angular rendered
 
         if ($scope.conversations[userId] === undefined) {

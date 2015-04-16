@@ -18,7 +18,7 @@ class Classes extends EntityRepository
 		return $this->createQueryBuilder()
 						->select('c')
 						->from(ClassEntity::getClassName(), 'c')
-						->join(SchoolYear::getClassName(), 'y')
+						->join('c.schoolYear', 'y')
 						->where("y.closed != 0 AND c.type = 'class'")
 						->addOrderBy('y.from', 'DESC')
 						->addOrderBy('c.name')

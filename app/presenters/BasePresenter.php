@@ -30,7 +30,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 	public function beforeRender()
 	{
-//		$this->template->isProduction = !Nette\Configurator::detectDebugMode();
-		$this->template->isProduction = FALSE;
+		$this->template->isProduction = !Nette\Configurator::detectDebugMode();
+//		$this->template->isProduction = FALSE;
 	}
 }
