@@ -77,15 +77,13 @@ class ChatControl extends Control
 		$messages = $this->em->getRepository(ChatMessage::getClassName())
 						->findBy(array('to' => $this->user->id, 'read' => 0), array('from' => "ASC", 'datetime' => "ASC"));
 
-
-
 		$messagesArray = array();
 		foreach ($messages as $message) {
-			array_unshift($messagesArray, array(
+			$messagesArray[] = array(
 				'from' => $message->getFrom()->getId(),
 				'message' => $message->getMessage(),
 				'date' => $message->getDatetime()->format('Y-m-d')
-			));
+			);
 			$message->setRead(true);
 		}
 

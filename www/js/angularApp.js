@@ -51,7 +51,6 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         }
 
         var unreadCount = localStorage.getItem('unreadCount' + $scope.userId);
-        console.log(unreadCount);
         if (unreadCount) {
             $scope.unreadCount = JSON.parse(unreadCount);
         }
@@ -61,13 +60,25 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         checkForNewMessages();
     }
 
-    $scope.openPopup = function(userId) {
+    $scope.openPopup = function(userId, pushToFront) {
 
         for (var i = 0; i < $scope.popups.length; i++) {
-            if ($scope.popups[i].userId == userId) { // if already opened, push to front
+            if ($scope.popups[i].userId == userId) { // if already opened, push to front or leave it alone
+                if (!pushToFront) return;
+
                 var toFront = $scope.popups[i];
+                toFront.status = 1;
+
+                if ($scope.unreadCount[toFront.userId] !== undefined) {
+                    $scope.unreadCount[toFront.userId] = 0;
+                    saveUnreadToStorage();
+                }
+
+
                 $scope.popups.splice(i, 1);
                 $scope.popups.unshift(toFront);
+
+                setTimeout(function() { $("#message-input-" + userId).focus(); }, 1);
 
                 return;
             }
@@ -80,6 +91,14 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         };
 
         $scope.popups.unshift(popup);
+
+        if ($scope.unreadCount[popup.userId] !== undefined) {
+            $scope.unreadCount[popup.userId] = 0;
+            saveUnreadToStorage();
+        }
+
+
+        setTimeout(function() { $("#message-input-" + userId).focus(); }, 1); // hack for waiting after angular rendered this input
 
 
         $http.get($scope.getConversationUrl, { params: {userId : userId}})
@@ -143,6 +162,17 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         event.preventDefault();
     }
 
+    $scope.clickOnPopup = function(popup) {
+        if (!popup.status) return;
+
+        if ($scope.unreadCount[popup.userId] !== undefined) {
+            $scope.unreadCount[popup.userId] = 0;
+            saveUnreadToStorage();
+        }
+
+        $("#message-input-" + popup.userId).focus();
+    }
+
     function savePopupsToStorage() {
         localStorage.setItem('popups' + $scope.userId, angular.toJson($scope.popups));
     }
@@ -163,12 +193,12 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
                     if (data.newMessages && data.newMessages.length) {
                         angular.forEach(data.newMessages, function(message) {
                             $scope.conversations[message.from].push(message);
-                            console.log($scope.unreadCount[message.from]);
                             if ($scope.unreadCount[message.from] === undefined) {
                                 $scope.unreadCount[message.from] = 1;
                             } else {
                                 $scope.unreadCount[message.from]++;
                             }
+                            $scope.openPopup(message.from, false);
                             saveUnreadToStorage();
                         })
 
@@ -192,7 +222,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
     $interval(function(){
         $http.get($scope.checkUsersUrl)
             .success(function(data) {
-              //  $scope.users = data.users;
+                $scope.users = data.users;
             })
     },30000);
 

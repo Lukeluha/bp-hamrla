@@ -11,7 +11,7 @@
 						);">
 	<ul class="unstyled">
 		<img ng-src="{$basePath}/images/spinner-bubble.svg" alt="spinner" ng-show="!users"/>
-		<li ng-repeat="user in users | orderObjectBy: 'ordering'" ng-click="openPopup(user.id)" ng-class="{ 'chat-teacher' : user.role == 'teacher' }">
+		<li ng-repeat="user in users | orderObjectBy: 'ordering'" ng-click="openPopup(user.id, true)" ng-class="{ 'chat-teacher' : user.role == 'teacher' }">
 			<img class="img-circle" ng-src="{$basePath}/images/{{ user.profilePicture }}" width="25"/>
 			<span ng-show="!unreadCount[user.id]">{{ user.nameSurname | characters: 22 : true }}</span>
 
@@ -26,10 +26,11 @@
 	</ul>
 </div>
 <div id="chat-popups" ng-show="popups.length">
-	<div class="chat-popup right" ng-repeat="popup in popups">
+	<div class="chat-popup right" ng-repeat="popup in popups" ng-click="clickOnPopup(popup)">
 		<div class="chat-header cursor-pointer" ng-class="{ 'minimize' : !popup.status }" ng-click="minimizeMaximizePopup(popup.userId)">
 			<span class="status" ng-class="{ 'online' : users[popup.userId].online }">&#9679;</span>
-			{{ users[popup.userId].name }} {{ users[popup.userId].surname }}
+			{{ users[popup.userId].nameSurname }}
+			<span class="label warning round" ng-show="unreadCount[popup.userId]">{{ unreadCount[popup.userId] }}</span>
 			<span class="right"><i class="fi-x cursor-pointer" ng-click="closePopup(popup.userId)"></i></span>
 		</div>
 
@@ -45,6 +46,11 @@
 			</ul>
 		</div>
 
-		<textarea ng-show="popup.status" rows="1" ng-keypress="chatKeyPress($event, popup.userId)"></textarea>
+		<textarea class="message-input"
+		          id="message-input-{{ popup.userId }}"
+		          data-userId="{{ popup.userId }}"
+		          ng-show="popup.status"
+		          rows="1"
+		          ng-keypress="chatKeyPress($event, popup.userId)"></textarea>
 	</div>
 </div>
