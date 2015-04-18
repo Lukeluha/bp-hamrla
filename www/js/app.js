@@ -102,3 +102,11 @@ function stillOnline(url) {
     $.get(url);
 }
 
+function showOrHide(id) {
+    var element = $("#" + id);
+    if (element.is(":visible")) {
+        element.hide();
+    } else {
+        element.show();
+    }
+}

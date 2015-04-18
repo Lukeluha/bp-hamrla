@@ -1,0 +1,26 @@
+{snippet}
+	{control postForm}
+	<hr class="white"/>
+
+	{if count($posts)}
+		<div class="posts">
+			{foreach $posts as $post}
+				<div class="row">
+					<div class="post column small-12">
+						<div class="post-header column small-3">
+							<img class="img-circle" src="{$basePath}/images/{$post->getUser()->getProfilePicture()}" alt="profile photo" width="100"/>
+							<p>{$post->getUser()->getName()} {$post->getUser()->getSurname()}</p>
+							<p class="left created-date no-margin">{$post->getCreated()|date: "j. n. Y H:i"}</p>
+						</div>
+						<div class="post-content column small-9">
+							<p>{$post->getText()}</p>
+							<div class="bottom">
+								{control comments-$post->id}
+							</div>
+						</div>
+					</div>
+				</div>
+			{/foreach}
+		</div>
+	{/if}
+{/snippet}

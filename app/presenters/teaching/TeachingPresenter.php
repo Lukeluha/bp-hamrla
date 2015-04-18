@@ -11,6 +11,7 @@ use App\Model\FoundationRenderer;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Multiplier;
+use App\Controls\IPostsControlFactory;
 
 /**
  * Class TeachingPresenter
@@ -22,6 +23,12 @@ class TeachingPresenter extends AuthorizedBasePresenter
 	 * @var Teaching
 	 */
 	protected $teaching;
+
+	/**
+	 * @var IPostsControlFactory
+	 * @inject
+	 */
+	public $postsControl;
 
 	public function actionDefault($teachingId)
 	{
@@ -37,85 +44,11 @@ class TeachingPresenter extends AuthorizedBasePresenter
 	{
 		$this->template->nextLesson = $this->em->getRepository(Lesson::getClassName())->findNext($this->teaching);
 		$this->template->teaching = $this->teaching;
-		if (!isset($this->template->posts)) {
-			$this->template->posts = $this->teaching->getPosts();
-		}
-
 	}
 
-	public function handleShowComments($postId)
+	public function createComponentPosts()
 	{
-		if (!isset($this->template->showComments)) {
-			$this->template->showComments = array();
-		}
-
-		$this->template->showComments[$postId] = true;
-		$this->redrawControl('comments-'.$postId);
-	}
-
-	public function createComponentPostForm()
-	{
-
-		$that = $this;
-
-		return new Multiplier(function($replyTo) use ($that){
-			$form = new Form();
-			$form->addHidden('replyTo');
-			$form->getElementPrototype()->addAttributes(array('class' => 'ajax'));
-
-			if (!$replyTo) {
-				$form->addTextArea("post", null, null, 1)
-						->setRequired('Vyplňte text příspěvku')
-						->setAttribute('placeholder', 'Napište něco...')
-						->setAttribute('class', 'no-resize autosize');
-
-			$form->addSubmit("save", "Přidat příspěvek")->setAttribute('class', 'button small');
-			} else {
-				$form->addText("post")->setAttribute('placeholder', 'Napište komentář...');
-				$form['replyTo']->setValue($replyTo);
-			}
-
-			$form->setRenderer(new FoundationRenderer());
-
-			$form->onSuccess[] = $that->savePost;
-
-			return $form;
-		});
-
-	}
-
-	public function savePost(Form $form)
-	{
-		$values = $form->getValues();
-
-		if (isset($values['replyTo']) && $values['replyTo']) {
-			$comment = new Comment();
-			$comment->setReplyTo($this->em->getReference(Post::getClassName(), $values['replyTo']))
-					->setText($values['post'])
-					->setUser($this->em->getReference(User::getClassName(), $this->user->getId()))
-					->setCreated(new \DateTime());
-
-			$this->em->persist($comment);
-			$this->em->flush();
-		} else {
-			$post = new Post();
-
-			$post->setUser($this->em->getReference(User::getClassName(), $this->user->getId()))
-				->setTeaching($this->teaching)
-				->setCreated(new \DateTime())
-				->setText($values['post']);
-
-			$this->em->persist($post);
-			$this->em->flush();
-		}
-
-
-		$this->template->posts = $this->teaching->getPosts();
-		$this->redrawControl('posts');
-
-		$form->setValues(array('post' => ""));
-
-		$this->redrawControl('postForm');
+		return $this->postsControl->create($this->user->id, $this->teaching);
 	}
 
 	/**

@@ -28,6 +28,10 @@ services:
 		class: App\Controls\ChatControl(%user%, %year%, ...)
 		implement: App\Controls\IChatControlFactory
 		parameters: [user, year]
+	postsFactory:
+		class: App\Controls\PostsControl(%userId%, %entity%, ...)
+		implement: App\Controls\IPostsControlFactory
+		parameters: [userId, entity]
 	- App\Model\Services\StudentService
 	- App\Model\Services\LessonService
 	actualityFactory:

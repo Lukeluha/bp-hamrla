@@ -29,7 +29,7 @@ class Post extends BaseEntity
 
 	/**
 	 * @var ArrayCollection
-	 * @ORM\OneToMany(targetEntity="Comment", mappedBy="replyTo")
+	 * @ORM\OneToMany(targetEntity="Comment", mappedBy="replyTo", fetch="EXTRA_LAZY")
 	 */
 	protected $replies;
 
@@ -166,5 +166,10 @@ class Post extends BaseEntity
 	{
 		$this->replies = $replies;
 		return $this;
+	}
+
+	public function getRepliesCount()
+	{
+		return $this->replies->count();
 	}
 }

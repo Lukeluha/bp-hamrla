@@ -1,0 +1,21 @@
+
+	<div>
+		{snippet}
+		<a class="right ajax" {if $post->getRepliesCount()}{if !$show}href="{link show!}"{/if} onclick="showOrHide('comments-'+{$post->getId()})"{/if}>
+			<i class="fi-comments"></i> {count($post->getReplies())}
+		</a>
+
+			<div id="comments-{$post->getId()}" {if !$show}class="hide"{/if}>
+				{if $show}
+					<hr class="white"/>
+					{foreach $post->getReplies() as $comment}
+						{$comment->getText()}
+					{/foreach}
+				{else}
+					<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+				{/if}
+			</div>
+
+			{control commentForm}
+		{/snippet}
+	</div>
