@@ -11,7 +11,13 @@ $(document).ready(function(){
 
     $(".chat-text").niceScroll();
     $("#chat").niceScroll();
+
+    autosize($('.autosize'));
+
+
 })
+
+
 
 $(document).on('click', '.myAjax', function(e){
     if ($(this).hasClass('button')) {
@@ -24,8 +30,6 @@ $(document).on('click', '.myAjax', function(e){
     $.nette.ajax({
         'url': url
     })
-
-
 
     e.preventDefault();
 
@@ -41,6 +45,8 @@ $(document).on('keyup', '.liveSearch', function(e){
 
 })
 
+
+
 var delay = (function(){
     var timer = 0;
     return function(callback, ms){
@@ -49,16 +55,17 @@ var delay = (function(){
     };
 })();
 
-function loadView(elementId, url)
-{
-    var element = $("#" + elementId);
-    if (url) {
-        element.load(url);
-    } else {
-        url = element.data('url');
-        element.load(url)
-    }
-}
+
+//function loadView(elementId, url)
+//{
+//    var element = $("#" + elementId);
+//    if (url) {
+//        element.load(url);
+//    } else {
+//        url = element.data('url');
+//        element.load(url)
+//    }
+//}
 
 function liveSearch(element)
 {

@@ -9163,50 +9163,86 @@ body {
 }
 
 /* line 12, ../../scss/app.scss */
+textarea {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+/* line 31, ../../scss/app.scss */
+.no-resize {
+  overflow: scroll;
+  resize: none;
+}
+
+/* line 36, ../../scss/app.scss */
+.no-padding {
+  padding: 0;
+}
+
+/* line 40, ../../scss/app.scss */
+.no-margin {
+  margin: 0;
+}
+
+/* line 44, ../../scss/app.scss */
 #menu {
   z-index: 100;
 }
-/* line 13, ../../scss/app.scss */
+/* line 45, ../../scss/app.scss */
 #menu .top-bar-section ul li {
   background: #4D4D4D;
 }
-/* line 21, ../../scss/app.scss */
+/* line 53, ../../scss/app.scss */
 #menu ul.vertical-center li {
   color: white;
 }
-/* line 25, ../../scss/app.scss */
+/* line 57, ../../scss/app.scss */
 #menu ul.vertical-center :hover li {
   background: #333333;
 }
-/* line 29, ../../scss/app.scss */
+/* line 61, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info {
   padding-top: 5px;
   padding-left: 5px;
 }
-/* line 33, ../../scss/app.scss */
+/* line 65, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info li:nth-child(3) {
   font-size: 11px;
   color: grey;
 }
 
-/* line 42, ../../scss/app.scss */
+/* line 74, ../../scss/app.scss */
 #chat-wrapper {
   position: absolute;
   width: 100%;
   z-index: 10;
 }
 
-/* line 48, ../../scss/app.scss */
+/* line 80, ../../scss/app.scss */
 .status {
   color: grey;
 }
 
-/* line 52, ../../scss/app.scss */
+/* line 84, ../../scss/app.scss */
 .online {
   color: green;
 }
 
-/* line 56, ../../scss/app.scss */
+/* line 88, ../../scss/app.scss */
 #chat {
   background-color: #ECECEC;
   height: calc(100vh - 55px);
@@ -9215,12 +9251,12 @@ body {
   overflow-y: scroll;
   right: 0;
 }
-/* line 63, ../../scss/app.scss */
+/* line 95, ../../scss/app.scss */
 #chat ul {
   margin-left: 0;
   cursor: pointer;
 }
-/* line 66, ../../scss/app.scss */
+/* line 98, ../../scss/app.scss */
 #chat ul li {
   height: 40px;
   line-height: 40px;
@@ -9228,32 +9264,27 @@ body {
   padding: 0 5px;
   border-bottom: 1px solid white;
 }
-/* line 74, ../../scss/app.scss */
+/* line 106, ../../scss/app.scss */
 #chat ul .status {
   font-size: 20px;
 }
-/* line 78, ../../scss/app.scss */
+/* line 110, ../../scss/app.scss */
 #chat ul li:hover {
   background: #dedede;
 }
-/* line 83, ../../scss/app.scss */
+/* line 115, ../../scss/app.scss */
 #chat img {
   margin-right: 2px;
 }
 
-/* line 89, ../../scss/app.scss */
+/* line 121, ../../scss/app.scss */
 .breadcrumbs {
   border-radius: 0;
   border: none;
   border-bottom: 2px solid #ECECEC;
 }
 
-/* line 95, ../../scss/app.scss */
-.without-padding {
-  padding: 0;
-}
-
-/* line 99, ../../scss/app.scss */
+/* line 127, ../../scss/app.scss */
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -9261,12 +9292,12 @@ body {
   max-width: initial;
 }
 
-/* line 106, ../../scss/app.scss */
+/* line 134, ../../scss/app.scss */
 ul.unstyled {
   list-style-type: none;
 }
 
-/* line 110, ../../scss/app.scss */
+/* line 138, ../../scss/app.scss */
 .img-circle {
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
@@ -9274,69 +9305,98 @@ ul.unstyled {
   border-radius: 150px;
 }
 
-/* line 115, ../../scss/app.scss */
+/* line 143, ../../scss/app.scss */
 input.form-control-error {
   margin-bottom: 0;
 }
 
-/* line 120, ../../scss/app.scss */
+/* line 148, ../../scss/app.scss */
 .alert-box.success a {
   color: #005938;
 }
 
-/* line 124, ../../scss/app.scss */
+/* line 152, ../../scss/app.scss */
 .alert-box.success a:hover {
   color: #003823;
 }
 
-/* line 129, ../../scss/app.scss */
+/* line 157, ../../scss/app.scss */
 td > .button {
   margin: 0 !important;
 }
 
-/* line 133, ../../scss/app.scss */
+/* line 161, ../../scss/app.scss */
 .alert-box {
   margin-bottom: 0;
 }
 
-/* line 137, ../../scss/app.scss */
+/* line 165, ../../scss/app.scss */
 .hide {
   display: none;
 }
 
-/* line 142, ../../scss/app.scss */
+/* line 169, ../../scss/app.scss */
+.post {
+  padding-bottom: 20px;
+}
+/* line 172, ../../scss/app.scss */
 .post .post-header {
   background-color: #ECECEC;
   width: 24.5%;
   text-align: center;
+  padding: 10px;
 }
-/* line 147, ../../scss/app.scss */
+/* line 179, ../../scss/app.scss */
 .post .post-header i {
   line-height: 1em;
   font-size: 90px;
 }
-/* line 153, ../../scss/app.scss */
+/* line 185, ../../scss/app.scss */
 .post .post-content {
   padding: 20px;
   background-color: #BFBFBF;
 }
-/* line 157, ../../scss/app.scss */
+/* line 189, ../../scss/app.scss */
 .post .post-content .button {
   margin: 0;
 }
+/* line 194, ../../scss/app.scss */
+.post .created-date {
+  font-size: 12px;
+  color: #818181;
+}
 
-/* line 163, ../../scss/app.scss */
+/* line 201, ../../scss/app.scss */
+.posts .post-content {
+  padding-bottom: 0;
+}
+/* line 206, ../../scss/app.scss */
+.posts .bottom a {
+  color: white;
+}
+/* line 209, ../../scss/app.scss */
+.posts .bottom a i {
+  font-size: 30px;
+}
+
+/* line 216, ../../scss/app.scss */
 hr.white {
   border: 1px solid white;
 }
 
 @media only screen {
-  /* line 168, ../../scss/app.scss */
+  /* line 221, ../../scss/app.scss */
   #main-content-wrapper {
     padding-right: 200px;
   }
 }
-/* line 173, ../../scss/app.scss */
+@media only screen and (max-width: 40em) {
+  /* line 227, ../../scss/app.scss */
+  #main-content-wrapper {
+    padding-right: 0;
+  }
+}
+/* line 233, ../../scss/app.scss */
 #chat-popups {
   position: fixed;
   bottom: 0;
@@ -9344,13 +9404,13 @@ hr.white {
   padding-right: 200px;
   height: 280px;
 }
-/* line 180, ../../scss/app.scss */
+/* line 240, ../../scss/app.scss */
 #chat-popups .chat-popup {
   width: 250px;
   height: 280px;
   margin-right: 20px;
 }
-/* line 185, ../../scss/app.scss */
+/* line 245, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header {
   font-size: 12px;
   font-weight: bold;
@@ -9359,13 +9419,13 @@ hr.white {
   padding: 5px 10px;
   color: white;
 }
-/* line 194, ../../scss/app.scss */
+/* line 254, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header.minimize {
   position: fixed;
   bottom: 0;
   width: 250px;
 }
-/* line 200, ../../scss/app.scss */
+/* line 260, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-text {
   height: 220px;
   background: white;
@@ -9373,17 +9433,17 @@ hr.white {
   border-right: 1px solid lightgray;
   overflow-y: scroll;
 }
-/* line 208, ../../scss/app.scss */
+/* line 268, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation {
   list-style-type: none;
   margin: 0;
   padding: 10px;
 }
-/* line 213, ../../scss/app.scss */
+/* line 273, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation li {
   margin-bottom: 15px;
 }
-/* line 220, ../../scss/app.scss */
+/* line 280, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble {
   position: relative;
   padding: 5px;
@@ -9393,19 +9453,19 @@ hr.white {
   font-size: 12px;
   width: 190px;
 }
-/* line 230, ../../scss/app.scss */
+/* line 290, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left {
   background: #e0e0e0;
   margin-left: 5px;
   float: right;
 }
-/* line 237, ../../scss/app.scss */
+/* line 297, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right {
   margin-right: 5px;
   float: left;
   background: #DBF4FF;
 }
-/* line 243, ../../scss/app.scss */
+/* line 303, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble:after {
   content: "";
   position: absolute;
@@ -9415,24 +9475,24 @@ hr.white {
   width: 0;
   z-index: 1;
 }
-/* line 253, ../../scss/app.scss */
+/* line 313, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left:after {
   left: -7px;
   border-width: 5px 7px 5px 0;
   border-color: transparent #e0e0e0;
 }
-/* line 259, ../../scss/app.scss */
+/* line 319, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right:after {
   right: -7px;
   border-width: 5px 0 5px 7px;
   border-color: transparent #DBF4FF;
 }
-/* line 266, ../../scss/app.scss */
+/* line 326, ../../scss/app.scss */
 #chat-popups .chat-popup input {
   height: 30px;
 }
 
-/* line 274, ../../scss/app.scss */
+/* line 334, ../../scss/app.scss */
 .cursor-pointer {
   cursor: pointer;
 }

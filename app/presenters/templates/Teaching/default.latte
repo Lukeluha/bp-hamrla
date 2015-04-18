@@ -24,4 +24,51 @@
 		</div>
 		<hr class="white"/>
 	{/if}
+	{snippet postForm}
+		{control postForm-0}
+		<hr class="white"/>
+	{/snippet}
+
+	{snippet posts}
+		{if count($posts)}
+			<div class="posts">
+				{foreach $posts as $post}
+					<div class="row">
+						<div class="post column small-12">
+							<div class="post-header column small-3">
+								<img class="img-circle" src="{$basePath}/images/{$post->getUser()->getProfilePicture()}" alt="profile photo" width="100"/>
+								<p>{$post->getUser()->getName()} {$post->getUser()->getSurname()}</p>
+								<p class="left created-date no-margin">{$post->getCreated()|date: "j. n. Y H:i"}</p>
+							</div>
+								<div class="post-content column small-9">
+									<p>{$post->getText()}</p>
+									<div class="bottom" ng-init="showComments{$post->getId()} = false">
+										<a class="ajax right" href="{link showComments! $post->getId()}"
+										      {if count($post->getReplies())}ng-click="showComments{$post->getId()} = !showComments{$post->getId()}"{/if}>
+											<i class="fi-comments"></i> {count($post->getReplies())}
+										</a>
+									</div>
+									<div ng-show="showComments{$post->getId()}">
+										<hr class="white"/>
+										{snippet comments-$post->id}
+										{if !isset($showComments[$post->getId()])}
+											<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+										{else}
+											{foreach $post->getReplies() as $comment}
+												fdfd
+												<br/>
+												<br/>
+											{/foreach}
+										{/if}
+										{/snippet}
+									</div>
+									{control postForm-$post->id}
+								</div>
+						</div>
+					</div>
+				{/foreach}
+			</div>
+		{/if}
+	{/snippet}
+
 {/block}

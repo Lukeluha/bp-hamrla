@@ -27,6 +27,7 @@
 			<script src="{$basePath}/js/nette.ajax.js"></script>
 			<script src="{$basePath}/js/netteForms.js"></script>
 			<script src="{$basePath}/js/jquery.nicescroll.min.js"></script>
+			<script src="{$basePath}/js/autosize.min.js"></script>
 			<script src="{$basePath}/js/angular.min.js"></script>
 			<script src="{$basePath}/js/scrollGlue.js"></script>
 
@@ -59,19 +60,19 @@
 	<a href="#" class="close">&times;</a>
 </div>
 <div class="row full-width">
-	<div class="small-12 column without-padding" id="main-content-wrapper">
+	<div class="small-12 column no-padding" id="main-content-wrapper">
 		<div n:if="$presenter->name != Login" class="hide-for-small small-12 ">
 			{control breadcrumbs}
 		</div>
 
 		{block leftMenu}
-			<div class="column small-2">
+			<div class="column small-12 large-2">
 				&nbsp;
 			</div>
 		{/block}
 
 
-		<div class="column {block contentWidth}small-10{/block}">
+		<div class="column {block contentWidth}small-12 large-10{/block}">
 			{block content}
 
 			{/block}
@@ -81,7 +82,7 @@
 
 
 	{if $presenter->name != "Login"}
-		<div class="hide-for-small column without-padding" id="chat-wrapper" ng-controller="ChatController">
+		<div class="hide-for-small column no-padding" id="chat-wrapper" ng-controller="ChatController">
 				{block chat}
 					{control chat}
 				{/block}

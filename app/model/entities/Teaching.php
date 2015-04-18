@@ -59,12 +59,20 @@ class Teaching extends BaseEntity
 	 */
 	protected $chat = self::CHAT_ALLOWED;
 
+	/**
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="Post", mappedBy="teaching")
+	 * @ORM\OrderBy(value={"created" = "desc"})
+	 */
+	protected $posts;
+
 
 	public function __construct()
 	{
 		$this->teachers = new ArrayCollection();
 		$this->teachingTimes = new ArrayCollection();
 		$this->lessons = new ArrayCollection();
+		$this->posts = new ArrayCollection();
 	}
 
 	/**
@@ -191,5 +199,25 @@ class Teaching extends BaseEntity
 		$this->lessons = $lessons;
 		return $this;
 	}
+
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getPosts()
+	{
+		return $this->posts;
+	}
+
+	/**
+	 * @param ArrayCollection $posts
+	 * @return $this
+	 */
+	public function setPosts($posts)
+	{
+		$this->posts = $posts;
+		return $this;
+	}
+
+
 
 }
