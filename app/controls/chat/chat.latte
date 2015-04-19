@@ -1,7 +1,7 @@
 {var $userData = $user->getIdentity()->getData()}
 <div id="chat" ng-init="init(
 							{$user->getId()},
-							'{$userData["profilePicture"]}',
+							'{$userData["profilePicture"]|img:30}',
 							'{link checkUsersInChat!}',
 							'{link sendMessage!}',
 							{$users},

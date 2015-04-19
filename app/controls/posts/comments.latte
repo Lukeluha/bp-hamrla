@@ -9,7 +9,7 @@
 			{foreach $post->getReplies() as $comment}
 				<div class="comment small-12 column no-padding">
 					<div class="small-2 medium-2 column text-center">
-						<img class="img-circle no-resize" src="{$basePath}/images/{$comment->getUser()->getProfilePicture()}" width="40" alt=""/><br/>
+						<img class="img-circle no-resize" src="{$basePath}/images/{$comment->getUser()->getProfilePicture()|img:40}" width="40" alt=""/><br/>
 						{$comment->getUser()->getName()} {$comment->getUser()->getSurname()}<br/>
 						<span class="created-date">{$comment->getCreated()|date: "j. n. Y H:i"}</span>
 					</div>

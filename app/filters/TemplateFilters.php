@@ -18,28 +18,27 @@ class TemplateFilters extends Object
 	 * @param $height int
 	 * @return string Path to new image with given resolution
 	 */
-	public static function image($imgPath, $width = null, $height = null)
+	public static function image($imgPath, $width = null)
 	{
 		if (!file_exists(IMG_DIR . "/" . $imgPath)) {
 			throw new InvalidArgumentException("Image doesn't exists");
 		}
 
-
-		if (!$width && !$height) {
+		if (!$width) {
 			return $imgPath;
 		}
 
 		$imgName = substr($imgPath, 0, -4);
 
 		$image = Image::fromFile(IMG_DIR . "/" . $imgPath);
-		$newResolution = Image::calculateSize($image->getWidth(), $image->getHeight(), $width, $height, Image::SHRINK_ONLY | Image::FIT);
-		$newPath = $imgName . "-w" . $newResolution[0] . "-h" . $newResolution[1] . ".jpg";
+
+		$newPath = $imgName . "-" . $width . ".jpg";
 
 		if (file_exists(IMG_DIR . $newPath)) {
 			return $newPath;
 		} else {
-			$image->resize($width, $height, Image::SHRINK_ONLY | Image::FIT);
-			$image->save(IMG_DIR . "/" . $newPath);
+			$image->resize($width, null);
+			$image->save(IMG_DIR . "/" . $newPath, 100, Image::JPEG);
 			return $newPath;
 		}
 

@@ -9,6 +9,7 @@
 namespace App\Controls;
 
 
+use App\Filter\TemplateFilters;
 use App\Model\Entities\ChatMessage;
 use App\Model\Entities\SchoolYear;
 use Nette\Application\UI\Control;
@@ -38,13 +39,12 @@ class ChatControl extends Control
 
 	public function render()
 	{
-		$template = $this->template;
-		$template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
+		$this->template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
 
-		$template->setFile(__DIR__ . '/chat.latte');
+		$this->template->setFile(__DIR__ . '/chat.latte');
 
-		$template->users = json_encode($this->getUsersForChat());
-		$template->render();
+		$this->template->users = json_encode($this->getUsersForChat());
+		$this->template->render();
 	}
 
 	protected function getUsersForChat()
@@ -60,7 +60,7 @@ class ChatControl extends Control
 				"surname" => $user->getSurname(),
 				"nameSurname" => $user->getName() . " " . $user->getSurname(),
 				"online" => $user->getOnline(),
-				"profilePicture" => $user->getProfilePicture(),
+				"profilePicture" => TemplateFilters::image($user->getProfilePicture(), 30),
 				"ordering" => $i,
 				"role" => in_array(\App\Model\Entities\User::ROLE_STUDENT, $roles) ? 'student' : 'teacher'
 			);

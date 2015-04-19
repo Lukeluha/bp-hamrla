@@ -84,6 +84,8 @@ class CommentsControl extends Control
 	public function render()
 	{
 		$this->template->setFile(__DIR__ . '/comments.latte');
+		$this->template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
+
 
 		$this->template->post = $this->post;
 		$this->template->show = $this->showComments;

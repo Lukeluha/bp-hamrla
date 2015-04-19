@@ -148,6 +148,8 @@ class PostsControl extends Control
 	public function render()
 	{
 		$this->template->setFile(__DIR__ . '/posts.latte');
+		$this->template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
+
 
 		if ($this->homepage) {
 			$this->template->posts = $this->em->getRepository(Post::getClassName())->findAllForUser($this->user, $this->fromId, $this->limit);

@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="post column small-12">
 						<div class="post-header column small-3">
-							<img class="img-circle" src="{$basePath}/images/{$post->getUser()->getProfilePicture()}" alt="profile photo" width="100"/>
+							<img class="img-circle" src="{$basePath}/images/{$post->getUser()->getProfilePicture()|img:100}" alt="profile photo" width="100"/>
 							<p>{$post->getUser()->getName()} {$post->getUser()->getSurname()}</p>
 							<p class="left created-date no-margin">{$post->getCreated()|date: "j. n. Y H:i"}</p>
 						</div>
