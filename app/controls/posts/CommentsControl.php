@@ -83,13 +83,12 @@ class CommentsControl extends Control
 
 	public function render()
 	{
-		$template = $this->createTemplate();
-		$template->setFile(__DIR__ . '/comments.latte');
+		$this->template->setFile(__DIR__ . '/comments.latte');
 
-		$template->post = $this->post;
-		$template->show = $this->showComments;
+		$this->template->post = $this->post;
+		$this->template->show = $this->showComments;
 
-		$template->render();
+		$this->template->render();
 	}
 
 }

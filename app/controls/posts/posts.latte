@@ -1,7 +1,11 @@
-{snippet}
-	{control postForm}
-	<hr class="white"/>
+{snippet form}
+	{if !isset($disableForm)}
+		{control postForm}
+		<hr class="white"/>
+	{/if}
+{/snippet}
 
+<div n:snippet="posts" data-ajax-append="true">
 	{if count($posts)}
 		<div class="posts">
 			{foreach $posts as $post}
@@ -22,5 +26,13 @@
 				</div>
 			{/foreach}
 		</div>
+	{/if}
+</div>
+
+{snippet getMore}
+	{if $fromId}
+		<a href="{link loadNext! $fromId - 1}" class="button secondary myAjax small-12">Další stránka</a>
+	{else}
+		<div class="panel text-center">Žádné další příspěvky</div>
 	{/if}
 {/snippet}

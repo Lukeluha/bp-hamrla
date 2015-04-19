@@ -20,6 +20,11 @@ use Nette\InvalidArgumentException;
  */
 class PostsControl extends Control
 {
+	/**
+	 * @var User
+	 */
+	protected $user;
+
 	protected $userId;
 
 	/**
@@ -37,19 +42,51 @@ class PostsControl extends Control
 	 */
 	protected $lesson;
 
-	public function __construct($userId, $entity, EntityManager $em)
+	/**
+	 * @var array
+	 */
+	protected $posts;
+
+	/**
+	 * Is homepage?
+	 * @var bool
+	 */
+	protected $homepage;
+
+	/* Pagination */
+
+	/**
+	 * From which id should I show
+	 * @var int|null
+	 */
+	protected $fromId = null;
+
+	/**
+	 * Limit of showed posts
+	 * @var int
+	 */
+	protected $limit = 8;
+
+
+
+	public function __construct(\Nette\Security\User $user, $entity, EntityManager $em)
 	{
 		parent::__construct();
-		$this->userId = $userId;
+		$this->user = $user;
+		$this->userId = $user->getId();
 		$this->em = $em;
 
-		if ($entity instanceof Teaching) {
-			$this->teaching = $entity;
-		} elseif ($entity instanceof Lesson) {
-			$this->lesson = $entity;
-			$this->teaching = $this->lesson->getTeaching();
+		if (!is_null($entity)) {
+			if ($entity instanceof Teaching) {
+				$this->teaching = $entity;
+			} elseif ($entity instanceof Lesson) {
+				$this->lesson = $entity;
+				$this->teaching = $this->lesson->getTeaching();
+			} else {
+				throw new InvalidArgumentException('Unknown entity');
+			}
 		} else {
-			throw new InvalidArgumentException('Unknown entity');
+			$this->homepage = true;
 		}
 	}
 
@@ -67,7 +104,6 @@ class PostsControl extends Control
 	public function createComponentPostForm()
 	{
 		$form = new Form();
-		$form->getElementPrototype()->addAttributes(array('class' => 'ajax'));
 
 		$form->addTextArea("post", null, null, 1)
 			->setRequired('Vyplňte text příspěvku')
@@ -100,50 +136,33 @@ class PostsControl extends Control
 		$this->template->posts = $this->teaching->getPosts();
 		$form->setValues(array('post' => ""));
 
+		$this->redirect('this');
+	}
+
+	public function handleLoadNext($postId)
+	{
+		$this->fromId = $postId;
 		$this->redrawControl();
 	}
 
-//	public function createComponentPostForm()
-//	{
-//		$that = $this;
-//
-//		return new Multiplier(function($replyTo) use ($that){
-//			$form = new Form();
-//			$form->addHidden('replyTo');
-//			$form->getElementPrototype()->addAttributes(array('class' => 'ajax'));
-//
-//			if (!$replyTo) {
-//				$form->addTextArea("post", null, null, 1)
-//					->setRequired('Vyplňte text příspěvku')
-//					->setAttribute('placeholder', 'Napište něco...')
-//					->setAttribute('class', 'no-resize autosize');
-//
-//				$form->addSubmit("save", "Přidat příspěvek")->setAttribute('class', 'button small');
-//			} else {
-//				$form->addText("post")->setAttribute('placeholder', 'Napište komentář...');
-//				$form['replyTo']->setValue($replyTo);
-//			}
-//
-//			$form->setRenderer(new FoundationRenderer());
-//
-//			$form->onSuccess[] = $that->savePost;
-//
-//			return $form;
-//		});
-//	}
-
 	public function render()
 	{
-		$template = $this->createTemplate();
-		$template->setFile(__DIR__ . '/posts.latte');
+		$this->template->setFile(__DIR__ . '/posts.latte');
 
-		if ($this->lesson) {
+		if ($this->homepage) {
+			$this->template->posts = $this->em->getRepository(Post::getClassName())->findAllForUser($this->user, $this->fromId, $this->limit);
+			$this->template->disableForm = true;
+		} elseif ($this->lesson) {
 
 		} else {
-			$template->posts = $this->teaching->getPosts();
+			$this->template->posts = $this->em
+								->getRepository(Post::getClassName())
+								->findAllForTeaching($this->teaching->getId(), $this->fromId, $this->limit);
 		}
 
+		$this->template->fromId = isset($this->template->posts[$this->limit-1]) ? $this->template->posts[$this->limit-1]->getId() : null;
 
-		$template->render();
+
+		$this->template->render();
 	}
 }

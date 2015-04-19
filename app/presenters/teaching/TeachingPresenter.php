@@ -42,7 +42,7 @@ class TeachingPresenter extends AuthorizedBasePresenter
 
 	public function createComponentPosts()
 	{
-		return $this->postsControl->create($this->user->id, $this->teaching);
+		return $this->postsControl->create($this->user, $this->teaching);
 	}
 
 	/**
