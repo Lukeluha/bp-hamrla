@@ -9496,3 +9496,16 @@ hr.white {
 .cursor-pointer {
   cursor: pointer;
 }
+
+/* line 338, ../../scss/app.scss */
+img.no-resize {
+  max-width: none;
+}
+
+/* line 342, ../../scss/app.scss */
+.comment {
+  background-color: #d3d3d3;
+  margin-bottom: 15px;
+  font-size: 12px !important;
+  padding: 10px;
+}

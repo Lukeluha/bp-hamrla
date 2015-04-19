@@ -1,21 +1,27 @@
+{snippet}
+<a class="right ajax" {if $post->getRepliesCount()}{if !$show}href="{link show!}"{/if} onclick="showOrHide('comments-'+{$post->getId()})"{/if}>
+	<i class="fi-comments"></i> {count($post->getReplies())}
+</a>
 
-	<div>
-		{snippet}
-		<a class="right ajax" {if $post->getRepliesCount()}{if !$show}href="{link show!}"{/if} onclick="showOrHide('comments-'+{$post->getId()})"{/if}>
-			<i class="fi-comments"></i> {count($post->getReplies())}
-		</a>
-
-			<div id="comments-{$post->getId()}" {if !$show}class="hide"{/if}>
-				{if $show}
-					<hr class="white"/>
-					{foreach $post->getReplies() as $comment}
+	<div id="comments-{$post->getId()}" {if !$show}class="hide"{/if}>
+		{if $show}
+			<hr class="white"/>
+			{foreach $post->getReplies() as $comment}
+				<div class="comment small-12 column no-padding">
+					<div class="small-2 medium-2 column text-center">
+						<img class="img-circle no-resize" src="{$basePath}/images/{$comment->getUser()->getProfilePicture()}" width="40" alt=""/><br/>
+						{$comment->getUser()->getName()} {$comment->getUser()->getSurname()}<br/>
+						<span class="created-date">{$comment->getCreated()|date: "j. n. Y H:i"}</span>
+					</div>
+					<div class="small-10 medium-10 column">
 						{$comment->getText()}
-					{/foreach}
-				{else}
-					<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
-				{/if}
-			</div>
-
-			{control commentForm}
-		{/snippet}
+					</div>
+				</div>
+			{/foreach}
+		{else}
+			<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+		{/if}
 	</div>
+
+	{control commentForm}
+{/snippet}

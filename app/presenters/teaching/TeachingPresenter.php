@@ -2,15 +2,9 @@
 
 namespace App\Presenters;
 
-use App\Model\Entities\Comment;
 use App\Model\Entities\Lesson;
-use App\Model\Entities\Post;
 use App\Model\Entities\Teaching;
-use App\Model\Entities\User;
-use App\Model\FoundationRenderer;
 use Nette\Application\BadRequestException;
-use Nette\Application\UI\Form;
-use Nette\Application\UI\Multiplier;
 use App\Controls\IPostsControlFactory;
 
 /**
