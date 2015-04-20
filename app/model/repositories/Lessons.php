@@ -23,4 +23,23 @@ class Lessons extends EntityRepository
 
 	}
 
+	public function findRank(Lesson $lesson){
+		$sql = "SELECT id, rank FROM (
+				SELECT l.*,	@rownum := @rownum + 1 AS rank
+				FROM lessons l,	(SELECT @rownum := 0) r
+				WHERE teaching_id = :teachingId
+				ORDER BY `date` ASC
+			) l
+			WHERE id = :lessonId";
+
+
+		$query = $this->getEntityManager()->getConnection()->prepare($sql);
+		$query->bindValue("lessonId", $lesson->getId());
+		$query->bindValue("teachingId", $lesson->getTeaching()->getId());
+		$query->execute();
+
+
+		return (int) $query->fetchColumn(1);
+	}
+
 }

@@ -53,6 +53,12 @@ class Post extends BaseEntity
 	 */
 	protected $created;
 
+	/**
+	 * @var boolean
+	 * @ORM\Column(type="integer")
+	 */
+	protected $anonymous;
+
 
 	public function __construct()
 	{
@@ -172,4 +178,24 @@ class Post extends BaseEntity
 	{
 		return $this->replies->count();
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getAnonymous()
+	{
+		return $this->anonymous;
+	}
+
+	/**
+	 * @param boolean $anonymous
+	 * @return $this
+	 */
+	public function setAnonymous($anonymous)
+	{
+		$this->anonymous = $anonymous;
+		return $this;
+	}
+
+
 }

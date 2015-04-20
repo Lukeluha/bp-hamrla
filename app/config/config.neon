@@ -29,9 +29,9 @@ services:
 		implement: App\Controls\IChatControlFactory
 		parameters: [user, year]
 	postsFactory:
-		class: App\Controls\PostsControl(%userId%, %entity%, ...)
+		class: App\Controls\PostsControl(%user%, %entity%, ...)
 		implement: App\Controls\IPostsControlFactory
-		parameters: [userId, entity]
+		parameters: [user, entity]
 	- App\Model\Services\StudentService
 	- App\Model\Services\LessonService
 	actualityFactory:

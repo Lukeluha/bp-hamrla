@@ -6,9 +6,9 @@ namespace App\Controls;
 interface IPostsControlFactory {
 
 	/**
-	 * @param $userId
+	 * @param $user
 	 * @param $entity
 	 * @return PostsControl
 	 */
-	function create($userId, $entity);
+	function create($user, $entity);
 }

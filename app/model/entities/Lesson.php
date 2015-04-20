@@ -40,6 +40,19 @@ class Lesson extends BaseEntity
 	protected $description;
 
 	/**
+	 * Rank of lesson in schoolYear
+	 * @var int
+	 */
+	protected $rank;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Post", mappedBy="lesson")
+ 	 * @ORM\OrderBy(value={"created" = "desc"})
+	 * @var ArrayCollection
+	 */
+	protected $posts;
+
+	/**
 	 * @return \DateTime
 	 */
 	public function getDate()
@@ -110,6 +123,25 @@ class Lesson extends BaseEntity
 		$this->description = $description;
 		return $this;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function getRank()
+	{
+		return $this->rank;
+	}
+
+	/**
+	 * @param int $rank
+	 * @return $this
+	 */
+	public function setRank($rank)
+	{
+		$this->rank = $rank;
+		return $this;
+	}
+
 
 
 

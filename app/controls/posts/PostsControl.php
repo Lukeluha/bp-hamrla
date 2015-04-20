@@ -110,6 +110,8 @@ class PostsControl extends Control
 			->setAttribute('placeholder', 'Napište něco...')
 			->setAttribute('class', 'no-resize autosize');
 
+		$form->addCheckbox('anonymous', "Anonymní příspěvek");
+
 		$form->addSubmit("save", "Přidat příspěvek")->setAttribute('class', 'button small');
 
 		$form->setRenderer(new FoundationRenderer());
@@ -125,15 +127,32 @@ class PostsControl extends Control
 
 		$post = new Post();
 
-		$post->setUser($this->em->getReference(User::getClassName(), $this->userId))
-			->setTeaching($this->teaching)
+		$post->setTeaching($this->teaching)
 			->setCreated(new \DateTime())
 			->setText($values['post']);
+
+		if ($values['anonymous']) {
+			$post->setAnonymous($values['anonymous']);
+			$post->setUser(null);
+		} else {
+			$post->setAnonymous(false);
+			$post->setUser($this->em->getReference(User::getClassName(), $this->userId));
+		}
+
+		if ($this->lesson) {
+			$post->setLesson($this->lesson);
+		}
 
 		$this->em->persist($post);
 		$this->em->flush();
 
-		$this->template->posts = $this->teaching->getPosts();
+		if ($this->lesson) {
+			$this->template->posts = $this->lesson->getPosts();
+		} else {
+			$this->template->posts = $this->teaching->getPosts();
+		}
+
+
 		$form->setValues(array('post' => ""));
 
 		$this->redirect('this');
@@ -155,7 +174,9 @@ class PostsControl extends Control
 			$this->template->posts = $this->em->getRepository(Post::getClassName())->findAllForUser($this->user, $this->fromId, $this->limit);
 			$this->template->disableForm = true;
 		} elseif ($this->lesson) {
-
+			$this->template->posts = $this->em
+				->getRepository(Post::getClassName())
+				->findAllForLesson($this->lesson->getId(), $this->fromId, $this->limit);
 		} else {
 			$this->template->posts = $this->em
 								->getRepository(Post::getClassName())
@@ -163,6 +184,7 @@ class PostsControl extends Control
 		}
 
 		$this->template->fromId = isset($this->template->posts[$this->limit-1]) ? $this->template->posts[$this->limit-1]->getId() : null;
+		$this->template->userNoPhoto = '/users/user-no-picture.jpg';
 
 
 		$this->template->render();

@@ -9509,3 +9509,9 @@ img.no-resize {
   font-size: 12px !important;
   padding: 10px;
 }
+
+/* line 350, ../../scss/app.scss */
+.switch p {
+  font-size: 12px;
+  margin-bottom: 3px;
+}

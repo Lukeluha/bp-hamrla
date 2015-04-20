@@ -11,7 +11,7 @@ class LessonService extends BaseService
 {
 	protected $translateWeekDay = array("monday", "tuesday", "wednesday", "thursday", "friday");
 
-	protected $holidays = array( '01-01', '05-01', '05-08', '07-05', '07-06', '09-28', '10-28', '11-17', '12-24', '12-25', '12-26' );
+	protected $holidays = array('01-01', '05-01', '05-08', '07-05', '07-06', '09-28', '10-28', '11-17', '12-24', '12-25', '12-26');
 
 	/**
 	 * Creates lessons by given teaching entity - checks for holidays, week parity, etc.
@@ -82,5 +82,4 @@ class LessonService extends BaseService
 
 		}
 	}
-
 }
