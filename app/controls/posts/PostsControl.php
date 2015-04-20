@@ -110,9 +110,9 @@ class PostsControl extends Control
 			->setAttribute('placeholder', 'Napište něco...')
 			->setAttribute('class', 'no-resize autosize');
 
-		$form->addCheckbox('anonymous', "Anonymní příspěvek");
+		$form->addCheckbox('anonymous', "Anonymní příspěvek")->setAttribute('class', 'switcher');
 
-		$form->addSubmit("save", "Přidat příspěvek")->setAttribute('class', 'button small');
+		$form->addSubmit("save", "Přidat příspěvek")->setAttribute('class', 'button small small-full');
 
 		$form->setRenderer(new FoundationRenderer());
 

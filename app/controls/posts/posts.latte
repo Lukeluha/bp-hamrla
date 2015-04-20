@@ -4,14 +4,13 @@
 			<div class="column small-12">
 			{form postForm}
 				<p>{input post}</p>
-					<div class="small-12 medium-6 column no-padding">{input save}</div>
-					<div class="column small-3 medium-offset-4 medium-2 small-only-text-center text-right">
-						<div class="switch small-12 tiny">
-							<p><strong>Anonymní příspěvek</strong></p>
-							{input anonymous:}
-							{label anonymous:/}
-						</div>
+				<div class="row">
+					<div class="small-12 medium-6 column">{input save}</div>
+					<div class="column small-12 medium-6 small-only-text-center text-right">
+						{label anonymous: class => strong/}
+						{input anonymous:}
 					</div>
+				</div>
 			{/form}
 			</div>
 		</div>

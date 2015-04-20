@@ -9157,12 +9157,129 @@ th.hide-for-touch {
     display: table-cell !important;
   }
 }
-/* line 8, ../../scss/app.scss */
+/* line 5, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher {
+  cursor: pointer;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+/* line 15, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher .content {
+  position: relative;
+  user-select: none;
+}
+/* line 20, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher .text {
+  display: none;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+}
+/* line 27, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.is-disabled {
+  opacity: 0.4;
+}
+
+/* line 32, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.default {
+  background-color: #fff;
+  border: 1px solid #dfdfdf;
+  border-radius: 4px;
+  line-height: 26px;
+  min-width: 80px;
+  padding: 2px;
+  transition: background-color 0.3s;
+}
+/* line 45, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.default input {
+  display: none;
+}
+/* line 49, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.default .slider {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 2px 1px #dfdfdf;
+  height: 26px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translateX(0%);
+  transition: transform 0.3s;
+  width: 50%;
+  z-index: 2;
+}
+/* line 63, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.default .text {
+  width: 50%;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+/* line 71, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.default .textYes {
+  color: #fff;
+  float: left;
+}
+/* line 76, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.default .textNo {
+  color: #9f9f9f;
+  float: right;
+}
+/* line 81, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.default.is-active {
+  background-color: #008CBA;
+}
+/* line 84, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.default.is-active .slider {
+  transform: translateX(100%);
+}
+
+/* line 90, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.short {
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+/* line 99, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.short input {
+  display: none;
+}
+/* line 103, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.short .content {
+  border: 1px solid #aaa;
+  border-radius: 50%;
+  height: 18px;
+  padding: 0;
+  width: 18px;
+}
+/* line 111, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.short .slider {
+  background-color: #519b20;
+  border-radius: 50%;
+  height: 12px;
+  margin: 3px;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.2s;
+  width: 12px;
+}
+/* line 123, ../../vendor/bower_components/jquery.switcher/switcher.scss */
+.switcher.short.is-active .slider {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* line 9, ../../scss/app.scss */
 body {
   background-color: whitesmoke;
 }
 
-/* line 12, ../../scss/app.scss */
+/* line 13, ../../scss/app.scss */
 textarea {
   display: block;
   width: 100%;
@@ -9182,67 +9299,67 @@ textarea {
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-/* line 31, ../../scss/app.scss */
+/* line 32, ../../scss/app.scss */
 .no-resize {
   overflow: scroll;
   resize: none;
 }
 
-/* line 36, ../../scss/app.scss */
+/* line 37, ../../scss/app.scss */
 .no-padding {
   padding: 0;
 }
 
-/* line 40, ../../scss/app.scss */
+/* line 41, ../../scss/app.scss */
 .no-margin {
   margin: 0;
 }
 
-/* line 44, ../../scss/app.scss */
+/* line 45, ../../scss/app.scss */
 #menu {
   z-index: 100;
 }
-/* line 45, ../../scss/app.scss */
+/* line 46, ../../scss/app.scss */
 #menu .top-bar-section ul li {
   background: #4D4D4D;
 }
-/* line 53, ../../scss/app.scss */
+/* line 54, ../../scss/app.scss */
 #menu ul.vertical-center li {
   color: white;
 }
-/* line 57, ../../scss/app.scss */
+/* line 58, ../../scss/app.scss */
 #menu ul.vertical-center :hover li {
   background: #333333;
 }
-/* line 61, ../../scss/app.scss */
+/* line 62, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info {
   padding-top: 5px;
   padding-left: 5px;
 }
-/* line 65, ../../scss/app.scss */
+/* line 66, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info li:nth-child(3) {
   font-size: 11px;
   color: grey;
 }
 
-/* line 74, ../../scss/app.scss */
+/* line 75, ../../scss/app.scss */
 #chat-wrapper {
   position: absolute;
   width: 100%;
   z-index: 10;
 }
 
-/* line 80, ../../scss/app.scss */
+/* line 81, ../../scss/app.scss */
 .status {
   color: grey;
 }
 
-/* line 84, ../../scss/app.scss */
+/* line 85, ../../scss/app.scss */
 .online {
   color: green;
 }
 
-/* line 88, ../../scss/app.scss */
+/* line 89, ../../scss/app.scss */
 #chat {
   background-color: #ECECEC;
   height: calc(100vh - 55px);
@@ -9251,12 +9368,12 @@ textarea {
   overflow-y: scroll;
   right: 0;
 }
-/* line 95, ../../scss/app.scss */
+/* line 96, ../../scss/app.scss */
 #chat ul {
   margin-left: 0;
   cursor: pointer;
 }
-/* line 98, ../../scss/app.scss */
+/* line 99, ../../scss/app.scss */
 #chat ul li {
   height: 40px;
   line-height: 40px;
@@ -9264,27 +9381,27 @@ textarea {
   padding: 0 5px;
   border-bottom: 1px solid white;
 }
-/* line 106, ../../scss/app.scss */
+/* line 107, ../../scss/app.scss */
 #chat ul .status {
   font-size: 20px;
 }
-/* line 110, ../../scss/app.scss */
+/* line 111, ../../scss/app.scss */
 #chat ul li:hover {
   background: #dedede;
 }
-/* line 115, ../../scss/app.scss */
+/* line 116, ../../scss/app.scss */
 #chat img {
   margin-right: 2px;
 }
 
-/* line 121, ../../scss/app.scss */
+/* line 122, ../../scss/app.scss */
 .breadcrumbs {
   border-radius: 0;
   border: none;
   border-bottom: 2px solid #ECECEC;
 }
 
-/* line 127, ../../scss/app.scss */
+/* line 128, ../../scss/app.scss */
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -9292,12 +9409,12 @@ textarea {
   max-width: initial;
 }
 
-/* line 134, ../../scss/app.scss */
+/* line 135, ../../scss/app.scss */
 ul.unstyled {
   list-style-type: none;
 }
 
-/* line 138, ../../scss/app.scss */
+/* line 139, ../../scss/app.scss */
 .img-circle {
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
@@ -9305,98 +9422,103 @@ ul.unstyled {
   border-radius: 150px;
 }
 
-/* line 143, ../../scss/app.scss */
+/* line 144, ../../scss/app.scss */
 input.form-control-error {
   margin-bottom: 0;
 }
 
-/* line 148, ../../scss/app.scss */
+/* line 149, ../../scss/app.scss */
 .alert-box.success a {
   color: #005938;
 }
 
-/* line 152, ../../scss/app.scss */
+/* line 153, ../../scss/app.scss */
 .alert-box.success a:hover {
   color: #003823;
 }
 
-/* line 157, ../../scss/app.scss */
+/* line 158, ../../scss/app.scss */
 td > .button {
   margin: 0 !important;
 }
 
-/* line 161, ../../scss/app.scss */
+/* line 162, ../../scss/app.scss */
 .alert-box {
   margin-bottom: 0;
 }
 
-/* line 165, ../../scss/app.scss */
+/* line 166, ../../scss/app.scss */
 .hide {
   display: none;
 }
 
-/* line 169, ../../scss/app.scss */
+/* line 170, ../../scss/app.scss */
 .post {
   padding-bottom: 20px;
 }
-/* line 172, ../../scss/app.scss */
+/* line 173, ../../scss/app.scss */
 .post .post-header {
   background-color: #ECECEC;
   width: 24.5%;
   text-align: center;
   padding: 10px;
 }
-/* line 179, ../../scss/app.scss */
+/* line 180, ../../scss/app.scss */
 .post .post-header i {
   line-height: 1em;
   font-size: 90px;
 }
-/* line 185, ../../scss/app.scss */
+/* line 186, ../../scss/app.scss */
 .post .post-content {
   padding: 20px;
   background-color: #BFBFBF;
 }
-/* line 189, ../../scss/app.scss */
+/* line 190, ../../scss/app.scss */
 .post .post-content .button {
   margin: 0;
 }
-/* line 194, ../../scss/app.scss */
+/* line 195, ../../scss/app.scss */
 .post .created-date {
   font-size: 12px;
   color: #818181;
 }
 
-/* line 201, ../../scss/app.scss */
+/* line 202, ../../scss/app.scss */
 .posts .post-content {
   padding-bottom: 0;
 }
-/* line 206, ../../scss/app.scss */
+/* line 207, ../../scss/app.scss */
 .posts .bottom a {
   color: white;
 }
-/* line 209, ../../scss/app.scss */
+/* line 210, ../../scss/app.scss */
 .posts .bottom a i {
   font-size: 30px;
 }
 
-/* line 216, ../../scss/app.scss */
+/* line 217, ../../scss/app.scss */
 hr.white {
   border: 1px solid white;
 }
 
 @media only screen {
-  /* line 221, ../../scss/app.scss */
+  /* line 222, ../../scss/app.scss */
   #main-content-wrapper {
     padding-right: 200px;
   }
 }
 @media only screen and (max-width: 40em) {
-  /* line 227, ../../scss/app.scss */
+  /* line 228, ../../scss/app.scss */
   #main-content-wrapper {
     padding-right: 0;
   }
+
+  /* line 232, ../../scss/app.scss */
+  .small-full {
+    width: 100%;
+  }
 }
-/* line 233, ../../scss/app.scss */
+/* line 238, ../../scss/app.scss */
 #chat-popups {
   position: fixed;
   bottom: 0;
@@ -9404,13 +9526,13 @@ hr.white {
   padding-right: 200px;
   height: 280px;
 }
-/* line 240, ../../scss/app.scss */
+/* line 245, ../../scss/app.scss */
 #chat-popups .chat-popup {
   width: 250px;
   height: 280px;
   margin-right: 20px;
 }
-/* line 245, ../../scss/app.scss */
+/* line 250, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header {
   font-size: 12px;
   font-weight: bold;
@@ -9419,13 +9541,13 @@ hr.white {
   padding: 5px 10px;
   color: white;
 }
-/* line 254, ../../scss/app.scss */
+/* line 259, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header.minimize {
   position: fixed;
   bottom: 0;
   width: 250px;
 }
-/* line 260, ../../scss/app.scss */
+/* line 265, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-text {
   height: 220px;
   background: white;
@@ -9433,17 +9555,17 @@ hr.white {
   border-right: 1px solid lightgray;
   overflow-y: scroll;
 }
-/* line 268, ../../scss/app.scss */
+/* line 273, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation {
   list-style-type: none;
   margin: 0;
   padding: 10px;
 }
-/* line 273, ../../scss/app.scss */
+/* line 278, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation li {
   margin-bottom: 15px;
 }
-/* line 280, ../../scss/app.scss */
+/* line 285, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble {
   position: relative;
   padding: 5px;
@@ -9453,19 +9575,19 @@ hr.white {
   font-size: 12px;
   width: 190px;
 }
-/* line 290, ../../scss/app.scss */
+/* line 295, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left {
   background: #e0e0e0;
   margin-left: 5px;
   float: right;
 }
-/* line 297, ../../scss/app.scss */
+/* line 302, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right {
   margin-right: 5px;
   float: left;
   background: #DBF4FF;
 }
-/* line 303, ../../scss/app.scss */
+/* line 308, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble:after {
   content: "";
   position: absolute;
@@ -9475,34 +9597,34 @@ hr.white {
   width: 0;
   z-index: 1;
 }
-/* line 313, ../../scss/app.scss */
+/* line 318, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left:after {
   left: -7px;
   border-width: 5px 7px 5px 0;
   border-color: transparent #e0e0e0;
 }
-/* line 319, ../../scss/app.scss */
+/* line 324, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right:after {
   right: -7px;
   border-width: 5px 0 5px 7px;
   border-color: transparent #DBF4FF;
 }
-/* line 326, ../../scss/app.scss */
+/* line 331, ../../scss/app.scss */
 #chat-popups .chat-popup input {
   height: 30px;
 }
 
-/* line 334, ../../scss/app.scss */
+/* line 339, ../../scss/app.scss */
 .cursor-pointer {
   cursor: pointer;
 }
 
-/* line 338, ../../scss/app.scss */
+/* line 343, ../../scss/app.scss */
 img.no-resize {
   max-width: none;
 }
 
-/* line 342, ../../scss/app.scss */
+/* line 347, ../../scss/app.scss */
 .comment {
   background-color: #d3d3d3;
   margin-bottom: 15px;
@@ -9510,8 +9632,13 @@ img.no-resize {
   padding: 10px;
 }
 
-/* line 350, ../../scss/app.scss */
+/* line 355, ../../scss/app.scss */
 .switch p {
   font-size: 12px;
   margin-bottom: 3px;
+}
+
+/* line 361, ../../scss/app.scss */
+.strong {
+  font-weight: bold;
 }

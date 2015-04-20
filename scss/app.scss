@@ -1,6 +1,7 @@
 @import "settings";
 @import "functions";
 @import "../vendor/bower_components/foundation/scss/foundation";
+@import "../vendor/bower_components/jquery.switcher/switcher";
 
 $chat-width: 200px;
 
@@ -227,6 +228,10 @@ hr.white {
   #main-content-wrapper {
     padding-right:0;
   }
+
+  .small-full {
+    width:100%
+  }
 }
 
 
@@ -351,4 +356,8 @@ img.no-resize {
     font-size: 12px;
     margin-bottom: 3px;
   }
+}
+
+.strong {
+  font-weight: bold;
 }

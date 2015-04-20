@@ -14,6 +14,15 @@ $(document).ready(function(){
 
     autosize($('.autosize'));
 
+    $("input.switcher").switcher({
+        language:'cs',
+        copy:{
+            cs: {
+                yes: 'ano',
+                no: 'ne'
+            }
+        }
+    });
 
 })
 
