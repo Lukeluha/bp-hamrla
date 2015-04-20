@@ -14,16 +14,7 @@ $(document).ready(function(){
 
     autosize($('.autosize'));
 
-    $("input.switcher").switcher({
-        language:'cs',
-        copy:{
-            cs: {
-                yes: 'ano',
-                no: 'ne'
-            }
-        }
-    });
-
+    var switcher = new Switchery(document.querySelector('input.switcher'), {color: '#008CBA'});
 })
 
 
