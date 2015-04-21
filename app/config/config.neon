@@ -19,25 +19,36 @@ session:
 	expiration: 14 days
 
 services:
-	- App\Forms\SignFormFactory
+	- App\Model\Services\StudentService
+	- App\Model\Services\LessonService
+
 	menuFactory:
-	    class: App\Controls\MenuControl(%user%, ...)
+	    class: App\Controls\MenuControl(%user%, %lessonId%, ...)
 	    implement: App\Controls\IMenuControlFactory
-	    parameters: [user]
+	    parameters: [user, lessonId]
+
 	chatFactory:
 		class: App\Controls\ChatControl(%user%, %year%, ...)
 		implement: App\Controls\IChatControlFactory
 		parameters: [user, year]
+
 	postsFactory:
 		class: App\Controls\PostsControl(%user%, %entity%, ...)
 		implement: App\Controls\IPostsControlFactory
 		parameters: [user, entity]
-	- App\Model\Services\StudentService
-	- App\Model\Services\LessonService
-	actualityFactory:
+
+	questionFormFactory:
+		class: App\Forms\QuestionFormFactory(%lessonId%, ...)
+		implement: App\Forms\IQuestionFormFactory
+		parameters: [lessonId]
+
+	studentFormFactory:
 		class: App\Forms\StudentForm(%id%, %currentSchoolYear%, ...)
 		implement: App\Forms\IStudentFormFactory
 		parameters: [id, currentSchoolYear]
+
+
+
 	router: App\RouterFactory::createRouter
 	authenticator: App\Model\Services\UserService
 	authorizator:

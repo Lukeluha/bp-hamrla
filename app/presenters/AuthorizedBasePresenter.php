@@ -60,7 +60,7 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	 */
 	public function createComponentMenu()
 	{
-		return $this->menuControlFactory->create($this->user->getId());
+		return $this->menuControlFactory->create($this->user->getId(), $this->getHttpRequest()->getQuery('lessonId'));
 	}
 
 	/**

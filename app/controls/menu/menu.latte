@@ -25,6 +25,7 @@
 			{if $user->isAllowed('settings')}
 				<li><a href="{plink Settings:default}">Nastavení</a></li>
 			{/if}
+			<li class="divider"></li>
 		</ul>
 
 		<ul class="right vertical-center">
@@ -54,6 +55,17 @@
 			</li>
 		</ul>
 
-
+		<ul class="right" n:if="$lessonId">
+			<li class="active">
+				<a href="#" class="button" data-reveal-id="myModal">Zadat...</a>
+			</li>
+		</ul>
 	</section>
 </nav>
+
+<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" n:if="$lessonId">
+	<h2 id="modalTitle">Awesome. I have it.</h2>
+	{control newActivity}
+
+	<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
