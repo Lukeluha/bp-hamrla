@@ -171,7 +171,6 @@ td > .button {
 
   .post-header {
     background-color: $grey;
-    width: 24.5%;
     text-align: center;
     padding: 10px;
 
@@ -221,11 +220,19 @@ hr.white {
   #main-content-wrapper {
     padding-right:$chat-width;
   }
+
+  .post-header {
+    width: 24.5%;
+  }
 }
 
 @media #{$small-only} {
   #main-content-wrapper {
     padding-right:0;
+  }
+
+  .post-header {
+    width: 100%;
   }
 
   .small-full {

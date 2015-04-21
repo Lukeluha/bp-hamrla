@@ -13,7 +13,7 @@
 			<div class="small-1 columns left">
 				<span class="prefix"><i class="fi-magnifying-glass"></i></span>
 			</div>
-			<div class="medium-11 large-8 columns left">
+			<div class="small-11 large-8 columns left">
 				<input type="text" class="liveSearch" data-url="{link searchStudent!}" data-spinner="studentSpinner"/>
 			</div>
 		</div>
@@ -24,7 +24,7 @@
 			{if !count($students)}
 				<div class="panel">Nenalezeni žádní studenti</div>
 			{else}
-				<table class="medium-12 large-9">
+				<table class="small-12 large-9">
 					<thead>
 					<tr>
 						<th>Jméno a příjmení</th>
@@ -59,7 +59,7 @@
 			<div class="small-1 columns left">
 				<span class="prefix"><i class="fi-magnifying-glass"></i></span>
 			</div>
-			<div class="medium-11 large-8 columns left">
+			<div class="small-11 large-8 columns left">
 				<input type="text" class="liveSearch" data-url="{link searchClass!}" data-spinner="classSpinner"/>
 			</div>
 		</div>
@@ -69,7 +69,7 @@
 		{if !count($classes)}
 			<div class="panel">Nenalazeny žádné třídy</div>
 		{else}
-			<table class="medium-12 large-9">
+			<table class="small-12 large-9">
 				<thead>
 				<tr>
 					<th>Název</th>
@@ -103,7 +103,7 @@
 		<a n:href="SchoolYear:default"><button class="button tiny">Přidat školní rok</button></a>
 		<div class="clearfix"></div>
 		{if $schoolYears}
-			<table class="medium-12 large-9">
+			<table class="small-12 large-9">
 				<thead>
 				<tr>
 					<th>Školní rok</th>

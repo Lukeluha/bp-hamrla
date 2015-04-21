@@ -234,6 +234,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
 
                 $scope.conversations[userId].push(messageObject);
                 event.target.value = '';
+                $scope.checkTimeout = 0;
             }).error(function(){
                 alert('Zprávu se nepodařilo odeslat, zkuste to prosím znovu');
             })
@@ -319,15 +320,12 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
 
                             saveUnreadToStorage();
                         })
-
-
-
-                        $scope.checkTimeout = 0;
-                    } else {
-                        if ($scope.checkTimeout < 5) {
-                            $scope.checkTimeout++;
-                        }
                     }
+
+                    if ($scope.checkTimeout < 5) {
+                        $scope.checkTimeout++;
+                    }
+
                     checkForNewMessages();
                 })
         }, Math.pow(2, $scope.checkTimeout) * 1000)

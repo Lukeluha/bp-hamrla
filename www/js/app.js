@@ -14,7 +14,11 @@ $(document).ready(function(){
 
     autosize($('.autosize'));
 
-    var switcher = new Switchery(document.querySelector('input.switcher'), {color: '#008CBA'});
+    var elem = document.querySelector('input.switcher');
+    if (elem !== null) {
+        var init = new Switchery(elem, {color: '#008CBA'});
+    }
+
 })
 
 

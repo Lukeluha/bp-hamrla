@@ -197,5 +197,21 @@ class Post extends BaseEntity
 		return $this;
 	}
 
+	public function getLocation()
+	{
+
+		$location = $this->teaching->getClass()->getName() . " | " . $this->teaching->getSubject()->getAbbreviation();
+
+		if ($this->lesson) {
+			if ($this->lesson->getName()) {
+				$location .= ' | ' . $this->lesson->getName();
+			} else {
+				$location .= ' | ' . $this->lesson->getRank(). ". hodina";
+			}
+		}
+
+		return $location;
+	}
+
 
 }
