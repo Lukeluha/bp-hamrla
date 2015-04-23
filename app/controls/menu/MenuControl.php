@@ -30,16 +30,22 @@ class MenuControl extends Control
 	 */
 	private $lessonId;
 
-	public function __construct($userId, $lessonId, EntityManager $em)
+	/**
+	 * @var INewActivityControlFactory
+	 */
+	private $newActivityControlFactory;
+
+	public function __construct($userId, $lessonId, EntityManager $em, INewActivityControlFactory $newActivityControlFactory)
 	{
 		$this->em = $em;
 		$this->user = $this->em->getRepository(User::getClassName())->find($userId);
 		$this->lessonId = $lessonId;
+		$this->newActivityControlFactory = $newActivityControlFactory;
 	}
 
 	public function createComponentNewActivity()
 	{
-		return new NewActivityControl($this->lessonId, $this->em);
+		return $this->newActivityControlFactory->create($this->lessonId);
 	}
 
 	public function render()

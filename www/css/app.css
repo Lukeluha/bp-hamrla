@@ -9409,8 +9409,18 @@ hr.white {
   .small-full {
     width: 100%;
   }
+
+  /* line 242, ../../scss/app.scss */
+  .reveal-modal {
+    padding: 0.1rem;
+  }
+
+  /* line 246, ../../scss/app.scss */
+  .new-activity {
+    margin-top: 50px !important;
+  }
 }
-/* line 244, ../../scss/app.scss */
+/* line 251, ../../scss/app.scss */
 #chat-popups {
   position: fixed;
   bottom: 0;
@@ -9418,13 +9428,13 @@ hr.white {
   padding-right: 200px;
   height: 280px;
 }
-/* line 251, ../../scss/app.scss */
+/* line 258, ../../scss/app.scss */
 #chat-popups .chat-popup {
   width: 250px;
   height: 280px;
   margin-right: 20px;
 }
-/* line 256, ../../scss/app.scss */
+/* line 263, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header {
   font-size: 12px;
   font-weight: bold;
@@ -9433,13 +9443,13 @@ hr.white {
   padding: 5px 10px;
   color: white;
 }
-/* line 265, ../../scss/app.scss */
+/* line 272, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header.minimize {
   position: fixed;
   bottom: 0;
   width: 250px;
 }
-/* line 271, ../../scss/app.scss */
+/* line 278, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-text {
   height: 220px;
   background: white;
@@ -9447,17 +9457,17 @@ hr.white {
   border-right: 1px solid lightgray;
   overflow-y: scroll;
 }
-/* line 279, ../../scss/app.scss */
+/* line 286, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation {
   list-style-type: none;
   margin: 0;
   padding: 10px;
 }
-/* line 284, ../../scss/app.scss */
+/* line 291, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation li {
   margin-bottom: 15px;
 }
-/* line 291, ../../scss/app.scss */
+/* line 298, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble {
   position: relative;
   padding: 5px;
@@ -9467,19 +9477,19 @@ hr.white {
   font-size: 12px;
   width: 190px;
 }
-/* line 301, ../../scss/app.scss */
+/* line 308, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left {
   background: #e0e0e0;
   margin-left: 5px;
   float: right;
 }
-/* line 308, ../../scss/app.scss */
+/* line 315, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right {
   margin-right: 5px;
   float: left;
   background: #DBF4FF;
 }
-/* line 314, ../../scss/app.scss */
+/* line 321, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble:after {
   content: "";
   position: absolute;
@@ -9489,34 +9499,34 @@ hr.white {
   width: 0;
   z-index: 1;
 }
-/* line 324, ../../scss/app.scss */
+/* line 331, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left:after {
   left: -7px;
   border-width: 5px 7px 5px 0;
   border-color: transparent #e0e0e0;
 }
-/* line 330, ../../scss/app.scss */
+/* line 337, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right:after {
   right: -7px;
   border-width: 5px 0 5px 7px;
   border-color: transparent #DBF4FF;
 }
-/* line 337, ../../scss/app.scss */
+/* line 344, ../../scss/app.scss */
 #chat-popups .chat-popup input {
   height: 30px;
 }
 
-/* line 345, ../../scss/app.scss */
+/* line 352, ../../scss/app.scss */
 .cursor-pointer {
   cursor: pointer;
 }
 
-/* line 349, ../../scss/app.scss */
+/* line 356, ../../scss/app.scss */
 img.no-resize {
   max-width: none;
 }
 
-/* line 353, ../../scss/app.scss */
+/* line 360, ../../scss/app.scss */
 .comment {
   background-color: #d3d3d3;
   margin-bottom: 15px;
@@ -9524,13 +9534,13 @@ img.no-resize {
   padding: 10px;
 }
 
-/* line 361, ../../scss/app.scss */
+/* line 368, ../../scss/app.scss */
 .switch p {
   font-size: 12px;
   margin-bottom: 3px;
 }
 
-/* line 367, ../../scss/app.scss */
+/* line 374, ../../scss/app.scss */
 .strong {
   font-weight: bold;
 }

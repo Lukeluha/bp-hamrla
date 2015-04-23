@@ -2,6 +2,7 @@ $(document).ready(function(){
     $(document).foundation();
     $.nette.init();
 
+
     $('.fdatepicker').fdatepicker({
         language: 'cz',
         format: 'd. m. yyyy'

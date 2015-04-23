@@ -23,7 +23,7 @@ class Question extends BaseEntity
 	 * @var boolean
 	 * @ORM\Column(type="integer")
 	 */
-	protected $reasonRequire;
+	protected $reasonRequire = false;
 
 	/**
 	 * @var int
@@ -39,9 +39,9 @@ class Question extends BaseEntity
 
 	/**
 	 * @var boolean
-	 * @ORM\Column()
+	 * @ORM\Column(type="integer")
 	 */
-	protected $visible;
+	protected $visible = false;
 
 	/**
 	 * @var Group
@@ -51,15 +51,9 @@ class Question extends BaseEntity
 
 	/**
 	 * @var ArrayCollection
-	 * @ORM\OneToMany(targetEntity="QuestionOption", mappedBy="question")
+	 * @ORM\OneToMany(targetEntity="QuestionOption", mappedBy="question", fetch="EXTRA_LAZY")
 	 */
 	protected $options;
-
-	/**
-	 * @var ArrayCollection
-	 * @ORM\OneToMany(targetEntity="CorrectAnswer", mappedBy="question")
-	 */
-	protected $correctAnswers;
 
 	/**
 	 * @var ArrayCollection
@@ -70,7 +64,6 @@ class Question extends BaseEntity
 	public function __construct()
 	{
 		$this->options = new ArrayCollection();
-		$this->correctAnswers = new ArrayCollection();
 		$this->answers = new ArrayCollection();
 	}
 
@@ -216,23 +209,11 @@ class Question extends BaseEntity
 		return $this;
 	}
 
-	/**
-	 * @return ArrayCollection
-	 */
-	public function getCorrectAnswers()
+	public function getOptionsCount()
 	{
-		return $this->correctAnswers;
+		return $this->options->count();
 	}
 
-	/**
-	 * @param ArrayCollection $correctAnswers
-	 * @return $this
-	 */
-	public function setCorrectAnswers($correctAnswers)
-	{
-		$this->correctAnswers = $correctAnswers;
-		return $this;
-	}
 
 	/**
 	 * @return ArrayCollection

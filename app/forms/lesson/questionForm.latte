@@ -1,0 +1,53 @@
+{snippet form}
+	{form form}
+		<div class="small-12 column">
+			<p><strong>Otázka</strong></p>
+			{label questionText/}
+			{input questionText}
+		</div>
+
+		<div class="small-12 column">
+			{label questionType/}
+			{input questionType}
+		</div>
+
+		<div class="small-12 column">
+			{label reasonRequired: /}
+			{input reasonRequired:}
+		</div>
+
+		<div class="small-12 column">
+			{label visible: /}
+			{input visible:}
+		</div>
+
+
+		<div class="small-12 column" id="choice">
+			<p><strong>Možnosti</strong></p>
+			{foreach $form['choiceOptions']->containers as $id => $option}
+				<div class="row">
+					<div class="small-9 medium-10 column no-padding">
+						{label choiceOptions-$id-optionText /} {input choiceOptions-$id-optionText}
+					</div>
+					<div class="small-3 medium-2 column">
+						{label choiceOptions-$id-correctAnswer: /} {input choiceOptions-$id-correctAnswer:}
+					</div>
+
+					{if !$iterator->isFirst()}
+						<div class="column small-12">
+							{$option['remove']->control}
+						</div>
+					{/if}
+					{if !$iterator->isLast()}
+						<hr/>
+					{/if}
+				</div>
+			{/foreach}
+			{input choiceOptions-add}
+		</div>
+		<hr/>
+		<div class="small-12 column">
+			{input save}
+		</div>
+	{/form}
+{/snippet}

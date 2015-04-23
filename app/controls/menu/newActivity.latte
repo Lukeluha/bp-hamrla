@@ -1,1 +1,28 @@
-{$lessonId}
+{form form}
+	<div>
+		{foreach $form[type]->items as $key => $label}
+			<div class="switch small small-4 column text-center">
+					<p><strong>{$label}</strong></p>
+					<input type="radio" n:name="type:$key" />
+					<label class="radio-inline" n:name="type:$key"></label>
+			</div>
+		{/foreach}
+	</div>
+{/form}
+<br/>
+<br/>
+<br/>
+
+<div id="question">
+	{control questionForm}
+</div>
+
+
+<div id="task">
+	task
+</div>
+
+<div id="exam">
+		exam
+</div>
+

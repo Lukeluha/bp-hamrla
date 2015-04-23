@@ -37,6 +37,11 @@ services:
 		implement: App\Controls\IPostsControlFactory
 		parameters: [user, entity]
 
+	newActivityFactory:
+		class: App\Controls\NewActivityControl(%lessonId%, ...)
+		implement: App\Controls\INewActivityControlFactory
+		parameters: [lessonId]
+
 	questionFormFactory:
 		class: App\Forms\QuestionFormFactory(%lessonId%, ...)
 		implement: App\Forms\IQuestionFormFactory

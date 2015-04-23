@@ -4,10 +4,13 @@ namespace App\Controls;
 
 
 
+use App\Model\Entities\SchoolYear;
+use Nette\Security\User;
+
 interface IChatControlFactory {
 	/**
-	 * @param \App\Model\Entities\User $user
-	 * @param \App\Model\Entities\SchoolYear $year
+	 * @param User $user
+	 * @param SchoolYear $year
 	 * @return ChatControl
 	 */
 	function create($user, $year);

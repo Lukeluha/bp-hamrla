@@ -238,8 +238,15 @@ hr.white {
   .small-full {
     width:100%
   }
-}
 
+  .reveal-modal {
+    padding: 0.1rem;
+  }
+
+  .new-activity {
+    margin-top:50px !important;
+  }
+}
 
 #chat-popups {
   position: fixed;

@@ -2,6 +2,7 @@
 
 namespace App\Model\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,6 +24,13 @@ class QuestionOption extends BaseEntity
 	 * @ORM\ManyToOne(targetEntity="Question", inversedBy="options")
 	 */
 	protected $question;
+
+	/**
+	 * @var bool
+	 * @ORM\Column(name="correct_answer", type="integer")
+	 */
+	protected $correct = false;
+
 
 	/**
 	 * @return string
@@ -60,5 +68,30 @@ class QuestionOption extends BaseEntity
 		return $this;
 	}
 
+	/**
+	 * @return boolean
+	 */
+	public function getCorrect()
+	{
+		return $this->correct;
+	}
+
+	/**
+	 * @param boolean $correct
+	 * @return $this
+	 */
+	public function setCorrect($correct)
+	{
+		$this->correct = $correct;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isCorrect()
+	{
+		return $this->correct;
+	}
 
 }

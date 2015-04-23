@@ -10,7 +10,13 @@
 				<p class="no-margin"><strong>{if $lesson->getName()}{$lesson->getName()}{else}{$lesson->getRank()}. hodina{/if}</strong>
 				<hr class="white no-margin"/>
 				</p>
-				<p n:if="$lesson->getDescription()">{$lesson->getDescription()}</p>
+
+				{if $lesson->getDescription()}
+					<p>{$lesson->getDescription()}</p>
+				{else}
+					<p>Žádný popis hodiny</p>
+				{/if}
+
 
 				<div class="bottom">
 				</div>
