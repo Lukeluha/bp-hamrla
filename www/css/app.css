@@ -9549,12 +9549,16 @@ img.no-resize {
 .activities {
   background-color: #ECECEC;
 }
-/* line 381, ../../scss/app.scss */
+/* line 380, ../../scss/app.scss */
+.activities p {
+  font-size: 13px;
+}
+/* line 384, ../../scss/app.scss */
 .activities ul li {
   font-size: 13px;
 }
 
-/* line 387, ../../scss/app.scss */
+/* line 390, ../../scss/app.scss */
 h3 {
   font-size: 14px;
   font-weight: bold;

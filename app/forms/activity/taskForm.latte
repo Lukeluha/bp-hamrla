@@ -1,2 +1,41 @@
 <p><strong>Úkol</strong></p>
-{control form}
+{form form}
+	<p>
+		{label taskName /}
+		{input taskName}
+	</p>
+	<p>
+		{label taskText /}
+		{input taskText class => 'wysiwyg'}
+	</p>
+
+	<p>
+		{label start /}
+		{input start}
+	</p>
+
+
+	<p>
+		{label limitType class => "left" /}&nbsp;
+		<i data-tooltip aria-haspopup="true" class="fi-info cursor-pointer"
+		   title="<strong>žádný</strong> - není žádný limit pro odevzdání<br/><strong>volný</strong> - studenti mohou odevzdávat i po limitu, v závěrečném zhodnocení budou tito studenti označeni<br /><strong>striktní</strong> - studenti nebudou moci odevzdat po uplynutí limitu"></i>
+		{input limitType}
+	</p>
+
+	<div id="taskEnd">
+		<p>
+			{label end /}
+			{input end}
+		</p>
+	</div>
+
+	<p>
+		{label studentRating: /}
+		{input studentRating:}
+	</p>
+
+	<p>
+		{input save class => "button"}
+	</p>
+{/form}
+

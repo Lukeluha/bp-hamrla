@@ -5,6 +5,7 @@ namespace App\Model\Services;
 
 use App\Model\Entities\Lesson;
 use App\Model\Entities\Question;
+use App\Model\Entities\Task;
 use App\Model\Entities\Teaching;
 use App\Model\Entities\TeachingTime;
 use Nette\Security\User;
@@ -96,10 +97,17 @@ class LessonService extends BaseService
 
 		if ($user->isInRole(\App\Model\Entities\User::ROLE_TEACHER)) {
 			$activities['questions'] = $lesson->getQuestions();
+			$activities['tasks'] = $lesson->getTasks();
 		} else { // student
 			$activities['questions'] = $this->em
 											->getRepository(Question::getClassName())
 											->findBy(array('visible' => true));
+			$activities['tasks'] = $this->em
+				->createQueryBuilder()->select('t')
+				->from(Task::getClassName(), 't')
+				->where('t.lesson = :lessonId AND t.start >= :now')
+				->setParameters(array('lessonId' => $lesson->getId(), 'now' => new \DateTime()))
+				->getQuery()->getResult();
 		}
 
 

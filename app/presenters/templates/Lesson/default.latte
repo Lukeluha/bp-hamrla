@@ -12,6 +12,15 @@
 		{/if}
 		<hr class="white"/>
 		<h3>Úkoly</h3>
+		{if !count($activities['tasks'])}
+			<p>Žádné úkoly pro tuto hodinu</p>
+		{else}
+			<ul class="unstyled no-margin">
+				{foreach $activities['tasks'] as $task}
+					<li><a href="#">{$task->getTaskName()}</a></li>
+				{/foreach}
+			</ul>
+		{/if}
 		<hr class="white"/>
 		<h3>Písemky</h3>
 	</div>
@@ -44,4 +53,21 @@
 	<hr class="white"/>
 
 	{control posts}
+{/block}
+
+{block head}
+	{include parent}
+	<script src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+				$('.wysiwyg').each( function () {
+					if(CKEDITOR.instances[this.id] === undefined)
+					{
+						CKEDITOR.replace(this.id);
+					}
+				});
+			});
+		})
+	</script>
 {/block}

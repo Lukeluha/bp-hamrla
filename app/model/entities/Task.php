@@ -194,4 +194,23 @@ class Task extends BaseEntity
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getTaskName()
+	{
+		return $this->taskName;
+	}
+
+	/**
+	 * @param string $taskName
+	 * @return $this
+	 */
+	public function setTaskName($taskName)
+	{
+		$this->taskName = $taskName;
+		return $this;
+	}
+
+
 }
