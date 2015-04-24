@@ -10,6 +10,14 @@ $(document).ready(function(){
         return false;
     })
 
+	$('.fdatetimepicker').fdatetimepicker({
+		language: 'cz',
+		format: 'd. m. yyyy hh:ii',
+		closeButton:false
+	}).on('keydown', function(){
+		return false;
+	})
+
     $(".chat-text").niceScroll();
     $("#chat").niceScroll();
 

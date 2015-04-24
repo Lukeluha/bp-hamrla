@@ -37,8 +37,8 @@ class TaskForm extends Control
 		$form = new Form();
 		$form->addText('taskName', "Název úkolu")->setRequired('Zadejte název úkolu');
 		$form->addTextArea('taskText', 'Zadání úkolu')->setRequired('Zadejte zadání úkolu');
-		$form->addText("start", "Otevření úkolu")->setAttribute('class', 'fdatepicker');
-		$form->addText("end", "Uzavření úkolu úkolu")->setAttribute('class', 'fdatepicker');
+		$form->addText("start", "Otevření úkolu")->setAttribute('class', 'fdatetimepicker');
+		$form->addText("end", "Uzavření úkolu úkolu")->setAttribute('class', 'fdatetimepicker');
 
 
 		$form->addSubmit('save', 'Uložit úkol');
