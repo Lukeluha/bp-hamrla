@@ -59,9 +59,16 @@ class Lesson extends BaseEntity
 	 */
 	protected $questions;
 
+	/**
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="Task", mappedBy="lesson")
+	 */
+	protected $tasks;
+
 	public function __construct()
 	{
 		$this->questions = new ArrayCollection();
+		$this->tasks = new ArrayCollection();
 	}
 
 	/**
@@ -151,6 +158,60 @@ class Lesson extends BaseEntity
 	public function setRank($rank)
 	{
 		$this->rank = $rank;
+		return $this;
+	}
+
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getQuestions()
+	{
+		return $this->questions;
+	}
+
+	/**
+	 * @param ArrayCollection $questions
+	 * @return $this
+	 */
+	public function setQuestions($questions)
+	{
+		$this->questions = $questions;
+		return $this;
+	}
+
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getPosts()
+	{
+		return $this->posts;
+	}
+
+	/**
+	 * @param ArrayCollection $posts
+	 * @return $this
+	 */
+	public function setPosts($posts)
+	{
+		$this->posts = $posts;
+		return $this;
+	}
+
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getTasks()
+	{
+		return $this->tasks;
+	}
+
+	/**
+	 * @param ArrayCollection $tasks
+	 * @return $this
+	 */
+	public function setTasks($tasks)
+	{
+		$this->tasks = $tasks;
 		return $this;
 	}
 

@@ -1,10 +1,28 @@
+{block leftMenu}
+	<div class="column small-12 large-2 activities">
+		<h3>Otázky</h3>
+		{if !count($activities['questions'])}
+			<p>Žádné otázky pro tuto hodinu</p>
+		{else}
+			<ul class="unstyled no-margin">
+				{foreach $activities['questions'] as $question}
+					<li><a href="#">{$question->getQuestionText()}</a></li>
+				{/foreach}
+			</ul>
+		{/if}
+		<hr class="white"/>
+		<h3>Úkoly</h3>
+		<hr class="white"/>
+		<h3>Písemky</h3>
+	</div>
+{/block}
+
 {block content}
 	<div class="row">
 		<div class="post column small-12">
 			<div class="post-header column small-3">
 				<h1 class="no-margin">{$lesson->getRank()}.</h1>
 				<p>hodina</p>
-
 			</div>
 			<div class="post-content column small-9">
 				<p class="no-margin"><strong>{if $lesson->getName()}{$lesson->getName()}{else}{$lesson->getRank()}. hodina{/if}</strong>

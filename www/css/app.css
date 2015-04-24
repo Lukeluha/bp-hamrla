@@ -9544,3 +9544,18 @@ img.no-resize {
 .strong {
   font-weight: bold;
 }
+
+/* line 378, ../../scss/app.scss */
+.activities {
+  background-color: #ECECEC;
+}
+/* line 381, ../../scss/app.scss */
+.activities ul li {
+  font-size: 13px;
+}
+
+/* line 387, ../../scss/app.scss */
+h3 {
+  font-size: 14px;
+  font-weight: bold;
+}

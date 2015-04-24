@@ -5,6 +5,7 @@ namespace App\Presenters;
 use App\Model\Entities\Lesson;
 use Nette\Application\BadRequestException;
 use App\Controls\IPostsControlFactory;
+use App\Model\Services\LessonService;
 
 class LessonPresenter extends AuthorizedBasePresenter
 {
@@ -18,6 +19,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 	 * @inject
 	 */
 	public $postFactory;
+
+	/**
+	 * @var LessonService
+	 * @inject
+	 */
+	public $lessonService;
 
 	public function actionDefault($lessonId)
 	{
@@ -41,6 +48,7 @@ class LessonPresenter extends AuthorizedBasePresenter
 	public function renderDefault()
 	{
 		$this->template->lesson = $this->lesson;
+		$this->template->activities = $this->lessonService->getActivitiesInLesson($this->lesson, $this->user);
 	}
 
 	public function createComponentPosts()

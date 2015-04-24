@@ -10,6 +10,7 @@ namespace App\Controls;
 
 
 use App\Forms\IQuestionFormFactory;
+use App\Forms\ITaskFormFactory;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
@@ -31,11 +32,20 @@ class NewActivityControl extends Control
 	 */
 	protected $questionFormFactory;
 
-	public function __construct($lessonId, EntityManager $em, IQuestionFormFactory $questionFormFactory)
+	/**
+	 * @var ITaskFormFactory
+	 */
+	protected $taskFormFactory;
+
+	public function __construct($lessonId,
+								EntityManager $em,
+								IQuestionFormFactory $questionFormFactory,
+								ITaskFormFactory $taskFormFactory)
 	{
 		$this->em = $em;
 		$this->lessonId = $lessonId;
 		$this->questionFormFactory = $questionFormFactory;
+		$this->taskFormFactory = $taskFormFactory;
 	}
 
 	public function render()
@@ -48,6 +58,11 @@ class NewActivityControl extends Control
 	public function createComponentQuestionForm()
 	{
 		return $this->questionFormFactory->create($this->lessonId);
+	}
+
+	public function createComponentTaskForm()
+	{
+		return $this->taskFormFactory->create($this->lessonId);
 	}
 
 	public function createComponentForm()

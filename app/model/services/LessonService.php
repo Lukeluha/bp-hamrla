@@ -4,8 +4,10 @@ namespace App\Model\Services;
 
 
 use App\Model\Entities\Lesson;
+use App\Model\Entities\Question;
 use App\Model\Entities\Teaching;
 use App\Model\Entities\TeachingTime;
+use Nette\Security\User;
 
 class LessonService extends BaseService
 {
@@ -81,5 +83,26 @@ class LessonService extends BaseService
 			}
 
 		}
+	}
+
+	/**
+	 * Returns activities (questions, tasks and exams) in given lesson
+	 * @param Lesson $lesson
+	 * @return array
+	 */
+	public function getActivitiesInLesson(Lesson $lesson, User $user)
+	{
+		$activities = array();
+
+		if ($user->isInRole(\App\Model\Entities\User::ROLE_TEACHER)) {
+			$activities['questions'] = $lesson->getQuestions();
+		} else { // student
+			$activities['questions'] = $this->em
+											->getRepository(Question::getClassName())
+											->findBy(array('visible' => true));
+		}
+
+
+		return $activities;
 	}
 }

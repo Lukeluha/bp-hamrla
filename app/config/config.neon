@@ -43,7 +43,7 @@ services:
 		parameters: [lessonId]
 
 	questionFormFactory:
-		class: App\Forms\QuestionFormFactory(%lessonId%, ...)
+		class: App\Forms\QuestionForm(%lessonId%, ...)
 		implement: App\Forms\IQuestionFormFactory
 		parameters: [lessonId]
 
@@ -52,7 +52,7 @@ services:
 		implement: App\Forms\IStudentFormFactory
 		parameters: [id, currentSchoolYear]
 
-
+	- App\Forms\ITaskFormFactory
 
 	router: App\RouterFactory::createRouter
 	authenticator: App\Model\Services\UserService

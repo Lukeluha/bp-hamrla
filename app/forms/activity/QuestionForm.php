@@ -17,7 +17,7 @@ use Nette\Forms\Controls\SubmitButton;
  * Class QuestionFormFactory
  * @package App\Forms
  */
-class QuestionFormFactory extends Control
+class QuestionForm extends Control
 {
 	/**
 	 * @var int
@@ -123,7 +123,8 @@ class QuestionFormFactory extends Control
 
 
 		$question->setQuestionText($values['questionText'])
-					->setVisible($values['visible']);
+					->setVisible($values['visible'])
+					->setLesson($this->em->getReference(Question::getClassName(), $this->lessonId));
 
 		if (!$question->getGroup()) {
 			$group = new Group();

@@ -35,6 +35,7 @@ class MenuControl extends Control
 	 */
 	private $newActivityControlFactory;
 
+
 	public function __construct($userId, $lessonId, EntityManager $em, INewActivityControlFactory $newActivityControlFactory)
 	{
 		$this->em = $em;
