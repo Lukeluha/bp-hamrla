@@ -43,6 +43,10 @@
 
 	{block head}{/block}
 
+	{if isset($ckeditor) && $ckeditor}
+		<script src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js"></script>
+	{/if}
+
 	{if $presenter->name != "Login"}
 		<script>
 			var url = {link stillOnline!};

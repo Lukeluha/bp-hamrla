@@ -1,5 +1,5 @@
 {block content}
-	<a href="#" class="button">Vytvořit novou hodinu</a>
+	<a href="{link editLesson $teaching->getId()}" class="button">Vytvořit novou hodinu</a>
 <ul class="accordion" data-accordion>
 	{foreach $teaching->getLessons() as $lesson}
 		{if !isset($prevWeek) || $lesson->getStartDate()->format("W") != $prevWeek->format("W")}
@@ -19,7 +19,7 @@
 			<strong>{$iterator->getCounter()}. hodina</strong> |
 			{if $lesson->getName()}{$lesson->getName()} | {/if}{$lesson->getStartDate()|date:"j. n. Y, H:i"}
 			<a href="{link Lesson:default $lesson->getId()}" class="button secondary tiny">Detail</a>
-			<a href="#" class="button tiny">Editovat</a>
+			<a href="{link editLesson $teaching->getId(), $lesson->getId()}" class="button tiny">Editovat</a>
 			<a
 					href="{link delete! $lesson->getId()}"
 					class="button alert tiny"

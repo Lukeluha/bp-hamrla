@@ -49,6 +49,7 @@ class LessonPresenter extends AuthorizedBasePresenter
 	{
 		$this->template->lesson = $this->lesson;
 		$this->template->activities = $this->lessonService->getActivitiesInLesson($this->lesson, $this->user);
+		$this->template->ckeditor = true;
 	}
 
 	public function handleSaveText()
