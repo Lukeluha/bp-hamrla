@@ -6,6 +6,7 @@ $configurator = new Nette\Configurator;
 
 //$configurator->setDebugMode('23.75.345.200'); // enable for your remote IP
 $configurator->setDebugMode('78.45.10.90'); // enable for your remote IP
+$configurator->setDebugMode('80.188.83.20'); // enable for your remote IP
 $configurator->enableDebugger(__DIR__ . '/../log');
 
 $configurator->setTempDirectory(__DIR__ . '/../temp');
