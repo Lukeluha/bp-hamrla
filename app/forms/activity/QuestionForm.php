@@ -65,6 +65,7 @@ class QuestionForm extends Control
 				->setAttribute('class', 'ajax button alert tiny')
 				->onClick[] = $removeCallback;
 			$container['remove']->onClick[] = $redrawCallback;
+//			dump($container->getParent());
 		}, 1);
 
 		$options->addSubmit('add', 'Přidat možnost')
@@ -72,6 +73,7 @@ class QuestionForm extends Control
 			->setAttribute('class', 'ajax button success tiny')
 			->setAttribute('id', 'addOption')
 			->onClick[] = $this->addElement;
+
 
 		$options['add']->onClick[] = $redrawCallback;
 

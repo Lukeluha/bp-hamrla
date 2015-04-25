@@ -194,7 +194,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         }
 
         savePopupsToStorage();
-    }
+	}
 
     /**
      * Only for minimizing/maximizing popup window
@@ -218,7 +218,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
      */
     $scope.chatKeyPress = function (event, userId) {
         if (event.which != 13) return;
-        var message = event.target.value.trim();
+		var message = event.target.value.trim();
         if (message.length) {
             $http({
                 method: 'POST',
@@ -278,8 +278,8 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
      * Save open popups and their statuses to storage
      */
     function savePopupsToStorage() {
-        localStorage.setItem('popups' + $scope.userId, angular.toJson($scope.popups));
-    }
+		localStorage.setItem('popups' + $scope.userId, angular.toJson($scope.popups));
+	}
 
     /**
      * Save unread counts to storage

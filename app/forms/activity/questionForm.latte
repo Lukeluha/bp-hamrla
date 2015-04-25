@@ -1,5 +1,5 @@
 {snippet form}
-	{form form}
+	{form form id => 'questionForm'}
 		<div class="small-12 column">
 			<p><strong>Otázka</strong></p>
 			{label questionText/}
@@ -51,3 +51,17 @@
 		</div>
 	{/form}
 {/snippet}
+
+<script type="text/javascript">
+	$("#questionForm").submit(function(e) {
+		var form = $(this);
+		var valid = false;
+		if(!valid) {
+			alert('fdf');
+			console.log(form);
+
+			e.preventDefault();
+			return false;
+		}
+	});
+</script>
