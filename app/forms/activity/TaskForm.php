@@ -63,7 +63,6 @@ class TaskForm extends Control
 	{
 		$values = $form->getValues();
 
-		dump($values);die;
 
 		if ($values['taskId']) {
 			$task = $this->em->find(Task::getClassName(), $values['taskId']);

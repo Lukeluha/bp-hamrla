@@ -73,7 +73,10 @@ class LessonService extends BaseService
 
 				$lesson = new Lesson();
 
-				$lesson->setTeaching($teaching)->setDate($startDate);
+				$lessonEnd = clone $startDate;
+				$lessonEnd->setTime($teachingTime->getTo()->format("G"), $teachingTime->getTo()->format("i"));
+
+				$lesson->setTeaching($teaching)->setStartDate($startDate)->setEndDate($lessonEnd);
 
 
 				$this->em->persist($lesson);

@@ -3,12 +3,14 @@
 namespace App\Controls;
 
 
+use Nette\Security\User;
+
 interface IPostsControlFactory {
 
 	/**
-	 * @param $user
+	 * @param User $user
 	 * @param $entity
 	 * @return PostsControl
 	 */
-	function create($user, $entity);
+	function create(User $user, $entity);
 }

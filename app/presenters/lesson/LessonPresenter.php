@@ -51,6 +51,22 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->template->activities = $this->lessonService->getActivitiesInLesson($this->lesson, $this->user);
 	}
 
+	public function handleSaveText()
+	{
+		$post = $this->getHttpRequest()->getPost();
+		$contentId = $post['contentId'];
+		if ($contentId == 'lessonName') {
+			$this->lesson->setName($post['content']);
+		} elseif ($contentId == 'lessonDescription') {
+			$this->lesson->setDescription($post['content']);
+		}
+
+		$this->em->persist($this->lesson);
+		$this->em->flush();
+
+		$this->terminate();
+	}
+
 	public function createComponentPosts()
 	{
 		return $this->postFactory->create($this->user, $this->lesson);

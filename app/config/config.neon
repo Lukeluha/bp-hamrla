@@ -22,37 +22,17 @@ services:
 	- App\Model\Services\StudentService
 	- App\Model\Services\LessonService
 
-	menuFactory:
-	    class: App\Controls\MenuControl(%user%, %lessonId%, ...)
-	    implement: App\Controls\IMenuControlFactory
-	    parameters: [user, lessonId]
+	- App\Controls\IMenuControlFactory
+	- App\Controls\IPostsControlFactory
+	- App\Controls\INewActivityControlFactory
+	- App\Forms\IQuestionFormFactory
+	- App\Forms\ITaskFormFactory
+	- App\Forms\IStudentFormFactory
 
 	chatFactory:
 		class: App\Controls\ChatControl(%user%, %year%, ...)
 		implement: App\Controls\IChatControlFactory
 		parameters: [user, year]
-
-	postsFactory:
-		class: App\Controls\PostsControl(%user%, %entity%, ...)
-		implement: App\Controls\IPostsControlFactory
-		parameters: [user, entity]
-
-	newActivityFactory:
-		class: App\Controls\NewActivityControl(%lessonId%, ...)
-		implement: App\Controls\INewActivityControlFactory
-		parameters: [lessonId]
-
-	questionFormFactory:
-		class: App\Forms\QuestionForm(%lessonId%, ...)
-		implement: App\Forms\IQuestionFormFactory
-		parameters: [lessonId]
-
-	studentFormFactory:
-		class: App\Forms\StudentForm(%id%, %currentSchoolYear%, ...)
-		implement: App\Forms\IStudentFormFactory
-		parameters: [id, currentSchoolYear]
-
-	- App\Forms\ITaskFormFactory
 
 	router: App\RouterFactory::createRouter
 	authenticator: App\Model\Services\UserService

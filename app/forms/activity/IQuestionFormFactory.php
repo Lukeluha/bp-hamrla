@@ -8,7 +8,7 @@ interface IQuestionFormFactory
 {
 	/**
 	 * @param $lessonId
-	 * @return QuestionFormFactory
+	 * @return QuestionForm
 	 */
 	function create($lessonId);
 }

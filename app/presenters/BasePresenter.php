@@ -2,7 +2,6 @@
 
 namespace App\Presenters;
 
-use App\Filter\TemplateFilters;
 use Kdyby\Doctrine\EntityManager;
 use Nette,
 	App\Model;

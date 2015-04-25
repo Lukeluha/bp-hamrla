@@ -3,10 +3,15 @@
 namespace App\Forms;
 
 
+use App\Model\Entities\SchoolYear;
+
 interface IStudentFormFactory {
+
 	/**
+	 * @param $studentId
+	 * @param SchoolYear $schoolYear
 	 * @return StudentForm
 	 */
-	function create($studentId, $schoolYear);
+	function create($studentId, SchoolYear $schoolYear);
 
 }

@@ -28,6 +28,9 @@ class ChatControl extends Control
 	 */
 	private $user;
 
+	/**
+	 * @var SchoolYear
+	 */
 	private $actualYear;
 
 	public function __construct(User $user, SchoolYear $actualYear, EntityManager $em)

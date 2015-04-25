@@ -9563,3 +9563,13 @@ h3 {
   font-size: 14px;
   font-weight: bold;
 }
+
+/* line 396, ../../scss/app.scss */
+#lessonName p {
+  margin: 0;
+}
+
+/* line 401, ../../scss/app.scss */
+#lessonDescription {
+  margin-top: 10px;
+}

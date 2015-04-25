@@ -16,8 +16,8 @@ class Lessons extends EntityRepository
 						->select('l')
 						->from(Lesson::getClassName(), 'l')
 						->where('l.teaching = ' . $teaching->getId())
-						->andWhere("l.date >= '" . $now->format("Y-m-d") . "'")
-						->addOrderBy("l.date", "ASC")
+						->andWhere("l.startDate >= '" . $now->format("Y-m-d") . "'")
+						->addOrderBy("l.startDate", "ASC")
 						->setMaxResults(1)
 						->getQuery()->getOneOrNullResult();
 
@@ -28,7 +28,7 @@ class Lessons extends EntityRepository
 				SELECT l.*,	@rownum := @rownum + 1 AS rank
 				FROM lessons l,	(SELECT @rownum := 0) r
 				WHERE teaching_id = :teachingId
-				ORDER BY `date` ASC
+				ORDER BY `start_date` ASC
 			) l
 			WHERE id = :lessonId";
 

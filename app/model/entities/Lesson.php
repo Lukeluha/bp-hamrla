@@ -15,9 +15,15 @@ class Lesson extends BaseEntity
 {
 	/**
 	 * @var \DateTime
-	 * @ORM\Column(type="datetime", name="`date`")
+	 * @ORM\Column(type="datetime")
 	 */
-	protected $date;
+	protected $startDate;
+
+	/**
+	 * @var \DateTime
+	 * @ORM\Column(type="datetime")
+	 */
+	protected $endDate;
 
 	/**
 	 * @var Teaching
@@ -74,20 +80,40 @@ class Lesson extends BaseEntity
 	/**
 	 * @return \DateTime
 	 */
-	public function getDate()
+	public function getStartDate()
 	{
-		return $this->date;
+		return $this->startDate;
 	}
 
 	/**
-	 * @param \DateTime $date
+	 * @param \DateTime $startDate
 	 * @return $this
 	 */
-	public function setDate($date)
+	public function setStartDate($startDate)
 	{
-		$this->date = $date;
+		$this->startDate = $startDate;
 		return $this;
 	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getEndDate()
+	{
+		return $this->endDate;
+	}
+
+	/**
+	 * @param \DateTime $endDate
+	 * @return $this
+	 */
+	public function setEndDate($endDate)
+	{
+		$this->endDate = $endDate;
+		return $this;
+	}
+
+
 
 	/**
 	 * @return Teaching

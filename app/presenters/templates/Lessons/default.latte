@@ -1,0 +1,43 @@
+{block content}
+	<a href="#" class="button">Vytvořit novou hodinu</a>
+<ul class="accordion" data-accordion>
+	{foreach $teaching->getLessons() as $lesson}
+		{if !isset($prevWeek) || $lesson->getStartDate()->format("W") != $prevWeek->format("W")}
+			{var $prevWeek = $lesson->getStartDate()|date:'W'}
+			{if !$iterator->isFirst()}</div></li>{/if}
+			<li class="accordion-navigation">
+				<a href="#week-{$iterator->getCounter()}">{$lesson->getStartDate()|date:'W'}. týden {if $lesson->getStartDate()->format('W') == $todayWeek}<span class="label">aktuální týden</span>{/if} </a>
+				<div
+						id="week-{$iterator->getCounter()}"
+						{if $lesson->getStartDate()->format('W') == $todayWeek}
+							class="content active"
+						{else}
+							class="content"
+						{/if}>
+		{/if}
+		<p class="no-padding no-margin">
+			<strong>{$iterator->getCounter()}. hodina</strong> |
+			{if $lesson->getName()}{$lesson->getName()} | {/if}{$lesson->getStartDate()|date:"j. n. Y, H:i"}
+			<a href="{link Lesson:default $lesson->getId()}" class="button secondary tiny">Detail</a>
+			<a href="#" class="button tiny">Editovat</a>
+			<a
+					href="{link delete! $lesson->getId()}"
+					class="button alert tiny"
+					onclick="return confirm('Opravdu chcete vymazat tuto hodinu? Vymažou se veškerá data!)">
+				Smazat
+			</a>
+		</p>
+	{/foreach}
+</ul>
+{/block}
+
+{block head}
+	{include parent}
+	<script>
+		$(document).ready(function() {
+			$('html, body').animate({
+				scrollTop: $(".active").parent('li').offset().top
+			}, 500);
+		})
+	</script>
+{/block}

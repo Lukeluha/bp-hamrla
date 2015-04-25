@@ -34,16 +34,15 @@
 				<p>hodina</p>
 			</div>
 			<div class="post-content column small-9">
-				<p class="no-margin"><strong>{if $lesson->getName()}{$lesson->getName()}{else}{$lesson->getRank()}. hodina{/if}</strong>
+				<div id="lessonName" {if $user->isInRole('teacher')}contenteditable="true"{/if}><p class="no-margin"><strong>{if $lesson->getName()}{$lesson->getName()}{else}{$lesson->getRank()}. hodina{/if}</strong></p></div>
 				<hr class="white no-margin"/>
-				</p>
-
+				<div id="lessonDescription" {if $user->isInRole('teacher')}contenteditable="true"{/if}>
 				{if $lesson->getDescription()}
-					<p>{$lesson->getDescription()}</p>
+					{!$lesson->getDescription()}
 				{else}
 					<p>Žádný popis hodiny</p>
 				{/if}
-
+				</div>
 
 				<div class="bottom">
 				</div>
@@ -57,17 +56,58 @@
 
 {block head}
 	{include parent}
-	<script src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
-				$('.wysiwyg').each( function () {
-					if(CKEDITOR.instances[this.id] === undefined)
-					{
-						CKEDITOR.replace(this.id);
-					}
+	{if $user->isInRole('teacher')}
+		<script src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+					$('.wysiwyg').each( function () {
+						if(CKEDITOR.instances[this.id] === undefined)
+						{
+							CKEDITOR.replace(this.id);
+						}
+					});
 				});
-			});
-		})
-	</script>
+
+
+				CKEDITOR.disableAutoInline = true;
+
+				var url = {link saveText!};
+
+				var content_id = 'lessonDescription';
+				var prevDataDescription = '';
+
+				CKEDITOR.inline( content_id, {
+					on: {
+						blur: function( event ) {
+							var data = event.editor.getData();
+							if (data != prevDataDescription) {
+								$.post(url, { content: data, contentId: content_id}).error(function() {
+									alert('Nepodařilo se uložit popisek hodiny');
+								});
+							}
+						},
+						focus: function(event) {
+							prevDataDescription = event.editor.getData();
+						}
+					}
+				} );
+
+				var prevDataName = '';
+				$("#lessonName").on('focus', function() {
+					prevDataName = $(this).text();
+				})
+
+				$("#lessonName").on('blur', function() {
+					var data = $(this).text();
+					if (data != prevDataName) {
+						$.post(url, { content: $(this).text(), contentId: 'lessonName'}).error(function() {
+							alert('Nepodařilo se uložit název hodiny');
+						});
+					}
+				})
+
+			})
+		</script>
+	{/if}
 {/block}

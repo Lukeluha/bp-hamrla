@@ -10,13 +10,13 @@
 				<div class="post-content column small-9">
 					<p>Příští hodina {if $teaching->getClass()->isGroup()}skupiny{else}třídy{/if}
 						{$teaching->getClass()->getName()} v předmětu {$teaching->getSubject()->getName()}
-						začíná v {$daysInWeek[$nextLesson->getDate()->format('N')]|substr:0,2} {$nextLesson->getDate()|date:"j. n. Y v H:i"}.
+						začíná v {$daysInWeek[$nextLesson->getStartDate()->format('N')]|substr:0,2} {$nextLesson->getStartDate()|date:"j. n. Y v H:i"}.
 					</p>
 
 					<p n:if="$nextLesson->getName()">Hodina se jmenuje {$nextLesson->getName()}</p>
 
 					<div class="bottom">
-						<a class="left button secondary tiny" href="#">Zobrazit seznam všech hodin</a>
+						<a class="left button secondary tiny" href="{link Lessons:default $teaching->getId()}">Zobrazit seznam všech hodin</a>
 						<a class="right button secondary tiny" href="{link Lesson:default $nextLesson->getId()}">Přejít na detail hodiny</a>
 					</div>
 				</div>
