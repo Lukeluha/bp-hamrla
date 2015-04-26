@@ -55,7 +55,7 @@
 			</li>
 		</ul>
 
-		<ul class="right" n:if="$lessonId">
+		<ul class="right" n:if="$lessonId && $user->isInRole('teacher')">
 			<li class="active">
 				<a href="#" class="button" data-reveal-id="newActivity">Zadat...</a>
 			</li>

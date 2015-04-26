@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use App\Model\Entities\Lesson;
+use App\Model\Entities\Question;
 use Nette\Application\BadRequestException;
 use App\Controls\IPostsControlFactory;
 use App\Model\Services\LessonService;
@@ -48,7 +49,9 @@ class LessonPresenter extends AuthorizedBasePresenter
 	public function renderDefault()
 	{
 		$this->template->lesson = $this->lesson;
-		$this->template->activities = $this->lessonService->getActivitiesInLesson($this->lesson, $this->user);
+		if (!isset($this->template->activities)) {
+			$this->template->activities = $this->lessonService->getActivitiesInLesson($this->lesson, $this->user);
+		}
 		$this->template->ckeditor = true;
 	}
 
@@ -66,6 +69,18 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->em->flush();
 
 		$this->terminate();
+	}
+
+	public function handleToggleQuestion($questionId)
+	{
+		$question = $this->em->find(Question::getClassName(), $questionId);
+		if (!$question) throw new BadRequestException;
+
+		$question->setVisible(!$question->isVisible());
+		$this->em->flush();
+
+		$this->template->lesson = array($questionId => $question);
+		$this->redrawControl('questions');
 	}
 
 	public function createComponentPosts()
