@@ -9184,7 +9184,7 @@ textarea {
 
 /* line 31, ../../scss/app.scss */
 .no-resize {
-  overflow: scroll;
+  overflow: hidden;
   resize: none;
 }
 

@@ -63,12 +63,19 @@
 	</section>
 </nav>
 
-{if $user->isInRole('teacher')}
-	<div id="newActivity" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" n:if="$lessonId && $user->isInRole('teacher')">
-		<div class="new-activity">
-			{control newActivity}
-		</div>
-
-		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+<div id="newActivity" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" n:if="$lessonId && $user->isInRole('teacher')">
+	<div class="new-activity">
+		{control newActivity}
 	</div>
+
+	<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
+
+
+{if isset($openModal) && $openModal}
+	<script>
+		$(document).ready(function(){
+			$('#newActivity').foundation('reveal','open');
+		})
+	</script>
 {/if}

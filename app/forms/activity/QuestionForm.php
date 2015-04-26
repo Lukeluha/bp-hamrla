@@ -50,7 +50,7 @@ class QuestionForm extends Control
 							));
 
 		$form['questionType']->addCondition(Form::EQUAL, 'choice')->toggle('choice')->toggle('reason');
-		$form['questionType']->addCondition(Form::EQUAL, 'multipleChoice')->toggle('multipleChoice')->toggle('reason');
+		$form['questionType']->addCondition(Form::EQUAL, 'multipleChoice')->toggle('choice')->toggle('reason');
 		$form['questionType']->addCondition(Form::EQUAL, 'text')->toggle('text');
 
 		$that = $this;
@@ -59,14 +59,14 @@ class QuestionForm extends Control
 
 		$options = $form->addDynamic('choiceOptions', function(Container $container) use ($removeCallback, $redrawCallback){
 			$container->addText('optionText', "Text možnosti")->setRequired('Vyplňte text možnosti');
-			$container->addCheckbox('correctAnswer', 'Správná odpověď');
+			$container->addCheckbox('correctAnswer', 'Správná odpověď')->setAttribute('class', 'rightAnswer');
 			$container->addSubmit('remove', "Odebrat")
 				->setValidationScope(FALSE)
 				->setAttribute('class', 'ajax button alert tiny')
 				->onClick[] = $removeCallback;
 			$container['remove']->onClick[] = $redrawCallback;
-//			dump($container->getParent());
 		}, 1);
+
 
 		$options->addSubmit('add', 'Přidat možnost')
 			->setValidationScope(FALSE)
@@ -77,14 +77,14 @@ class QuestionForm extends Control
 
 		$options['add']->onClick[] = $redrawCallback;
 
-		$form->addCheckbox('reasonRequired', "Vyžadováno textové zdůvodnění?")->setAttribute('id', 'reason');
+		$form->addCheckbox('reasonRequired', "Vyžadováno textové zdůvodnění?");
 
 		$form->addCheckbox('visible', 'Ihned viditelné?');
 
 		$form->addHidden('questionId');
 
 		$form->onSuccess[] = $this->saveQuestion;
-//		$form->onValidate[] = $this->validateRightAnswers;
+		$form->onValidate[] = $this->validateRightAnswers;
 		$form->addSubmit('save', "Uložit otázku")->setAttribute('class', 'button');
 		$form->setRenderer(new FoundationRenderer());
 
@@ -126,7 +126,8 @@ class QuestionForm extends Control
 
 		$question->setQuestionText($values['questionText'])
 					->setVisible($values['visible'])
-					->setLesson($this->em->getReference(Question::getClassName(), $this->lessonId));
+					->setLesson($this->em->getReference(Question::getClassName(), $this->lessonId))
+					->setQuestionType($values['questionType']);
 
 		if (!$question->getGroup()) {
 			$group = new Group();
@@ -179,6 +180,10 @@ class QuestionForm extends Control
 
 	public function validateRightAnswers(Form $form)
 	{
+		$values = $form->getHttpData();
+
+		if (!isset($values['save'])) return;
+
 		$values = $form->getValues();
 
 		if ($values['questionType'] == 'choice') {

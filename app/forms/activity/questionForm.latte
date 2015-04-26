@@ -1,5 +1,13 @@
 {snippet form}
 	{form form id => 'questionForm'}
+		<div n:if="$form->hasErrors()">
+			<div n:foreach="$form->errors as $error" data-alert class="alert-box alert">
+				{$error}
+				<a href="#" class="close">&times;</a>
+			</div>
+			<br/>
+		</div>
+
 		<div class="small-12 column">
 			<p><strong>Otázka</strong></p>
 			{label questionText/}
@@ -11,7 +19,7 @@
 			{input questionType}
 		</div>
 
-		<div class="small-12 column">
+		<div class="small-12 column" id="reason">
 			{label reasonRequired: /}
 			{input reasonRequired:}
 		</div>
@@ -34,8 +42,10 @@
 					</div>
 
 					{if !$iterator->isFirst()}
-						<div class="column small-12">
-							{$option['remove']->control}
+						<div class="row">
+							<div class="column small-12">
+								{$option['remove']->control}
+							</div>
 						</div>
 					{/if}
 					{if !$iterator->isLast()}
@@ -52,16 +62,36 @@
 	{/form}
 {/snippet}
 
-<script type="text/javascript">
-	$("#questionForm").submit(function(e) {
-		var form = $(this);
-		var valid = false;
-		if(!valid) {
-			alert('fdf');
-			console.log(form);
-
-			e.preventDefault();
-			return false;
+<script>
+	$(document).on('click', '.rightAnswer', function() {
+		if ($("#frm-menu-newActivity-questionForm-form-questionType").val() == 'choice') {
+			if ($(this).is(":checked")) {
+				$(".rightAnswer").prop('checked', false);
+				$(this).prop('checked', true);
+			}
 		}
 	});
+
+	$(document).on('change', "#frm-menu-newActivity-questionForm-form-questionType", function() {
+		if ($(this).val() == 'choice') {
+			$(".rightAnswer").prop('checked', false);
+		}
+
+//		showFooInputs();
+	});
+
+//	$(document).ready(function() {
+//		showFooInputs();
+//	})
+//
+//	function showFooInputs(){
+//		var val = $("#frm-menu-newActivity-questionForm-form-questionType").val();
+//		if (val == 'choice') {
+//			$(".checkbox-foo").hide();
+//			$(".radio-foo").show();
+//		} else if (val == 'multipleChoice') {
+//			$(".checkbox-foo").show();
+//			$(".radio-foo").hide();
+//		}
+//	}
 </script>

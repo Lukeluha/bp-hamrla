@@ -61,6 +61,12 @@ class Question extends BaseEntity
 	 */
 	protected $answers;
 
+	/**
+	 * @var string
+	 * @ORM\Column()
+	 */
+	protected $questionType;
+
 	public function __construct()
 	{
 		$this->options = new ArrayCollection();
@@ -232,6 +238,26 @@ class Question extends BaseEntity
 		$this->answers = $answers;
 		return $this;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getQuestionType()
+	{
+		return $this->questionType;
+	}
+
+	/**
+	 * @param string $questionType
+	 * @return $this
+	 */
+	public function setQuestionType($questionType)
+	{
+		$this->questionType = $questionType;
+		return $this;
+	}
+
+
 
 
 }
