@@ -4,10 +4,12 @@ namespace App\Presenters;
 
 use App\Model\Entities\Lesson;
 use App\Model\Entities\Question;
+use App\Model\Entities\Task;
 use Nette\Application\BadRequestException;
 use App\Controls\IPostsControlFactory;
 use App\Model\Services\LessonService;
 use App\Forms\IAnswerFormFactory;
+use App\Forms\ISubmitTaskFormFactory;
 
 class LessonPresenter extends AuthorizedBasePresenter
 {
@@ -35,9 +37,20 @@ class LessonPresenter extends AuthorizedBasePresenter
 	public $answerFormFactory;
 
 	/**
+	 * @var ISubmitTaskFormFactory
+	 * @inject
+	 */
+	public $submitTaskFormFactory;
+
+	/**
 	 * @persistent
 	 */
 	public $questionId;
+
+	/**
+	 * @persistent
+	 */
+	public $taskId;
 
 	public function actionDefault($lessonId)
 	{
@@ -106,9 +119,25 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('questionModal');
 	}
 
+	public function handleLoadTask($taskId)
+	{
+		$task = $this->em->find(Task::getClassName(), $taskId);
+
+		if (!$task) throw new BadRequestException;
+
+		$this->template->taskActivity = $task;
+		$this->taskId = $taskId;
+		$this->redrawControl('taskModal');
+	}
+
 	public function createComponentAnswerForm()
 	{
 		return $this->answerFormFactory->create($this->questionId, $this->user->getId());
+	}
+
+	public function createComponentSubmitTaskForm()
+	{
+		return $this->submitTaskFormFactory->create($this->user->getId(), $this->taskId);
 	}
 
 	public function createComponentPosts()

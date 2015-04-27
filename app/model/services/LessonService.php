@@ -104,11 +104,11 @@ class LessonService extends BaseService
 		} else { // student
 			$activities['questions'] = $this->em
 											->getRepository(Question::getClassName())
-											->findBy(array('visible' => true));
+											->findBy(array('visible' => true, 'lesson' => $lesson->getId()));
 			$activities['tasks'] = $this->em
 				->createQueryBuilder()->select('t')
 				->from(Task::getClassName(), 't')
-				->where('t.lesson = :lessonId AND t.start >= :now')
+				->where('t.lesson = :lessonId AND t.start <= :now')
 				->setParameters(array('lessonId' => $lesson->getId(), 'now' => new \DateTime()))
 				->getQuery()->getResult();
 		}

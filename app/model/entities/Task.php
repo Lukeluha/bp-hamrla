@@ -65,6 +65,12 @@ class Task extends BaseEntity
 	protected $studentRating;
 
 	/**
+	 * @var string
+	 * @ORM\Column()
+	 */
+	protected $fileName;
+
+	/**
 	 * @return string
 	 */
 	public function getTaskText()
@@ -211,6 +217,26 @@ class Task extends BaseEntity
 		$this->taskName = $taskName;
 		return $this;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getFileName()
+	{
+		return $this->fileName;
+	}
+
+	/**
+	 * @param string $fileName
+	 * @return $this
+	 */
+	public function setFileName($fileName)
+	{
+		$this->fileName = $fileName;
+		return $this;
+	}
+
+
 
 
 }

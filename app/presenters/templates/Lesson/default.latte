@@ -32,7 +32,9 @@
 		{else}
 			<ul class="unstyled no-margin">
 				{foreach $activities['tasks'] as $task}
-					<li><a href="#">{$task->getTaskName()}</a></li>
+					<li>
+						<a class="myAjax" href="{link loadTask! $task->getId()}" data-reveal-id="taskModal">{$task->getTaskName()}</a>
+					</li>
 				{/foreach}
 			</ul>
 		{/if}
@@ -87,9 +89,15 @@
 
 	<div id="taskModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
 		{snippet taskModal}
-			<div class="text-center">
-				<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
-			</div>
+			{if !isset($taskActivity)}
+				<div class="text-center">
+					<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+				</div>
+			{else}
+				<p class="lead">{$taskActivity->getTaskName()}</p>
+				{control submitTaskForm}
+			{/if}
+
 		{/snippet}
 		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 	</div>

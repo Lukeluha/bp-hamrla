@@ -3,6 +3,7 @@
 namespace App\Forms;
 
 use App\Model\Entities\Group;
+use App\Model\Entities\Lesson;
 use App\Model\Entities\Task;
 use App\Model\FoundationRenderer;
 use Kdyby\Doctrine\EntityManager;
@@ -71,7 +72,8 @@ class TaskForm extends Control
 		}
 
 		$task->setTaskName($values['taskName'])
-			->setTaskText($values['taskText']);
+			->setTaskText($values['taskText'])
+			->setLesson($this->em->getReference(Lesson::getClassName(), $this->lessonId));
 
 		if ($values['start']) {
 			$task->setStart(\DateTime::createFromFormat('j. n. Y H:i', $values['start']));
@@ -95,10 +97,10 @@ class TaskForm extends Control
 		try {
 			$this->em->persist($task);
 			$this->em->flush();
-			$this->presenter->flashMessage("Otázka byla úspěšně uložena", "success");
+			$this->presenter->flashMessage("Úkol byl úspěšně uložen", "success");
 		} catch (\Exception $e) {
 			throw $e;
-			$this->presenter->flashMessage("Otázka nebyla uložena", "alert");
+			$this->presenter->flashMessage("Úkol nebyla uložen", "alert");
 			return;
 		}
 

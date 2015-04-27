@@ -29,6 +29,7 @@ services:
 	- App\Forms\ITaskFormFactory
 	- App\Forms\IStudentFormFactory
 	- App\Forms\IAnswerFormFactory
+	- App\Forms\ISubmitTaskFormFactory
 
 	chatFactory:
 		class: App\Controls\ChatControl(%user%, %year%, ...)
