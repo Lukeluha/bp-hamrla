@@ -7,6 +7,7 @@ use App\Model\Entities\Question;
 use Nette\Application\BadRequestException;
 use App\Controls\IPostsControlFactory;
 use App\Model\Services\LessonService;
+use App\Forms\IAnswerFormFactory;
 
 class LessonPresenter extends AuthorizedBasePresenter
 {
@@ -26,6 +27,17 @@ class LessonPresenter extends AuthorizedBasePresenter
 	 * @inject
 	 */
 	public $lessonService;
+
+	/**
+	 * @var IAnswerFormFactory
+	 * @inject
+	 */
+	public $answerFormFactory;
+
+	/**
+	 * @persistent
+	 */
+	public $questionId;
 
 	public function actionDefault($lessonId)
 	{
@@ -81,6 +93,22 @@ class LessonPresenter extends AuthorizedBasePresenter
 
 		$this->template->lesson = array($questionId => $question);
 		$this->redrawControl('questions');
+	}
+
+	public function handleLoadQuestion($questionId)
+	{
+		$question = $this->em->find(Question::getClassName(), $questionId);
+
+		if (!$question) throw new BadRequestException;
+
+		$this->template->questionActivity = $question;
+		$this->questionId = $questionId;
+		$this->redrawControl('questionModal');
+	}
+
+	public function createComponentAnswerForm()
+	{
+		return $this->answerFormFactory->create($this->questionId, $this->user->getId());
 	}
 
 	public function createComponentPosts()

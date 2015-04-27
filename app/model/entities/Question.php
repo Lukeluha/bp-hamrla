@@ -13,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Question extends BaseEntity
 {
+
+	const TYPE_CHOICE = 'choice';
+	const TYPE_MULTIPLECHOICE = 'multipleChoice';
+	const TYPE_TEXT = 'text';
+
 	/**
 	 * @var string
 	 * @ORM\Column()

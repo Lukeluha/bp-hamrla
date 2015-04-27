@@ -2,6 +2,7 @@
 
 namespace App\Model\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,10 +20,14 @@ class Answer extends BaseEntity
 	protected $answerText;
 
 	/**
-	 * @var QuestionOption
-	 * @ORM\ManyToOne(targetEntity="QuestionOption")
+	 * @var ArrayCollection
+	 * @ORM\ManyToMany(targetEntity="QuestionOption")
+	 * @ORM\JoinTable(name="answer_option",
+	 *      joinColumns={@ORM\JoinColumn(name="answer_id", referencedColumnName="id")},
+	 *		inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id")}
+	 *		)
 	 */
-	protected $option;
+	protected $options;
 
 	/**
 	 * @var Question
@@ -35,6 +40,17 @@ class Answer extends BaseEntity
 	 * @ORM\ManyToOne(targetEntity="Student")
 	 */
 	protected $student;
+
+	/**
+	 * @var int
+	 * @ORM\Column()
+	 */
+	protected $points;
+
+	public function __construct()
+	{
+		$this->options = new ArrayCollection();
+	}
 
 	/**
 	 * @return string
@@ -55,21 +71,26 @@ class Answer extends BaseEntity
 	}
 
 	/**
-	 * @return QuestionOption
+	 * @return ArrayCollection
 	 */
-	public function getOption()
+	public function getOptions()
 	{
-		return $this->option;
+		return $this->options;
 	}
 
 	/**
-	 * @param QuestionOption $option
+	 * @param ArrayCollection $options
 	 * @return $this
 	 */
-	public function setOption($option)
+	public function setOptions($options)
 	{
-		$this->option = $option;
+		$this->options = $options;
 		return $this;
+	}
+
+	public function addOption(QuestionOption $option)
+	{
+		$this->options->add($option);
 	}
 
 	/**
@@ -105,6 +126,24 @@ class Answer extends BaseEntity
 	public function setStudent($student)
 	{
 		$this->student = $student;
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPoints()
+	{
+		return $this->points;
+	}
+
+	/**
+	 * @param int $points
+	 * @return $this
+	 */
+	public function setPoints($points)
+	{
+		$this->points = $points;
 		return $this;
 	}
 

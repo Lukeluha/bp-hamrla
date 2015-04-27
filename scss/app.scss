@@ -401,3 +401,27 @@ h3 {
 #lessonDescription {
   margin-top: 10px;
 }
+
+input[type="radio"], input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+div.success {
+  background-color: #dff0d8
+}
+
+i.success {
+  color: #6C9902;
+}
+
+div.error {
+	background-color: #f2dede;
+}
+
+i.error {
+  color: #f04124;
+}
+
+div.row.padding {
+  padding: 5px
+}

@@ -1,0 +1,40 @@
+{snippet}
+	{form form}
+		{if $form['answer']->getItems()}
+			{foreach $form['answer']->getItems() as $key => $value}
+				<div class="row {if isset($rightAnswers)}padding {if isset($rightAnswers[$key])}success{else}error{/if}{/if}">
+					<div class="small-12">
+						{$form['answer']->getControlPart($key)}
+						{$form['answer']->getLabelPart($key)}
+						{if isset($answers) && isset($answers[$key])}
+							{if isset($rightAnswers[$key])}
+								<i class="fi-check success"></i>
+							{else}
+								<i class="fi-x error"></i>
+							{/if}
+						{elseif isset($rightAnswers)}
+							{if isset($rightAnswers[$key])}
+								<i class="fi-x error"></i>
+							{else}
+								<i class="fi-check success"></i>
+							{/if}
+						{/if}
+					</div>
+				</div>
+			{/foreach}
+
+			{if isset($form['reason'])}
+				<div class="row">
+					<div class="small-12">
+						{label reason/}
+						{input reason}
+					</div>
+				</div>
+			{/if}
+		{/if}
+
+		{if !isset($rightAnswers)}
+			{input save class => "button myAjax"}
+		{/if}
+	{/form}
+{/snippet}

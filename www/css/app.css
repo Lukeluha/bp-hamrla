@@ -9573,3 +9573,33 @@ h3 {
 #lessonDescription {
   margin-top: 10px;
 }
+
+/* line 405, ../../scss/app.scss */
+input[type="radio"], input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* line 409, ../../scss/app.scss */
+div.success {
+  background-color: #dff0d8;
+}
+
+/* line 413, ../../scss/app.scss */
+i.success {
+  color: #6C9902;
+}
+
+/* line 417, ../../scss/app.scss */
+div.error {
+  background-color: #f2dede;
+}
+
+/* line 421, ../../scss/app.scss */
+i.error {
+  color: #f04124;
+}
+
+/* line 425, ../../scss/app.scss */
+div.row.padding {
+  padding: 5px;
+}

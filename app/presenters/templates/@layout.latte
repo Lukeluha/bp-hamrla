@@ -43,7 +43,7 @@
 
 	{block head}{/block}
 
-	{if isset($ckeditor) && $ckeditor}
+	{if isset($ckeditor) && $ckeditor && $user->isInRole('teacher')}
 		<script src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js"></script>
 	{/if}
 

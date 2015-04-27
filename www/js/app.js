@@ -33,19 +33,27 @@ $(document).ready(function(){
 
 
 $(document).on('click', '.myAjax', function(e){
-    if ($(this).hasClass('button')) {
-        $(this).addClass('disabled');
-        $(this).text("Počkejte...");
-    }
 
-    var url = $(this).attr('href')
+    var request = $.nette.ajax({}, this, e);
 
-    $.nette.ajax({
-        'url': url
-    })
+	if (request.readyState) {
+		if ($(this).data('reveal-id')) {
+			$('#' + $(this).data('reveal-id')).foundation('reveal','open');
+		}
+
+		if ($(this).hasClass('button')) {
+			$(this).addClass('disabled');
+			var isSubmit = $(this).is('input[type=submit]') || $(this).is('button[type=submit]');
+
+			if (isSubmit) {
+				$(this).val("Počkejte...");
+			} else {
+				$(this).text("Počkejte...");
+			}
+		}
+	}
 
     e.preventDefault();
-
     return false;
 });
 
