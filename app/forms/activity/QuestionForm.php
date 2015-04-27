@@ -51,14 +51,16 @@ class QuestionForm extends Control
 
 		$form['questionType']->addCondition(Form::EQUAL, 'choice')->toggle('choice')->toggle('reason');
 		$form['questionType']->addCondition(Form::EQUAL, 'multipleChoice')->toggle('choice')->toggle('reason');
-		$form['questionType']->addCondition(Form::EQUAL, 'text')->toggle('text');
+		$form['questionType']->addCondition(Form::EQUAL, 'text')->toggle('textQuestion');
 
 		$that = $this;
 		$redrawCallback = function() use ($that) {$that->redrawControl('form');};
 		$removeCallback = $this->removeElement;
 
-		$options = $form->addDynamic('choiceOptions', function(Container $container) use ($removeCallback, $redrawCallback){
-			$container->addText('optionText', "Text možnosti")->setRequired('Vyplňte text možnosti');
+		$options = $form->addDynamic('choiceOptions', function(Container $container) use ($removeCallback, $redrawCallback, $form){
+			$container->addText('optionText', "Text možnosti")
+						->addConditionOn($form['questionType'], Form::NOT_EQUAL, 'text')
+						->setRequired('Vyplňte text možnosti');
 			$container->addCheckbox('correctAnswer', 'Správná odpověď')->setAttribute('class', 'rightAnswer');
 			$container->addSubmit('remove', "Odebrat")
 				->setValidationScope(FALSE)
@@ -76,6 +78,8 @@ class QuestionForm extends Control
 
 
 		$options['add']->onClick[] = $redrawCallback;
+
+		$form->addText('correctAnswer', 'Jednoznačná odpověď (pokud existuje)');
 
 		$form->addCheckbox('reasonRequired', "Vyžadováno textové zdůvodnění?");
 
@@ -147,7 +151,17 @@ class QuestionForm extends Control
 		}
 
 		if ($values['questionType'] == 'text') {
+			$question->setCorrectTextAnswer($values['correctAnswer']);
 
+			try {
+				$this->em->persist($question);
+				$this->em->flush();
+				$this->em->commit();
+			} catch (\Exception $e) {
+				$this->presenter->flashMessage('Nepodařilo se uložit otázku.', 'alert');
+				$this->em->rollback();
+				return;
+			}
 		} else { // choices
 
 			$question->setReasonRequire($values['reasonRequired']);

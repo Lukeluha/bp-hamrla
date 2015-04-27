@@ -72,6 +72,12 @@ class Question extends BaseEntity
 	 */
 	protected $questionType;
 
+	/**
+	 * @var string
+	 * @ORM\Column()
+	 */
+	protected $correctTextAnswer;
+
 	public function __construct()
 	{
 		$this->options = new ArrayCollection();
@@ -261,6 +267,25 @@ class Question extends BaseEntity
 		$this->questionType = $questionType;
 		return $this;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getCorrectTextAnswer()
+	{
+		return $this->correctTextAnswer;
+	}
+
+	/**
+	 * @param string $correctTextAnswer
+	 * @return $this
+	 */
+	public function setCorrectTextAnswer($correctTextAnswer)
+	{
+		$this->correctTextAnswer = $correctTextAnswer;
+		return $this;
+	}
+
 
 
 

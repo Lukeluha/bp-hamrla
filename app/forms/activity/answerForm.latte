@@ -1,6 +1,6 @@
 {snippet}
 	{form form}
-		{if $form['answer']->getItems()}
+		{if isset($form['answer'])}
 			{foreach $form['answer']->getItems() as $key => $value}
 				<div class="row {if isset($rightAnswers)}padding {if isset($rightAnswers[$key])}success{else}error{/if}{/if}">
 					<div class="small-12">
@@ -31,6 +31,13 @@
 					</div>
 				</div>
 			{/if}
+		{else}
+			<div class="row">
+				<div class="small-12">
+					{label textAnswer/}
+					{input textAnswer}
+				</div>
+			</div>
 		{/if}
 
 		{if !isset($rightAnswers)}

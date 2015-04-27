@@ -62,7 +62,7 @@ class AnswerForm extends Control
 				$form->addText('reason', "Důvod odpovědi")->setRequired('Vyplňte důvod odpovědi');
 			}
 		} else { // text question
-			$form->addText('answer', "Text odpovědi")->setRequired("Vyplňte odpověď");
+			$form->addTextArea('textAnswer', "Text odpovědi", null, 5)->setRequired("Vyplňte odpověď");
 		}
 
 
@@ -124,7 +124,8 @@ class AnswerForm extends Control
 				$this->template->answers = array_flip($choiceOptions);
 				$this->template->rightAnswers = $this->getRightAnswers();
 			} else { // text question
-
+				$this['form']['textAnswer']->setDisabled()->setValue($answer->getAnswerText());
+				$this->template->rightAnswers = true;
 			}
 		}
 
@@ -136,23 +137,19 @@ class AnswerForm extends Control
 	public function saveAnswer(Form $form)
 	{
 		$values = $form->getValues();
+		$answer = new Answer();
+		$answer->setStudent($this->user);
+		$answer->setQuestion($this->question);
+
 
 		if ($this->question->getQuestionType() == Question::TYPE_CHOICE) {
-			$answer = new Answer();
 
-			$answer->setStudent($this->user);
 			$answer->addOption($this->em->getReference(QuestionOption::getClassName(), $values['answer']));
-			$answer->setQuestion($this->question);
 			if (isset($values['reason'])) {
 				$answer->setAnswerText($values['reason']);
 			}
 
-			$this->em->persist($answer);
-			$this->em->flush();
 		} elseif ($this->question->getQuestionType() == Question::TYPE_MULTIPLECHOICE) {
-			$answer = new Answer();
-			$answer->setStudent($this->user);
-			$answer->setQuestion($this->question);
 			if (isset($values['reason'])) {
 				$answer->setAnswerText($values['reason']);
 			}
@@ -161,9 +158,13 @@ class AnswerForm extends Control
 				$answer->addOption($this->em->getReference(QuestionOption::getClassName(), $option));
 			}
 
-			$this->em->persist($answer);
-			$this->em->flush();
+
+		} else {
+			$answer->setAnswerText($values['textAnswer']);
 		}
+
+		$this->em->persist($answer);
+		$this->em->flush();
 
 		$this->redrawControl();
 	}
