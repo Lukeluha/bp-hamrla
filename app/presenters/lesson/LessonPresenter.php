@@ -43,6 +43,16 @@ class LessonPresenter extends AuthorizedBasePresenter
 	public $submitTaskFormFactory;
 
 	/**
+	 * @var Question
+	 */
+	private $question;
+
+	/**
+	 * @var Task
+	 */
+	private $task;
+
+	/**
 	 * @persistent
 	 */
 	public $questionId;
@@ -114,7 +124,7 @@ class LessonPresenter extends AuthorizedBasePresenter
 
 		if (!$question) throw new BadRequestException;
 
-		$this->template->questionActivity = $question;
+		$this->template->questionActivity = $this->question = $question;
 		$this->questionId = $questionId;
 		$this->redrawControl('questionModal');
 	}
@@ -125,19 +135,29 @@ class LessonPresenter extends AuthorizedBasePresenter
 
 		if (!$task) throw new BadRequestException;
 
-		$this->template->taskActivity = $task;
+		$this->template->taskActivity = $this->task = $task;
 		$this->taskId = $taskId;
 		$this->redrawControl('taskModal');
 	}
 
 	public function createComponentAnswerForm()
 	{
-		return $this->answerFormFactory->create($this->questionId, $this->user->getId());
+		if (!$this->question) {
+			$this->question = $this->em->find(Question::getClassName(), $this->questionId);
+			if (!$this->question) throw new BadRequestExcepiton;
+		}
+
+		return $this->answerFormFactory->create($this->question, $this->user->getId());
 	}
 
 	public function createComponentSubmitTaskForm()
 	{
-		return $this->submitTaskFormFactory->create($this->user->getId(), $this->taskId);
+		if (!$this->task) {
+			$this->task = $this->em->find(Task::getClassName(), $this->taskId);
+			if (!$this->task) throw new BadRequestExcepiton;
+		}
+
+		return $this->submitTaskFormFactory->create($this->user->getId(), $this->task);
 	}
 
 	public function createComponentPosts()

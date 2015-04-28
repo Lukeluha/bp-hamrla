@@ -3,12 +3,13 @@
 namespace App\Forms;
 
 use App\Forms\SubmitTaskForm;
+use App\Model\Entities\Task;
 
 interface ISubmitTaskFormFactory {
 	/**
 	 * @param $userId
-	 * @param $taskId
+	 * @param Task $task
 	 * @return SubmitTaskForm
 	 */
-	function create($userId, $taskId);
+	function create($userId, Task $task);
 }

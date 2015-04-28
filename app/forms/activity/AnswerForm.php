@@ -30,14 +30,14 @@ class AnswerForm extends Control
 	protected $user;
 
 	/**
-	 * @param int $questionId
+	 * @param Question $question
 	 * @param EntityManager $em
 	 * @throws \Doctrine\ORM\ORMException
 	 */
-	public function __construct($questionId, $userId, EntityManager $em)
+	public function __construct(Question $question, $userId, EntityManager $em)
 	{
 		$this->em = $em;
-		$this->question = $this->em->find(Question::getClassName(), $questionId);
+		$this->question = $question;
 		$this->user = $this->em->find(User::getClassName(), $userId);
 	}
 

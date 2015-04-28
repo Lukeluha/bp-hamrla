@@ -1,27 +1,29 @@
-{var $now = new \DateTime()}
+{if $submittedTask}
+	<div class="panel">Tento úkol jste odevzdal dne {$submittedTask->getCreated()|date:"j. n. Y v H:i"}</div>
+{else}
+	{var $now = new \DateTime()}
 
+	{if $task->getLimit() == 'strict'}
+		{if $now <= $task->getEnd()}
+			<div class="panel">
+				Tento úkol má nastaven striktní limit. Po jeho uplynutí již nebude možné úkol odevzdat.
+				Datum odevzdání je do {$task->getEnd()|date:"j. n. Y H:i"}
+			</div>
+			{control form}
 
-{if $task->getLimit() == 'strict'}
-	{if $now <= $task->getEnd()}
+		{else}
+			<div class="panel">
+				Úkol již nelze odevzdat, uplynul limit pro odevzdání.
+			</div>
+		{/if}
+	{elseif $task->getLimit() == 'nostrict'}
 		<div class="panel">
-			Tento úkol má nastaven striktní limit. Po jeho uplynutí již nebude možné úkol odevzdat.
+			Tento úkol má nastaven volný limit. Při odevzdání po uplynulém limitu bude vyučující informován o jeho překročení.
 			Datum odevzdání je do {$task->getEnd()|date:"j. n. Y H:i"}
 		</div>
+
 		{control form}
-
 	{else}
-		<div class="panel">
-			Úkol již nelze odevzdat, uplynul limit pro odevzdání.
-		</div>
+		{control form}
 	{/if}
-{elseif $task->getLimit() == 'nostrict'}
-	<div class="panel">
-		Tento úkol má nastaven volný limit. Při odevzdání po uplynulém limitu bude vyučující informován o jeho překročení.
-		Datum odevzdání je do {$task->getEnd()|date:"j. n. Y H:i"}
-	</div>
-
-	{control form}
-{else}
-	{control form}
 {/if}
-

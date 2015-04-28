@@ -30,10 +30,10 @@ class SubmitTaskForm extends Control
 	 */
 	protected $user;
 
-	public function __construct($userId, $taskId, EntityManager $entityManager)
+	public function __construct($userId, Task $task, EntityManager $entityManager)
 	{
 		$this->em = $entityManager;
-		$this->task = $this->em->find(Task::getClassName(), $taskId);
+		$this->task = $task;
 		$this->user = $this->em->find(Student::getClassName(), $userId);
 	}
 
@@ -42,7 +42,7 @@ class SubmitTaskForm extends Control
 		$form = new Form();
 
 		$form->addUpload('task', "Soubor k odevzdání")->setRequired('Vyberte soubor k odevzdání');
-		$form->addText('note', "Poznámka");
+		$form->addTextArea('note', "Poznámka", null, 5);
 		$form->addSubmit('save', 'Uložit');
 
 		$form->onSuccess[] = $this->saveTask;
@@ -56,6 +56,9 @@ class SubmitTaskForm extends Control
 	{
 		$this->template->setFile(__DIR__ . "/submitTaskForm.latte");
 		$this->template->task = $this->task;
+		$this->template->submittedTask = $this->em
+												->getRepository(TaskCompleted::getClassName())
+												->findOneBy(array('student' => $this->user->getId(), 'task' => $this->task->getId()));
 		$this->template->render();
 	}
 
