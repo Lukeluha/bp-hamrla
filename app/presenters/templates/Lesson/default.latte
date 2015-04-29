@@ -9,18 +9,20 @@
 				{foreach $activities['questions'] as $question}
 					<li>
 						{snippet question-$question->id}
-						<a class="myAjax" href="{link loadQuestion! $question->getId()}" data-reveal-id="questionModal">{$question->getQuestionText()}</a>
+						<a {if $user->isInRole('student')}class="myAjax"{else}class="question"{/if} href="{link loadQuestion! $question->getId()}" data-reveal-id="questionModal">{$question->getQuestionText()}</a>
 						{if $user->isInRole('teacher')}
 							<a href="{link toggleQuestion! $question->getId()}" class="ajax">
 							{if $question->isVisible()}
-								<span class="label success">viditelná</span>
+								<span class="label success right">viditelná</span>
 							{else}
-								<span class="label alert">skrytá</span>
+								<span class="label alert right">skrytá</span>
 							{/if}
 							</a>
 						{/if}
 						{/snippet}
 					</li>
+					<div class="clearfix"></div>
+					{sep}<hr/>{/sep}
 				{/foreach}
 				{/snippet}
 			</ul>
@@ -35,6 +37,8 @@
 					<li>
 						<a class="myAjax" href="{link loadTask! $task->getId()}" data-reveal-id="taskModal">{$task->getTaskName()}</a>
 					</li>
+					<div class="clearfix"></div>
+					{sep}<hr/>{/sep}
 				{/foreach}
 			</ul>
 		{/if}
@@ -81,7 +85,25 @@
 			</div>
 		{else}
 			<p class="lead">{$questionActivity->getQuestionText()}</p>
-			{control answerForm}
+			{if $user->isInRole('teacher')}
+				<ul class="tabs" data-tab>
+					<li class="tab-title active"><a href="#questionSummary">Souhrn odpovědí</a></li>
+					<li class="tab-title"><a href="#questionEdit">Editace otázky</a></li>
+				</ul>
+				<div class="tabs-content">
+					<div class="content active" id="questionSummary">
+						<div id="questionChart"></div>
+					</div>
+					<div class="content" id="questionEdit">
+						editace
+					</div>
+				</div>
+				<ul class="tabs vertical" data-tab>
+
+				</ul>
+			{else}
+				{control answerForm}
+			{/if}
 		{/if}
 		{/snippet}
 		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
@@ -117,7 +139,21 @@
 {block head}
 	{include parent}
 	{if $user->isInRole('teacher')}
+		<script type="text/javascript" src="{$basePath}/js/google.jsapi.js"></script>
 		<script type="text/javascript">
+			google.load("visualization", "1", { packages:["corechart"] });
+
+			function drawChart(id, data, options) {
+
+				var options = {
+					title: 'Úpěšnost odpovědí v %'
+				};
+
+				var chart = new google.visualization.PieChart(document.getElementById(id));
+
+				chart.draw(google.visualization.arrayToDataTable(data), options);
+			}
+
 			$(document).ready(function(){
 				$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
 					$('.wysiwyg').each( function () {
@@ -126,6 +162,7 @@
 							CKEDITOR.replace(this.id);
 						}
 					});
+					$(document).foundation();
 				});
 
 
@@ -166,7 +203,21 @@
 					}
 				})
 
+
+				$(".question").click(function() {
+					var url = $(this).attr("href");
+					$.nette.ajax({
+						url: url
+					}).success(function(e) {
+						if (e['chartData'] !== 'undefined') {
+							drawChart("questionChart", JSON.parse(e['chartData']));
+						}
+						$(document).foundation();
+					});
+				});
 			})
+
+
 		</script>
 	{/if}
 {/block}

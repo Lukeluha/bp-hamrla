@@ -47,7 +47,7 @@ class TaskCompleted extends BaseEntity
 
 	/**
 	 * @var string
-	 * @ORM\Column()
+	 * @ORM\Column(name="filename")
 	 */
 	protected $filename;
 

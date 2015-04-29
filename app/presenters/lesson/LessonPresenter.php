@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use App\Model\Entities\Answer;
 use App\Model\Entities\Lesson;
 use App\Model\Entities\Question;
 use App\Model\Entities\Task;
@@ -126,6 +127,15 @@ class LessonPresenter extends AuthorizedBasePresenter
 
 		$this->template->questionActivity = $this->question = $question;
 		$this->questionId = $questionId;
+		if ($this->user->isInRole('teacher')) {
+			$successData = $this->em->getRepository(Answer::getClassName())->getDataForChart($this->question);
+			$data = array(0 => array('Úspěšnost v %', 'Počet'));
+			foreach ($successData as $points) {
+				$data[] = array((string)$points['points'] . ' %', (int) $points['cnt']);
+			}
+
+			$this->payload->chartData = json_encode($data);
+		}
 		$this->redrawControl('questionModal');
 	}
 

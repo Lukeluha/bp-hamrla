@@ -7,6 +7,7 @@ use App\Model\Entities\Answer;
 use App\Model\Entities\Question;
 use App\Model\Entities\QuestionOption;
 use App\Model\FoundationRenderer;
+use App\Model\Services\AnswerService;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
@@ -30,15 +31,22 @@ class AnswerForm extends Control
 	protected $user;
 
 	/**
+	 * @var AnswerService
+	 */
+	protected $answerService;
+
+	/**
 	 * @param Question $question
 	 * @param EntityManager $em
+	 * @param AnswerService $answerService
 	 * @throws \Doctrine\ORM\ORMException
 	 */
-	public function __construct(Question $question, $userId, EntityManager $em)
+	public function __construct(Question $question, $userId, EntityManager $em, AnswerService $answerService)
 	{
 		$this->em = $em;
 		$this->question = $question;
 		$this->user = $this->em->find(User::getClassName(), $userId);
+		$this->answerService = $answerService;
 	}
 
 	public function createComponentForm()
@@ -55,8 +63,7 @@ class AnswerForm extends Control
 			}
 		} elseif ($this->question->getQuestionType() == Question::TYPE_MULTIPLECHOICE) {
 			$optionsArray = $this->getOptionsArray();
-			$form->addCheckboxList('answer', null, $optionsArray)
-				->setRequired("Vyberte odpověď");
+			$form->addCheckboxList('answer', null, $optionsArray);
 
 			if ($this->question->isReasonRequire()) {
 				$form->addText('reason', "Důvod odpovědi")->setRequired('Vyplňte důvod odpovědi');
@@ -127,6 +134,8 @@ class AnswerForm extends Control
 				$this['form']['textAnswer']->setDisabled()->setValue($answer->getAnswerText());
 				$this->template->rightAnswers = true;
 			}
+
+			$this->template->answer = $answer;
 		}
 
 
@@ -158,10 +167,11 @@ class AnswerForm extends Control
 				$answer->addOption($this->em->getReference(QuestionOption::getClassName(), $option));
 			}
 
-
 		} else {
 			$answer->setAnswerText($values['textAnswer']);
 		}
+
+		$answer->setPoints(ceil($this->answerService->computePointsPercentage($answer)));
 
 		$this->em->persist($answer);
 		$this->em->flush();

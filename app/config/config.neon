@@ -21,6 +21,7 @@ session:
 services:
 	- App\Model\Services\StudentService
 	- App\Model\Services\LessonService
+	- App\Model\Services\AnswerService
 
 	- App\Controls\IMenuControlFactory
 	- App\Controls\IPostsControlFactory

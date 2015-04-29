@@ -1,6 +1,7 @@
 {snippet}
 	{form form}
 		{if isset($form['answer'])}
+			{if isset($answer)}<p><strong>Váš výsledek</strong>: {$answer->getPoints()} %</p>{/if}
 			{foreach $form['answer']->getItems() as $key => $value}
 				<div class="row {if isset($rightAnswers)}padding {if isset($rightAnswers[$key])}success{else}error{/if}{/if}">
 					<div class="small-12">

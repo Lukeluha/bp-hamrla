@@ -62,6 +62,7 @@ class Lesson extends BaseEntity
 	/**
 	 * @var ArrayCollection
 	 * @ORM\OneToMany(targetEntity="Question", mappedBy="lesson")
+	 * @ORM\OrderBy({"questionText" = "ASC"})
 	 */
 	protected $questions;
 

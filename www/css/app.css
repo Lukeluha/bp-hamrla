@@ -9557,49 +9557,53 @@ img.no-resize {
 .activities ul li {
   font-size: 13px;
 }
+/* line 389, ../../scss/app.scss */
+.activities hr {
+  margin: 0.5rem 0;
+}
 
-/* line 390, ../../scss/app.scss */
-h3 {
-  font-size: 14px;
+/* line 395, ../../scss/app.scss */
+.activities h3 {
+  font-size: 16px;
   font-weight: bold;
 }
 
-/* line 396, ../../scss/app.scss */
+/* line 402, ../../scss/app.scss */
 #lessonName p {
   margin: 0;
 }
 
-/* line 401, ../../scss/app.scss */
+/* line 407, ../../scss/app.scss */
 #lessonDescription {
   margin-top: 10px;
 }
 
-/* line 405, ../../scss/app.scss */
+/* line 411, ../../scss/app.scss */
 input[type="radio"], input[type="checkbox"] {
   margin-right: 10px;
 }
 
-/* line 409, ../../scss/app.scss */
+/* line 415, ../../scss/app.scss */
 div.success {
   background-color: #dff0d8;
 }
 
-/* line 413, ../../scss/app.scss */
+/* line 419, ../../scss/app.scss */
 i.success {
   color: #6C9902;
 }
 
-/* line 417, ../../scss/app.scss */
+/* line 423, ../../scss/app.scss */
 div.error {
   background-color: #f2dede;
 }
 
-/* line 421, ../../scss/app.scss */
+/* line 427, ../../scss/app.scss */
 i.error {
   color: #f04124;
 }
 
-/* line 425, ../../scss/app.scss */
+/* line 431, ../../scss/app.scss */
 div.row.padding {
   padding: 5px;
 }

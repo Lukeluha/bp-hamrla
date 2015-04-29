@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Answer
  * @package App\Model\Entities
  * @ORM\Table(name="answers")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Model\Repositories\Answers")
  */
 class Answer extends BaseEntity
 {

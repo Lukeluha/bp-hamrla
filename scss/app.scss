@@ -385,11 +385,17 @@ img.no-resize {
   		font-size: 13px;
 	}
   }
+
+  hr {
+	margin: 0.5rem 0;
+  }
 }
 
-h3 {
-	font-size: 14px;
-  	font-weight: bold;
+.activities {
+  h3 {
+	  font-size: 16px;
+	  font-weight: bold;
+  }
 }
 
 #lessonName {
