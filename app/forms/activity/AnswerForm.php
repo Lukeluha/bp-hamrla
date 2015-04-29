@@ -171,7 +171,10 @@ class AnswerForm extends Control
 			$answer->setAnswerText($values['textAnswer']);
 		}
 
-		$answer->setPoints(ceil($this->answerService->computePointsPercentage($answer)));
+		$points = $this->answerService->computePointsPercentage($answer);
+		if ($points !== null) {
+			$answer->setPoints(ceil($points));
+		}
 
 		$this->em->persist($answer);
 		$this->em->flush();

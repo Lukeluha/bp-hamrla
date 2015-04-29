@@ -128,11 +128,7 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->template->questionActivity = $this->question = $question;
 		$this->questionId = $questionId;
 		if ($this->user->isInRole('teacher')) {
-			$successData = $this->em->getRepository(Answer::getClassName())->getDataForChart($this->question);
-			$data = array(0 => array('Úspěšnost v %', 'Počet'));
-			foreach ($successData as $points) {
-				$data[] = array((string)$points['points'] . ' %', (int) $points['cnt']);
-			}
+			$data = $this->getDataForChart();
 
 			$this->payload->chartData = json_encode($data);
 		}
@@ -148,6 +144,25 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->template->taskActivity = $this->task = $task;
 		$this->taskId = $taskId;
 		$this->redrawControl('taskModal');
+	}
+
+	public function handleEditAnswer()
+	{
+		$post = $this->getHttpRequest()->getPost();
+
+		$answer = $this->em->find(Answer::getClassName(), $post['answerId']);
+		$answer->setPoints($post['points']);
+
+		$question = $this->em->find(Question::getClassName(), $answer->getQuestion()->getId());
+		$this->question = $question;
+
+		$this->em->flush();
+		if ($this->user->isInRole('teacher')) {
+			$data = $this->getDataForChart();
+
+			$this->payload->chartData = json_encode($data);
+		}
+		$this->redrawControl('questionModal');
 	}
 
 	public function createComponentAnswerForm()
@@ -185,4 +200,14 @@ class LessonPresenter extends AuthorizedBasePresenter
 		}
 	}
 
+	public function getDataForChart()
+	{
+		$successData = $this->em->getRepository(Answer::getClassName())->getDataForChart($this->question);
+		$data = array(0 => array('Úspěšnost v %', 'Počet'));
+		foreach ($successData as $points) {
+			$data[] = array((string)$points['points'] . ' %', (int) $points['cnt']);
+		}
+
+		return $data;
+	}
 }

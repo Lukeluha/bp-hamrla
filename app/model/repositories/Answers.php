@@ -14,7 +14,9 @@ class Answers extends EntityRepository
 		return $this->createQueryBuilder()
 				->select('a.points, COUNT(a) as cnt')
 				->from(Answer::getClassName(), 'a')
-				->where("a.question = " . $question->getId())->groupBy('a.points')->getQuery()->getArrayResult();
+				->where("a.question = " . $question->getId() . " AND a.points IS NOT NULL")
+				->groupBy('a.points')
+				->getQuery()->getArrayResult();
 	}
 
 }

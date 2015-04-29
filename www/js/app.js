@@ -143,4 +143,13 @@ function showOrHide(id) {
 	};
 }(jQuery));
 
+function drawChart(id, data, options) {
 
+	var options = {
+		title: 'Úpěšnost odpovědí v %'
+	};
+
+	var chart = new google.visualization.PieChart(document.getElementById(id));
+
+	chart.draw(google.visualization.arrayToDataTable(data), options);
+}

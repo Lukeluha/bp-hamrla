@@ -57,7 +57,11 @@ class AnswerService extends BaseService
 
 			return $points * 100;
 		} else { // text question
+			if ($question->getCorrectTextAnswer()) {
 
+			} else {
+				return null;
+			}
 		}
 
 

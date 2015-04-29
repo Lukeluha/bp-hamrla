@@ -1,7 +1,17 @@
 {snippet}
 	{form form}
+		{if isset($answer)}
+			<p>
+				<strong>Váš výsledek</strong>:
+				{if $answer->getPoints()}
+					{$answer->getPoints()} %
+					{if $answer->getQuestion()->getCorrectTextAnswer()} (výsledek se ještě může změnit){/if}
+				{else}
+					<span class="label">čeká na opravení</span>
+				{/if}
+			</p>
+		{/if}
 		{if isset($form['answer'])}
-			{if isset($answer)}<p><strong>Váš výsledek</strong>: {$answer->getPoints()} %</p>{/if}
 			{foreach $form['answer']->getItems() as $key => $value}
 				<div class="row {if isset($rightAnswers)}padding {if isset($rightAnswers[$key])}success{else}error{/if}{/if}">
 					<div class="small-12">
