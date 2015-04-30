@@ -29,6 +29,11 @@ class QuestionForm extends Control
 	 */
 	protected $em;
 
+	/**
+	 * @var Question
+	 */
+	protected $question;
+
 	public function __construct($lessonId, EntityManager $em)
 	{
 		$this->lessonId = $lessonId;
@@ -49,9 +54,9 @@ class QuestionForm extends Control
 								'text' => 'Otevřená'
 							));
 
-		$form['questionType']->addCondition(Form::EQUAL, 'choice')->toggle('choice')->toggle('reason');
-		$form['questionType']->addCondition(Form::EQUAL, 'multipleChoice')->toggle('choice')->toggle('reason');
-		$form['questionType']->addCondition(Form::EQUAL, 'text')->toggle('textQuestion');
+		$form['questionType']->addCondition(Form::EQUAL, 'choice')->toggle($this->getUniqueId() . '-choice')->toggle($this->getUniqueId() . '-reason');
+		$form['questionType']->addCondition(Form::EQUAL, 'multipleChoice')->toggle($this->getUniqueId() . '-choice')->toggle($this->getUniqueId() . '-reason');
+		$form['questionType']->addCondition(Form::EQUAL, 'text')->toggle($this->getUniqueId() . '-textQuestion');
 
 		$that = $this;
 		$redrawCallback = function() use ($that) {$that->redrawControl('form');};
@@ -66,6 +71,7 @@ class QuestionForm extends Control
 				->setValidationScope(FALSE)
 				->setAttribute('class', 'ajax button alert tiny')
 				->onClick[] = $removeCallback;
+			$container->addHidden('optionId');
 			$container['remove']->onClick[] = $redrawCallback;
 		}, 1);
 
@@ -167,7 +173,12 @@ class QuestionForm extends Control
 			$question->setReasonRequire($values['reasonRequired']);
 
 			foreach ($values['choiceOptions'] as $option) {
-				$optionEntity = new QuestionOption();
+				if ($option['optionId']) {
+					$optionEntity = $this->em->find(QuestionOption::getClassName(), $option['optionId']);
+				} else {
+					$optionEntity = new QuestionOption();
+				}
+
 				$optionEntity->setOptionText($option['optionText']);
 				$optionEntity->setQuestion($question);
 				$optionEntity->setCorrect($option['correctAnswer']);
@@ -191,6 +202,36 @@ class QuestionForm extends Control
 		$this->redirect('this');
 	}
 
+	public function setQuestion(Question $question)
+	{
+		$this->question = $question;
+		$defaults = array();
+
+		$defaults['questionText'] = $question->getQuestionText();
+		$defaults['questionType'] = $question->getQuestionType();
+		$defaults['questionId'] = $question->getId();
+
+		if ($question->getQuestionType() == Question::TYPE_TEXT) {
+			$defaults['correctAnswer'] = $question->getCorrectTextAnswer();
+		} else {
+			$defaults['reasonRequired'] = $question->isReasonRequire();
+			$defaults['visible'] = $question->isVisible();
+
+			$i = 0;
+			foreach ($question->getOptions() as $option) {
+				$this['form']['choiceOptions'][$i]->setDefaults(array(
+					'optionText' => $option->getOptionText(),
+					'correctAnswer' => $option->isCorrect(),
+					'optionId' => $option->getId()
+				));
+				$i++;
+			}
+
+		}
+
+		$this['form']->setDefaults($defaults);
+
+	}
 
 	public function validateRightAnswers(Form $form)
 	{

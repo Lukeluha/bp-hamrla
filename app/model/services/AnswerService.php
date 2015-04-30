@@ -58,7 +58,11 @@ class AnswerService extends BaseService
 			return $points * 100;
 		} else { // text question
 			if ($question->getCorrectTextAnswer()) {
-
+				if (mb_strtolower(trim($question->getCorrectTextAnswer())) == mb_strtolower(trim($answer->getAnswerText()))) {
+					return 100;
+				} else {
+					return 0;
+				}
 			} else {
 				return null;
 			}

@@ -19,7 +19,7 @@
 			{input questionType}
 		</div>
 
-		<div class="small-12 column" id="reason">
+		<div class="small-12 column" id="{$control->getUniqueId()}-reason">
 			{label reasonRequired: /}
 			{input reasonRequired:}
 		</div>
@@ -30,7 +30,7 @@
 		</div>
 
 
-		<div class="small-12 column" id="choice">
+		<div class="small-12 column" id="{$control->getUniqueId()}-choice">
 			<p><strong>Možnosti</strong></p>
 			{foreach $form['choiceOptions']->containers as $id => $option}
 				<div class="row">
@@ -56,7 +56,7 @@
 			{input choiceOptions-add}
 		</div>
 
-		<div class="small-12 column" id="textQuestion">
+		<div class="small-12 column" id="{$control->getUniqueId()}-textQuestion">
 			<div class="row">
 				<div class="small-12">
 					{label correctAnswer/}

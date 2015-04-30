@@ -158,7 +158,11 @@
 						</div>
 					</div>
 					<div class="content" id="questionEdit">
-						editace
+						{if $questionActivity->getAnswers()->count()}
+							<div class="panel">Na otázku již bylo odpovězeno, nelze ji proto editovat</div>
+						{else}
+							{control questionForm}
+						{/if}
 					</div>
 				</div>
 				<ul class="tabs vertical" data-tab>

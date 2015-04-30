@@ -11,6 +11,7 @@ use App\Controls\IPostsControlFactory;
 use App\Model\Services\LessonService;
 use App\Forms\IAnswerFormFactory;
 use App\Forms\ISubmitTaskFormFactory;
+use App\Forms\IQuestionFormFactory;
 
 class LessonPresenter extends AuthorizedBasePresenter
 {
@@ -42,6 +43,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 	 * @inject
 	 */
 	public $submitTaskFormFactory;
+
+	/**
+	 * @var IQuestionFormFactory
+	 * @inject
+	 */
+	public $questionFormFactory;
 
 	/**
 	 * @var Question
@@ -128,8 +135,9 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->template->questionActivity = $this->question = $question;
 		$this->questionId = $questionId;
 		if ($this->user->isInRole('teacher')) {
-			$data = $this->getDataForChart();
+			$this['questionForm']->setQuestion($question);
 
+			$data = $this->getDataForChart();
 			$this->payload->chartData = json_encode($data);
 		}
 		$this->redrawControl('questionModal');
@@ -158,11 +166,16 @@ class LessonPresenter extends AuthorizedBasePresenter
 
 		$this->em->flush();
 		if ($this->user->isInRole('teacher')) {
-			$data = $this->getDataForChart();
 
+			$data = $this->getDataForChart();
 			$this->payload->chartData = json_encode($data);
 		}
 		$this->redrawControl('questionModal');
+	}
+
+	public function createComponentQuestionForm()
+	{
+		return $this->questionFormFactory->create($this->lesson->getId());
 	}
 
 	public function createComponentAnswerForm()
