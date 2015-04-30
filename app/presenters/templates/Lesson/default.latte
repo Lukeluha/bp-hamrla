@@ -11,11 +11,11 @@
 						{snippet question-$question->id}
 						<a {if $user->isInRole('student')}class="myAjax"{else}class="question"{/if} href="{link loadQuestion! $question->getId()}" data-reveal-id="questionModal">{$question->getQuestionText()}</a>
 						{if $user->isInRole('teacher')}
-							<a href="{link toggleQuestion! $question->getId()}" class="ajax">
+							<a href="{link toggleQuestion! $question->getId()}" class="ajax right">
 							{if $question->isVisible()}
-								<span class="label success right">viditelná</span>
+								<span class="label success">viditelná</span>
 							{else}
-								<span class="label alert right">skrytá</span>
+								<span class="label alert">skrytá</span>
 							{/if}
 							</a>
 						{/if}
@@ -33,13 +33,26 @@
 			<p>Žádné úkoly pro tuto hodinu</p>
 		{else}
 			<ul class="unstyled no-margin">
+				{snippet tasks}
 				{foreach $activities['tasks'] as $task}
 					<li>
-						<a class="myAjax" href="{link loadTask! $task->getId()}" data-reveal-id="taskModal">{$task->getTaskName()}</a>
+						{snippet task-$task->id}
+						<a class="myAjax" href="{link loadTask! $task->getId()}" data-foundation-refresh="true" data-reveal-id="taskModal">{$task->getTaskName()}</a>
+						{if $user->isInRole('teacher')}
+								{if $task->isRunning()}
+									<span class="label success right">spuštěný</span>
+								{else}
+									<a href="{link startTask! $task->id}" class="ajax right" onclick="return confirm('Opravdu chcete spustit úkol nyní?')">
+										<span class="label alert right">naplánován {$task->getStart()|date:"j. n. Y v H:i"}</span>
+									</a>
+								{/if}
+						{/if}
+						{/snippet}
 					</li>
 					<div class="clearfix"></div>
 					{sep}<hr/>{/sep}
 				{/foreach}
+				{/snippet}
 			</ul>
 		{/if}
 		<hr class="white"/>
@@ -184,7 +197,62 @@
 				</div>
 			{else}
 				<p class="lead">{$taskActivity->getTaskName()}</p>
-				{control submitTaskForm}
+				{if $user->isInRole('student')}
+					{control submitTaskForm}
+				{else}
+					<ul class="tabs" data-tab>
+						<li class="tab-title active"><a href="#taskSummary">Odevzdané úkoly</i></a></li>
+						<li class="tab-title"><a href="#taskEdit">Editace úkolu</a></li>
+					</ul>
+					<hr/>
+					<div class="tabs-content">
+						<a href="{link loadTask! $taskActivity->getId()}" class="button right tiny secondary myAjax" data-foundation-refresh="true">
+							<span>
+								<i style="font-size: 20px" class="fi-refresh"></i>
+							</span>
+						</a>
+						<div class="content active" id="taskSummary">
+							{if $taskActivity->getCompletedTasks()->count()}
+								<table class="small-12">
+									<thead>
+									<tr>
+										<th>Jméno a příjmení</th>
+										<th>Datum odevzdání</th>
+										<th>Soubor</th>
+										<th>Hodnocení</th>
+										{if $taskActivity->isStudentRating()}
+											<th>Hodnocení studentů</th>
+										{/if}
+									</tr>
+									</thead>
+									<tbody>
+										{foreach $taskActivity->getCompletedTasks() as $completed}
+											<tr>
+												<td>{$completed->getStudent()->getName()} {$completed->getStudent()->getSurname()}</td>
+												<td>{$completed->getCreated()|date:"j. n. Y v H:i"}</td>
+												<td class="text-center">
+													{if $completed->isImage()}
+													{else}
+														<a href="{$basePath}/{$completed->getFilename()}" target="_blank"><i style="font-size: 30px" class="fi-download"></i></a>
+													{/if}
+												</td>
+												<td>{$completed->getPoints()}</td>
+												{if $taskActivity->isStudentRating()}
+													<td>Hodnocení studentů</td>
+												{/if}
+											</tr>
+										{/foreach}
+									</tbody>
+								</table>
+							{else}
+								<div class="panel">Zatím žádné odevzdané úkoly</div>
+							{/if}
+						</div>
+						<div class="content" id="taskEdit">
+							editace
+						</div>
+					</div>
+				{/if}
 			{/if}
 
 		{/snippet}
@@ -203,9 +271,9 @@
 
 {/block}
 
-{block head}
-	{include parent}
-	{if $user->isInRole('teacher')}
+{if $user->isInRole('teacher')}
+	{block head}
+		{include parent}
 		<script type="text/javascript" src="{$basePath}/js/google.jsapi.js"></script>
 		<script type="text/javascript">
 			google.load("visualization", "1", { packages:["corechart"] });
@@ -319,11 +387,7 @@
 
 					return false;
 				});
-
-
 			})
-
-
 		</script>
-	{/if}
-{/block}
+	{/block}
+{/if}

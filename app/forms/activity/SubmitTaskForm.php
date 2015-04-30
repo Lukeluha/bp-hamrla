@@ -10,6 +10,7 @@ use Nette\Application\UI\Control;
 use App\Model\Entities\Task;
 use Nette\Application\UI\Form;
 use App\Model\Entities\Student;
+use Nette\Utils\Strings;
 
 class SubmitTaskForm extends Control
 {
@@ -76,7 +77,8 @@ class SubmitTaskForm extends Control
 		$lesson = $this->task->getLesson();
 		$schoolYear = $lesson->getTeaching()->getClass()->getSchoolYear();
 
-		$pwd = "files/tasks/" . $schoolYear->getId() . "/" . $lesson->getId() . "/". $this->user->getId() . "-" . $this->task->getId() . "-" . $values['task']->getName();
+
+		$pwd = "files/tasks/" . $schoolYear->getId() . "/" . $lesson->getId() . "/". $this->user->getId() . "-" . $this->task->getId() . "-" . Strings::webalize($this->user->getSurname() . "-".$this->user->getName()) . "." . $this->getFileExtension($values['task']->getName());
 
 		$values['task']->move(WWW_DIR . "/" . $pwd);
 
@@ -97,6 +99,10 @@ class SubmitTaskForm extends Control
 		}
 
 		$this->redirect('this');
+	}
+
+	private function getFileExtension($file_name) {
+		return substr(strrchr($file_name,'.'),1);
 	}
 
 }

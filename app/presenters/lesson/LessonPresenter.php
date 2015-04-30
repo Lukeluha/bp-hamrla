@@ -143,6 +143,19 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('questionModal');
 	}
 
+	public function handleStartTask($taskId)
+	{
+		$task = $this->em->find(Task::getClassName(), $taskId);
+		if (!$task) throw new BadRequestException;
+		$task->setStart(new \DateTime());
+		$this->em->persist($task);
+		$this->em->flush();
+
+		$this->template->tasks = array($taskId => $task);
+
+		$this->redrawControl('tasks');
+	}
+
 	public function handleLoadTask($taskId)
 	{
 		$task = $this->em->find(Task::getClassName(), $taskId);

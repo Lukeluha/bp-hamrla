@@ -34,7 +34,12 @@ $(document).ready(function(){
 
 $(document).on('click', '.myAjax', function(e){
 
-    var request = $.nette.ajax({}, this, e);
+    var request = $.nette.ajax({}, this, e).success(function(){
+		var element = $(e.target);
+		if (element.data('foundation-refresh')) {
+			$(document).foundation();
+		}
+	});
 
 	if (request.readyState) {
 		if ($(this).data('reveal-id')) {

@@ -28,7 +28,7 @@ class TaskCompleted extends BaseEntity
 
 	/**
 	 * @var Task
-	 * @ORM\ManyToOne(targetEntity="Task")
+	 * @ORM\ManyToOne(targetEntity="Task", inversedBy="completedTasks")
 	 * @ORM\JoinColumn(name="task_id")
 	 */
 	protected $task;
@@ -159,6 +159,15 @@ class TaskCompleted extends BaseEntity
 		return $this;
 	}
 
+	/**
+	 * @see Nette\Http\FileUpload
+	 * @return bool
+	 */
+	public function isImage()
+	{
+		$type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), WWW_DIR . '/' . $this->filename);
+		return in_array($type, array('image/gif', 'image/png', 'image/jpeg'), TRUE);
+	}
 
 
 

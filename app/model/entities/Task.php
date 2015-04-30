@@ -2,6 +2,7 @@
 
 namespace App\Model\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Nette\InvalidArgumentException;
 
@@ -64,6 +65,17 @@ class Task extends BaseEntity
 	 */
 	protected $studentRating;
 
+	/**
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="TaskCompleted", mappedBy="task")
+	 */
+	protected $completedTasks;
+
+
+	public function __construct()
+	{
+		$this->completedTasks = new ArrayCollection();
+	}
 
 	/**
 	 * @return string
@@ -186,6 +198,14 @@ class Task extends BaseEntity
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isStudentRating()
+	{
+		return $this->studentRating;
+	}
+
+	/**
 	 * @param boolean $studentRating
 	 * @return $this
 	 */
@@ -213,5 +233,28 @@ class Task extends BaseEntity
 		return $this;
 	}
 
+	public function isRunning()
+	{
+		$now = new \DateTime();
+		return $now >= $this->start;
+	}
+
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getCompletedTasks()
+	{
+		return $this->completedTasks;
+	}
+
+	/**
+	 * @param ArrayCollection $completedTasks
+	 * @return $this
+	 */
+	public function setCompletedTasks($completedTasks)
+	{
+		$this->completedTasks = $completedTasks;
+		return $this;
+	}
 
 }
