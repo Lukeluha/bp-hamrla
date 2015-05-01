@@ -5,7 +5,7 @@
 		</div>
 		<hr/>
 	{/if}
-	<div class="text-center rating small-12" {if $rating->getPoints()}data-rateit-value="{$rating->getPoints()}"{/if}></div>
+	<div class="rating small-12 {if $withImage}text-center{/if}" {if $rating->getPoints()}data-rateit-value="{$rating->getPoints()}"{/if}></div>
 </div>
 <script>
 		var controlId = {$control->getUniqueId()};

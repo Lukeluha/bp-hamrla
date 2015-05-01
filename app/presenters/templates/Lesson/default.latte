@@ -147,10 +147,10 @@
 										<th>Jméno a příjmení</th>
 										<th>Datum odevzdání</th>
 										<th>Soubor</th>
-										<th>Hodnocení</th>
 										{if $taskActivity->isStudentRating()}
 											<th>Hodnocení studentů</th>
 										{/if}
+										<th>Závěrečné hodnocení v %</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -161,18 +161,29 @@
 													<td>{$completed->getCreated()|date:"j. n. Y v H:i"}</td>
 													<td class="text-center">
 														{if $completed->isImage()}
-															<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax">
-																<img src="{$basePath}/{$completed->getFilename()}" alt=""/>
+															<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax" rel="group">
+																<img src="{$basePath}/{$completed->getFilename()}" alt="" width="150"/>
 															</a>
 														{/if}
-														<a href="{$basePath}/{$completed->getFilename()}" target="_blank"><i style="font-size: 30px" class="fi-download"></i></a>
-														<hr/>
-														{control rating-$completed->id false}
+														<div class="row">
+															<div class="small-8 column text-right" style="padding-top:10px">
+																{control rating-$completed->id false}
+															</div>
+															<div class="small-4 column text-left">
+																<a href="{$basePath}/{$completed->getFilename()}" target="_blank"><i style="font-size: 30px" class="fi-download"></i></a>
+															</div>
+														</div>
 													</td>
-													<td>{$completed->getPoints()}</td>
 													{if $taskActivity->isStudentRating()}
 														<td>Hodnocení studentů</td>
 													{/if}
+													<td contenteditable="true" class="taskPoints" data-task-id="{$completed->getId()}">
+														{if $completed->getPoints() === null}
+															<span class="label alert">čeká na ohodnocení</span>
+														{else}
+															{$completed->getPoints()}
+														{/if}
+													</td>
 												</tr>
 											{/foreach}
 										{/snippet}
@@ -183,7 +194,7 @@
 							{/if}
 						</div>
 						<div class="content" id="taskEdit">
-							editace
+							{control taskForm}
 						</div>
 					</div>
 				{/if}
@@ -222,6 +233,7 @@
 					});
 					$(document).foundation();
 				});
+
 
 				$('.fancybox').fancybox();
 
@@ -263,6 +275,42 @@
 					}
 				})
 
+				var prevDataTaskPoints = '';
+
+				$(document).on('focus', '.taskPoints', function() {
+					if ($(this).html().indexOf('label') > -1) {
+						prevDataTaskPoints = $(this).html();
+						$(this).html('');
+					} else {
+						prevDataTaskPoints = parseInt($(this).text().trim());
+					}
+				});
+
+				$(document).on('blur', '.taskPoints', function() {
+					var data = parseInt($(this).text().trim());
+					if (data != prevDataTaskPoints) {
+						if (data < 0 || data > 100) {
+							alert('Úspěšnost musí být mezi 0 - 100 %');
+							$(this).html(prevDataTaskPoints);
+							return false;
+						} else if (isNaN(data)) {
+
+							alert('Úspěšnost musí být číslo');
+							$(this).html(prevDataTaskPoints);
+							return false;
+						}
+						var id = $(this).data('task-id');
+						$.post({link editTask!}, { taskId: id, points: data}).error(function() {
+							alert('Nepodařilo se uložit úspěšnost');
+						}).success(function(e) {
+							$(document).foundation();
+						});
+						$(this).text(data);
+
+					} else {
+						$(this).text(prevDataTaskPoints);
+					}
+				});
 
 
 			})

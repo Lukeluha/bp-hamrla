@@ -22,6 +22,11 @@ class TaskForm extends Control
 	 */
 	protected $em;
 
+	/**
+	 * @var Task
+	 */
+	protected $task;
+
 	public function __construct($lessonId, EntityManager $em)
 	{
 		$this->em = $em;
@@ -43,7 +48,7 @@ class TaskForm extends Control
 		$form->addText("start", "Spuštění úkolu (pokud nezadáte nic, úkol bude spuštěný ihned)")->setAttribute('class', 'fdatetimepicker');
 		$form->addSelect('limitType', "Typ limitu",
 							array(0 => "Žádný", Task::LIMIT_NO_STRICT => "Volný", Task::LIMIT_STRICT => "Striktní"))
-							->addCondition(Form::NOT_EQUAL, 0)->toggle('taskEnd');
+							->addCondition(Form::NOT_EQUAL, 0)->toggle($this->getUniqueId() . '-taskEnd');
 
 		$form->addText("end", "Termín odevzdání")
 			->setAttribute('class', 'fdatetimepicker')
@@ -106,6 +111,24 @@ class TaskForm extends Control
 
 		$this->redirect('this');
 
+	}
+
+	public function setTask(Task $task)
+	{
+		$this->task = $task;
+
+		$defaults = array(
+			'taskName' => $task->getTaskName(),
+			'taskText' => $task->getTaskText(),
+			'start' => $task->getStart()->format("j. n. Y H:i"),
+			'end' => $task->getEnd()->format("j. n. Y H:i"),
+			'limitType' => $task->getLimit(),
+			'studentRating' => $task->getStudentRating(),
+			'taskId' => $task->getId()
+		);
+
+		$this['form']->setDefaults($defaults);
+		return $this;
 	}
 
 }

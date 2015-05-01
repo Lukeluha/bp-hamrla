@@ -7,6 +7,7 @@ use App\Model\Entities\Answer;
 use App\Model\Entities\Lesson;
 use App\Model\Entities\Question;
 use App\Model\Entities\Task;
+use App\Model\Entities\TaskCompleted;
 use Nette\Application\BadRequestException;
 use App\Controls\IPostsControlFactory;
 use App\Model\Services\LessonService;
@@ -16,6 +17,7 @@ use App\Forms\IQuestionFormFactory;
 use App\Controls\IRatingControlFactory;
 use Nette\Application\UI\Multiplier;
 use App\Controls\IQuestionSummaryControlFactory;
+use App\Forms\ITaskFormFactory;
 
 class LessonPresenter extends AuthorizedBasePresenter
 {
@@ -65,6 +67,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 	 * @inject
 	 */
 	public $ratingControlFactory;
+
+	/**
+	 * @var ITaskFormFactory
+	 * @inject
+	 */
+	public $taskFormFactory;
 
 	/**
 	 * @var Question
@@ -172,8 +180,21 @@ class LessonPresenter extends AuthorizedBasePresenter
 
 		if (!$task) throw new BadRequestException;
 
+		$this['taskForm']->setTask($task);
+
 		$this->template->taskActivity = $this->task = $task;
 		$this->taskId = $taskId;
+		$this->redrawControl('taskModal');
+	}
+
+	public function handleEditTask()
+	{
+		$post = $this->getHttpRequest()->getPost();
+
+		$task = $this->em->find(TaskCompleted::getClassName(), $post['taskId']);
+		$task->setPoints($post['points']);
+		$this->em->flush();
+
 		$this->redrawControl('taskModal');
 	}
 
@@ -186,6 +207,11 @@ class LessonPresenter extends AuthorizedBasePresenter
 	public function createComponentQuestionForm()
 	{
 		return $this->questionFormFactory->create($this->lesson->getId());
+	}
+
+	public function createComponentTaskForm()
+	{
+		return $this->taskFormFactory->create($this->lesson->getId());
 	}
 
 	public function createComponentQuestionSummary()

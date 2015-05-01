@@ -10,13 +10,9 @@ $(document).ready(function(){
         return false;
     })
 
-	$('.fdatetimepicker').fdatetimepicker({
-		language: 'cs',
-		format: 'd. m. yyyy h:ii',
-		closeButton:false
-	}).on('keydown', function(){
-		return false;
-	})
+	initDateTimePicker();
+
+	$(document).ajaxComplete(initDateTimePicker);
 
     $(".chat-text").niceScroll();
     $("#chat").niceScroll();
@@ -29,6 +25,16 @@ $(document).ready(function(){
     }
 
 })
+
+function initDateTimePicker(){
+	$('.fdatetimepicker').fdatetimepicker({
+		language: 'cs',
+		format: 'd. m. yyyy h:ii',
+		closeButton:false
+	}).on('keydown', function(){
+		return false;
+	})
+}
 
 
 
