@@ -1,0 +1,25 @@
+<div id="{$control->getUniqueId()}">
+	{if $withImage}
+		<div class="small-12 text-center">
+			<img src="{$basePath}/{$task->getFilename()}" alt=""/>
+		</div>
+		<hr/>
+	{/if}
+	<div class="text-center rating small-12" {if $rating->getPoints()}data-rateit-value="{$rating->getPoints()}"{/if}></div>
+</div>
+<script>
+		var controlId = {$control->getUniqueId()};
+		$("#" + controlId + " .rating").rateit();
+		$("#" + controlId + " .rating").on('rated', updatePoints);
+		$("#" + controlId + " .rating").on('reset', updatePoints);
+
+		function updatePoints(event, value) {
+			$.get({link rate!}, { points: value });
+		}
+</script>
+
+<style>
+	.rateit button.rateit-reset {
+		float:none;
+	}
+</style>

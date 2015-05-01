@@ -15,7 +15,6 @@ class TemplateFilters extends Object
 	/**
 	 * @param $imgPath string
 	 * @param $width int
-	 * @param $height int
 	 * @return string Path to new image with given resolution
 	 */
 	public static function image($imgPath, $width = null)

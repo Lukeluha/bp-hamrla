@@ -26,6 +26,7 @@ services:
 	- App\Controls\IMenuControlFactory
 	- App\Controls\IPostsControlFactory
 	- App\Controls\INewActivityControlFactory
+	- App\Controls\IRatingControlFactory
 	- App\Forms\IQuestionFormFactory
 	- App\Forms\ITaskFormFactory
 	- App\Forms\IStudentFormFactory

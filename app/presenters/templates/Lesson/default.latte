@@ -226,22 +226,28 @@
 									</tr>
 									</thead>
 									<tbody>
-										{foreach $taskActivity->getCompletedTasks() as $completed}
-											<tr>
-												<td>{$completed->getStudent()->getName()} {$completed->getStudent()->getSurname()}</td>
-												<td>{$completed->getCreated()|date:"j. n. Y v H:i"}</td>
-												<td class="text-center">
-													{if $completed->isImage()}
-													{else}
+										{snippet completedTasks}
+											{foreach $taskActivity->getCompletedTasks() as $completed}
+												<tr>
+													<td>{$completed->getStudent()->getName()} {$completed->getStudent()->getSurname()}</td>
+													<td>{$completed->getCreated()|date:"j. n. Y v H:i"}</td>
+													<td class="text-center">
+														{if $completed->isImage()}
+															<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax">
+																<img src="{$basePath}/{$completed->getFilename()}" alt=""/>
+															</a>
+														{/if}
 														<a href="{$basePath}/{$completed->getFilename()}" target="_blank"><i style="font-size: 30px" class="fi-download"></i></a>
+														<hr/>
+														{control rating-$completed->id false}
+													</td>
+													<td>{$completed->getPoints()}</td>
+													{if $taskActivity->isStudentRating()}
+														<td>Hodnocení studentů</td>
 													{/if}
-												</td>
-												<td>{$completed->getPoints()}</td>
-												{if $taskActivity->isStudentRating()}
-													<td>Hodnocení studentů</td>
-												{/if}
-											</tr>
-										{/foreach}
+												</tr>
+											{/foreach}
+										{/snippet}
 									</tbody>
 								</table>
 							{else}
@@ -288,6 +294,8 @@
 					});
 					$(document).foundation();
 				});
+
+				$('.fancybox').fancybox();
 
 
 				CKEDITOR.disableAutoInline = true;

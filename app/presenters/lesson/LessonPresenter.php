@@ -12,6 +12,8 @@ use App\Model\Services\LessonService;
 use App\Forms\IAnswerFormFactory;
 use App\Forms\ISubmitTaskFormFactory;
 use App\Forms\IQuestionFormFactory;
+use App\Controls\IRatingControlFactory;
+use Nette\Application\UI\Multiplier;
 
 class LessonPresenter extends AuthorizedBasePresenter
 {
@@ -49,6 +51,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 	 * @inject
 	 */
 	public $questionFormFactory;
+
+	/**
+	 * @var IRatingControlFactory
+	 * @inject
+	 */
+	public $ratingControlFactory;
 
 	/**
 	 * @var Question
@@ -186,6 +194,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('questionModal');
 	}
 
+	public function actionRating($taskId, $withImage = false)
+	{
+		$this->template->taskId = $taskId;
+		$this->template->withImage = $withImage;
+	}
+
 	public function createComponentQuestionForm()
 	{
 		return $this->questionFormFactory->create($this->lesson->getId());
@@ -211,9 +225,23 @@ class LessonPresenter extends AuthorizedBasePresenter
 		return $this->submitTaskFormFactory->create($this->user->getId(), $this->task);
 	}
 
+
 	public function createComponentPosts()
 	{
 		return $this->postFactory->create($this->user, $this->lesson);
+	}
+
+	public function createComponentRating()
+	{
+		$that = $this;
+		return new Multiplier(function ($taskId) use ($that){
+			$ratingControl = $that->ratingControlFactory->create($that->user->getId());
+			$ratingControl->setTask($taskId);
+			$ratingControl->onChange[] = function($rating, $taskId) {
+				$this->redrawControl('completedTasks');
+			};
+			return $ratingControl;
+		});
 	}
 
 	public function checkUser()
