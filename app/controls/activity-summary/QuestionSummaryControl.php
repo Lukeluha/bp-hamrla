@@ -8,6 +8,7 @@ use App\Model\Entities\Answer;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use App\Model\Entities\Question;
+use Nette\Application\UI\Form;
 
 class QuestionSummaryControl extends Control
 {
@@ -66,6 +67,10 @@ class QuestionSummaryControl extends Control
 	{
 		$questionForm = $this->questionFormFactory->create($this->question->getLesson()->getId(), $this, 'questionForm');
 		$questionForm->setQuestion($this->question);
+		$that = $this;
+		$questionForm->onSave[] = function(Form $form) use ($that) {
+			$that->redirect('this');
+		};
 
 		return $questionForm;
 	}

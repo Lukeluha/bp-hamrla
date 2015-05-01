@@ -35,6 +35,11 @@ class QuestionForm extends Control
 	 */
 	protected $question;
 
+	/**
+	 * @var array
+	 */
+	public $onSave = array();
+
 	public function __construct($lessonId, IContainer $parent = null, $name = "", EntityManager $em)
 	{
 		parent::__construct($parent, $name);
@@ -199,6 +204,9 @@ class QuestionForm extends Control
 			$this->presenter->flashMessage("Otázka byla úspěšně uložena", 'success');
 		}
 
+
+		$this->onSave($form);
+		$this->redirect('this');
 	}
 
 	public function setQuestion(Question $question)

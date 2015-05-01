@@ -35,7 +35,7 @@ class RatingControl extends Control
 	/**
 	 * @var array
 	 */
-	public $onChange;
+	public $onChange = array();
 
 
 	public function __construct($userId, EntityManager $entityManager)
@@ -75,7 +75,7 @@ class RatingControl extends Control
 
 		$this->em->persist($this->rating);
 		$this->em->flush();
-//		$this->onChange($this, $this->task->getId());
+		$this->onChange($this);
 	}
 
 }

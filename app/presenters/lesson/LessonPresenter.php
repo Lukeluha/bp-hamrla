@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use App\Controls\RatingControl;
 use App\Model\Entities\Answer;
 use App\Model\Entities\Lesson;
 use App\Model\Entities\Question;
@@ -194,15 +195,6 @@ class LessonPresenter extends AuthorizedBasePresenter
 			$questionSummary->setQuestion($this->questionId);
 		}
 		return $questionSummary;
-
-//		$that = $this;
-//		return new Multiplier(function ($questionId) use ($that) {
-//			$questionSummary = $that->questionSummaryFactory->create();
-//			$questionSummary->setQuestion($questionId);
-//
-//			return $questionSummary;
-//		});
-
 	}
 
 	public function createComponentAnswerForm()
@@ -237,8 +229,8 @@ class LessonPresenter extends AuthorizedBasePresenter
 		return new Multiplier(function ($taskId) use ($that){
 			$ratingControl = $that->ratingControlFactory->create($that->user->getId());
 			$ratingControl->setTask($taskId);
-			$ratingControl->onChange[] = function($rating, $taskId) {
-				$this->redrawControl('completedTasks');
+			$ratingControl->onChange[] = function(RatingControl $rating) use ($that){
+				$that->redrawControl('completedTasks');
 			};
 			return $ratingControl;
 		});
