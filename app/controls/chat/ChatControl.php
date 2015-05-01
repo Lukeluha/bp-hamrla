@@ -35,6 +35,7 @@ class ChatControl extends Control
 
 	public function __construct(User $user, SchoolYear $actualYear, EntityManager $em)
 	{
+		parent::__construct();
 		$this->em = $em;
 		$this->user = $user;
 		$this->actualYear = $actualYear;

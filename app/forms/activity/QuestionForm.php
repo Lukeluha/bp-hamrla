@@ -10,6 +10,7 @@ use App\Model\FoundationRenderer;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
+use Nette\ComponentModel\IContainer;
 use Nette\Forms\Container;
 use Nette\Forms\Controls\SubmitButton;
 
@@ -34,15 +35,16 @@ class QuestionForm extends Control
 	 */
 	protected $question;
 
-	public function __construct($lessonId, EntityManager $em)
+	public function __construct($lessonId, IContainer $parent = null, $name = "", EntityManager $em)
 	{
+		parent::__construct($parent, $name);
 		$this->lessonId = $lessonId;
 		$this->em = $em;
 	}
 
 	public function createComponentForm()
 	{
-		$form = new Form();
+		$form = new Form($this, 'form');
 
 		$form->addText('questionText', 'Text otázky')->setRequired('Vyplňte text otázky');
 
@@ -156,9 +158,9 @@ class QuestionForm extends Control
 			return;
 		}
 
+
 		if ($values['questionType'] == 'text') {
 			$question->setCorrectTextAnswer($values['correctAnswer']);
-
 			try {
 				$this->em->persist($question);
 				$this->em->flush();
@@ -187,8 +189,6 @@ class QuestionForm extends Control
 					$this->em->persist($optionEntity);
 					$this->em->flush();
 				} catch (\Exception $e) {
-					throw $e;
-
 					$this->presenter->flashMessage('Nepodařilo se uložit otázku.', 'alert');
 					$this->em->rollback();
 					return;
@@ -199,7 +199,6 @@ class QuestionForm extends Control
 			$this->presenter->flashMessage("Otázka byla úspěšně uložena", 'success');
 		}
 
-		$this->redirect('this');
 	}
 
 	public function setQuestion(Question $question)
@@ -210,6 +209,7 @@ class QuestionForm extends Control
 		$defaults['questionText'] = $question->getQuestionText();
 		$defaults['questionType'] = $question->getQuestionType();
 		$defaults['questionId'] = $question->getId();
+
 
 		if ($question->getQuestionType() == Question::TYPE_TEXT) {
 			$defaults['correctAnswer'] = $question->getCorrectTextAnswer();
@@ -226,11 +226,9 @@ class QuestionForm extends Control
 				));
 				$i++;
 			}
-
 		}
 
 		$this['form']->setDefaults($defaults);
-
 	}
 
 	public function validateRightAnswers(Form $form)

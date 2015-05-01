@@ -14,6 +14,7 @@ use App\Forms\ISubmitTaskFormFactory;
 use App\Forms\IQuestionFormFactory;
 use App\Controls\IRatingControlFactory;
 use Nette\Application\UI\Multiplier;
+use App\Controls\IQuestionSummaryControlFactory;
 
 class LessonPresenter extends AuthorizedBasePresenter
 {
@@ -51,6 +52,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 	 * @inject
 	 */
 	public $questionFormFactory;
+
+	/**
+	 * @var IQuestionSummaryControlFactory
+	 * @inject
+	 */
+	public $questionSummaryFactory;
 
 	/**
 	 * @var IRatingControlFactory
@@ -141,13 +148,7 @@ class LessonPresenter extends AuthorizedBasePresenter
 		if (!$question) throw new BadRequestException;
 
 		$this->template->questionActivity = $this->question = $question;
-		$this->questionId = $questionId;
-		if ($this->user->isInRole('teacher')) {
-			$this['questionForm']->setQuestion($question);
-
-			$data = $this->getDataForChart();
-			$this->payload->chartData = json_encode($data);
-		}
+		$this['questionSummary']->setQuestion($this->question);
 		$this->redrawControl('questionModal');
 	}
 
@@ -175,25 +176,6 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('taskModal');
 	}
 
-	public function handleEditAnswer()
-	{
-		$post = $this->getHttpRequest()->getPost();
-
-		$answer = $this->em->find(Answer::getClassName(), $post['answerId']);
-		$answer->setPoints($post['points']);
-
-		$question = $this->em->find(Question::getClassName(), $answer->getQuestion()->getId());
-		$this->question = $question;
-
-		$this->em->flush();
-		if ($this->user->isInRole('teacher')) {
-
-			$data = $this->getDataForChart();
-			$this->payload->chartData = json_encode($data);
-		}
-		$this->redrawControl('questionModal');
-	}
-
 	public function actionRating($taskId, $withImage = false)
 	{
 		$this->template->taskId = $taskId;
@@ -203,6 +185,24 @@ class LessonPresenter extends AuthorizedBasePresenter
 	public function createComponentQuestionForm()
 	{
 		return $this->questionFormFactory->create($this->lesson->getId());
+	}
+
+	public function createComponentQuestionSummary()
+	{
+		$questionSummary = $this->questionSummaryFactory->create();
+		if ($this->questionId) {
+			$questionSummary->setQuestion($this->questionId);
+		}
+		return $questionSummary;
+
+//		$that = $this;
+//		return new Multiplier(function ($questionId) use ($that) {
+//			$questionSummary = $that->questionSummaryFactory->create();
+//			$questionSummary->setQuestion($questionId);
+//
+//			return $questionSummary;
+//		});
+
 	}
 
 	public function createComponentAnswerForm()
@@ -252,16 +252,5 @@ class LessonPresenter extends AuthorizedBasePresenter
 				$this->redirect('Homepage:default');
 			}
 		}
-	}
-
-	public function getDataForChart()
-	{
-		$successData = $this->em->getRepository(Answer::getClassName())->getDataForChart($this->question);
-		$data = array(0 => array('Úspěšnost v %', 'Počet'));
-		foreach ($successData as $points) {
-			$data[] = array((string)$points['points'] . ' %', (int) $points['cnt']);
-		}
-
-		return $data;
 	}
 }
