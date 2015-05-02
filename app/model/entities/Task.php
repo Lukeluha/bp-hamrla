@@ -30,10 +30,10 @@ class Task extends BaseEntity
 	protected $taskText;
 
 	/**
-	 * @var \DateTime
-	 * @ORM\Column(type="datetime")
+	 * @var boolean
+	 * @ORM\Column(type="integer")
 	 */
-	protected $start;
+	protected $visible;
 
 	/**
 	 * @var \DateTime
@@ -95,23 +95,6 @@ class Task extends BaseEntity
 		return $this;
 	}
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getStart()
-	{
-		return $this->start;
-	}
-
-	/**
-	 * @param \DateTime $start
-	 * @return $this
-	 */
-	public function setStart($start)
-	{
-		$this->start = $start;
-		return $this;
-	}
 
 	/**
 	 * @return \DateTime
@@ -233,11 +216,6 @@ class Task extends BaseEntity
 		return $this;
 	}
 
-	public function isRunning()
-	{
-		$now = new \DateTime();
-		return $now >= $this->start;
-	}
 
 	/**
 	 * @return ArrayCollection
@@ -256,5 +234,30 @@ class Task extends BaseEntity
 		$this->completedTasks = $completedTasks;
 		return $this;
 	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getVisible()
+	{
+		return $this->visible;
+	}
+
+	/**
+	 * @param boolean $visible
+	 * @return $this
+	 */
+	public function setVisible($visible)
+	{
+		$this->visible = $visible;
+		return $this;
+	}
+
+	public function isVisible()
+	{
+		return $this->visible;
+	}
+
+
 
 }

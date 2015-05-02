@@ -10,17 +10,18 @@
 	</p>
 
 	<p>
-		{label start /}
-		{input start}
+		{label visible /}
+		{input visible}
 	</p>
 
 
 	<p>
 		{label limitType class => "left" /}&nbsp;
-		<i data-tooltip aria-haspopup="true" class="fi-info cursor-pointer"
-		   title="<strong>žádný</strong> - není žádný limit pro odevzdání<br/><strong>volný</strong> - studenti mohou odevzdávat i po limitu, v závěrečném zhodnocení budou tito studenti označeni<br /><strong>striktní</strong> - studenti nebudou moci odevzdat po uplynutí limitu"></i>
+		<i class="fi-info cursor-pointer" id="tooltip-limit"></i>
 		{input limitType}
 	</p>
+
+
 
 	<div id="{$control->getUniqueId()}-taskEnd">
 		<p>

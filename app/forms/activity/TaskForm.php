@@ -45,7 +45,7 @@ class TaskForm extends Control
 		$form = new Form();
 		$form->addText('taskName', "Název úkolu")->setRequired('Zadejte název úkolu');
 		$form->addTextArea('taskText', 'Zadání úkolu', null, 5);
-		$form->addText("start", "Spuštění úkolu (pokud nezadáte nic, úkol bude spuštěný ihned)")->setAttribute('class', 'fdatetimepicker');
+		$form->addCheckbox('visible', "Ihned vidiltený?");
 		$form->addSelect('limitType', "Typ limitu",
 							array(0 => "Žádný", Task::LIMIT_NO_STRICT => "Volný", Task::LIMIT_STRICT => "Striktní"))
 							->addCondition(Form::NOT_EQUAL, 0)->toggle($this->getUniqueId() . '-taskEnd');
@@ -78,13 +78,8 @@ class TaskForm extends Control
 
 		$task->setTaskName($values['taskName'])
 			->setTaskText($values['taskText'])
-			->setLesson($this->em->getReference(Lesson::getClassName(), $this->lessonId));
-
-		if ($values['start']) {
-			$task->setStart(\DateTime::createFromFormat('j. n. Y H:i', $values['start']));
-		} else {
-			$task->setStart(new \DateTime());
-		}
+			->setLesson($this->em->getReference(Lesson::getClassName(), $this->lessonId))
+			->setVisible($values['visible']);
 
 		if ($values['limitType']) {
 			$task->setLimit($values['limitType'])->setEnd(\DateTime::createFromFormat("j. n. Y H:i", $values['end']));
@@ -120,7 +115,7 @@ class TaskForm extends Control
 		$defaults = array(
 			'taskName' => $task->getTaskName(),
 			'taskText' => $task->getTaskText(),
-			'start' => $task->getStart()->format("j. n. Y H:i"),
+			'visible' => $task->getVisible(),
 			'end' => $task->getEnd()->format("j. n. Y H:i"),
 			'limitType' => $task->getLimit(),
 			'studentRating' => $task->getStudentRating(),

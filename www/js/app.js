@@ -24,6 +24,10 @@ $(document).ready(function(){
         var init = new Switchery(elem, {color: '#008CBA'});
     }
 
+	$('#tooltip-limit').tooltipster({
+		content: $('<span><strong>žádný</strong> - není žádný limit pro odevzdání<br/><strong>volný</strong> - studenti mohou odevzdávat i po limitu, v závěrečném zhodnocení budou tito studenti označeni<br /><strong>striktní</strong> - studenti nebudou moci odevzdat po uplynutí limitu</span>')
+	});
+
 	$(document).ajaxComplete(function(){
 		$(".rateit").rateit();
 	})

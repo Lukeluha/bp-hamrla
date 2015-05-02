@@ -39,13 +39,13 @@
 						{snippet task-$task->id}
 						<a class="myAjax" href="{link loadTask! $task->getId()}" data-foundation-refresh="true" data-reveal-id="taskModal">{$task->getTaskName()}</a>
 						{if $user->isInRole('teacher')}
-								{if $task->isRunning()}
-									<span class="label success right">spuštěný</span>
+							<a href="{link toggleTask! $task->getId()}" class="ajax right">
+								{if $task->isVisible()}
+									<span class="label success right">viditelný</span>
 								{else}
-									<a href="{link startTask! $task->id}" class="ajax right" onclick="return confirm('Opravdu chcete spustit úkol nyní?')">
-										<span class="label alert right">naplánován {$task->getStart()|date:"j. n. Y v H:i"}</span>
-									</a>
+									<span class="label alert right">skrytý</span>
 								{/if}
+								</a>
 						{/if}
 						{/snippet}
 					</li>
