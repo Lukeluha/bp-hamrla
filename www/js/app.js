@@ -1,40 +1,34 @@
 $(document).ready(function(){
-    $(document).foundation();
-    $.nette.init();
+	$.nette.init();
 
+	init();
 
-    $('.fdatepicker').fdatepicker({
-        language: 'cz',
-        format: 'd. m. yyyy'
-    }).on('keydown', function(){
-        return false;
-    })
+	var elem = document.querySelector('input.switcher');
+	if (elem !== null) {
+		var switchery = new Switchery(elem, {color: '#008CBA'});
+	}
 
-	initDateTimePicker();
+	$(".chat-text").niceScroll();
+	$("#chat").niceScroll();
 
-	$(document).ajaxComplete(initDateTimePicker);
+	autosize($('.autosize'));
 
-    $(".chat-text").niceScroll();
-    $("#chat").niceScroll();
-
-    autosize($('.autosize'));
-
-    var elem = document.querySelector('input.switcher');
-    if (elem !== null) {
-        var init = new Switchery(elem, {color: '#008CBA'});
-    }
-
-	$('#tooltip-limit').tooltipster({
-		content: $('<span><strong>žádný</strong> - není žádný limit pro odevzdání<br/><strong>volný</strong> - studenti mohou odevzdávat i po limitu, v závěrečném zhodnocení budou tito studenti označeni<br /><strong>striktní</strong> - studenti nebudou moci odevzdat po uplynutí limitu</span>')
-	});
-
-	$(document).ajaxComplete(function(){
-		$(".rateit").rateit();
-	})
+	$(document).ajaxComplete(init);
 
 })
 
-function initDateTimePicker(){
+
+
+function init(){
+	$(document).foundation();
+
+	$('.fdatepicker').fdatepicker({
+		language: 'cz',
+		format: 'd. m. yyyy'
+	}).on('keydown', function(){
+		return false;
+	})
+
 	$('.fdatetimepicker').fdatetimepicker({
 		language: 'cs',
 		format: 'd. m. yyyy h:ii',
@@ -42,8 +36,16 @@ function initDateTimePicker(){
 	}).on('keydown', function(){
 		return false;
 	})
-}
 
+	$(".rateit").rateit();
+
+
+	$('.tooltip-limit').tooltipster({
+		content: $('<span><strong>žádný</strong> - není žádný limit pro odevzdání<br/><strong>volný</strong> - studenti mohou odevzdávat i po limitu, v závěrečném zhodnocení budou tito studenti označeni<br /><strong>striktní</strong> - studenti nebudou moci odevzdat po uplynutí limitu</span>')
+	});
+
+
+}
 
 
 $(document).on('click', '.myAjax', function(e){
