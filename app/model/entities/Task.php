@@ -68,6 +68,7 @@ class Task extends BaseEntity
 	/**
 	 * @var ArrayCollection
 	 * @ORM\OneToMany(targetEntity="TaskCompleted", mappedBy="task")
+	 * @ORM\OrderBy({"points" = "DESC"})
 	 */
 	protected $completedTasks;
 

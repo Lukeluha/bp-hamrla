@@ -232,9 +232,6 @@
 
 									{var $count = $taskActivity->getCompletedImageTasksCount()}
 									{if $count}
-									{*<div class="small-12 column">*}
-										{*<span class="button" onclick="startPresentation(0)">Spustit prezentaci <span class="sliderOutput3"></span> nejlepších prací dle mého hodnocení</span>*}
-									{*</div>*}
 										<div class="small-12 column">
 											<div class="row">
 												<div class="small-12 columns">
@@ -248,7 +245,7 @@
 										</div>
 
 										<div class="small-12 column">
-											<span class="button" id="taskPresentationLabel" onclick="startPresentation(1)">Spustit prezentaci <span id="sliderOutput3"></span> nejlepších prací dle hodnocení studentů</span>
+											<span class="button" id="taskPresentationLabel" onclick="startPresentation()">Spustit prezentaci <span id="sliderOutput3"></span> nejlepších prací dle hodnocení studentů</span>
 										</div>
 									{/if}
 								</div>
@@ -283,12 +280,14 @@
 								{if isset($historyTasks)}
 									<hr/>
 									{if count($historyTasks)}
+									{var $presentation = false}
 										{foreach $historyTasks as $historyTask}
 											<div class="small-3 column text-center left">
 												{if $historyTask->isImage()}
-													<a href="#" class="fancybox" rel="historyGroup">
-														<img src="{$basePath}/{$historyTask->getFilename()}" alt="" width="150"/>
+													<a href="{$basePath}/{$historyTask->getFilename('web')}" class="fancybox historyTaskImage" rel="historyGroup">
+														<img src="{$basePath}/{$historyTask->getFilename('thumbnail')}" alt="" width="150"/>
 													</a>
+													{var $presentation = true}
 												{/if}
 												<br/>
 												<p>
@@ -300,9 +299,20 @@
 											</div>
 										{/foreach}
 										<hr/>
-										<div class="small-12 column">
-											<span class="button" onclick="startPresentation(1)">Spustit prezentaci</span>
-										</div>
+										{if $presentation}
+											<div class="small-12 column">
+												<span class="button" onclick="startHistoryPresentation()">Spustit prezentaci</span>
+											</div>
+										{/if}
+
+										<script>
+											function startHistoryPresentation() {
+												$.fancybox.open($(".historyTaskImage"), {
+													autoPlay: true,
+													playSpeed: 5000
+												});
+											}
+										</script>
 									{else}
 										<div class="panel">Nenalezeny žádné práce</div>
 									{/if}
@@ -338,18 +348,12 @@
 		<script type="text/javascript">
 			google.load("visualization", "1", { packages:["corechart"] });
 
-			function startPresentation(students){
+			function startPresentation(){
 				var allTasks = [];
 
-				if (students) {
-					$(".student-rating span.rateit").each(function () {
-						allTasks.push([$(this).data("task-id"), $(this).data('rateit-value')]);
-					});
-				} else {
-					$(".my-rating div.rateit-range").each(function () {
-						allTasks.push([$(this).data("task-id"), $(this).data('rateit-value')]);
-					});
-				}
+				$(".student-rating span.rateit").each(function () {
+					allTasks.push([$(this).data("task-id"), $(this).data('rateit-value')]);
+				});
 
 				allTasks.sort(function(a, b) { return a[1] < b[1] });
 
