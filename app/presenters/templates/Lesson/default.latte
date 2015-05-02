@@ -127,6 +127,21 @@
 				<p class="lead">{$taskActivity->getTaskName()}</p>
 				{if $user->isInRole('student')}
 					{control submitTaskForm}
+					{if $taskActivity->isStudentRating()}
+						<p class="lead">Hodnocení ostatních prací</p>
+						{foreach $taskActivity->getCompletedTasks() as $completed}
+							<div class="small-3 column text-center left">
+								{if $completed->isImage()}
+									<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax" rel="group">
+										<img src="{$basePath}/{$completed->getFilename()}" alt="" width="150"/>
+									</a>
+									<div class="text-center" style="padding-top:10px">
+										{control rating-$completed->id false}
+									</div>
+								{/if}
+							</div>
+						{/foreach}
+					{/if}
 				{else}
 					<ul class="tabs" data-tab>
 						<li class="tab-title active"><a href="#taskSummary">Odevzdané úkoly</i></a></li>
@@ -139,6 +154,7 @@
 								<i style="font-size: 20px" class="fi-refresh"></i>
 							</span>
 						</a>
+						<div class="clearfix"></div>
 						<div class="content active" id="taskSummary">
 							{if $taskActivity->getCompletedTasks()->count()}
 								<table class="small-12">
@@ -159,10 +175,10 @@
 												<tr>
 													<td>{$completed->getStudent()->getName()} {$completed->getStudent()->getSurname()}</td>
 													<td>{$completed->getCreated()|date:"j. n. Y v H:i"}</td>
-													<td class="text-center">
+													<td class="text-center my-rating">
 														{if $completed->isImage()}
 															<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax" rel="group">
-																<img src="{$basePath}/{$completed->getFilename()}" alt="" width="150"/>
+																<img src="{$basePath}/{$completed->getFilename()}" alt="" width="150" id="task-photo-{$completed->id}" />
 															</a>
 														{/if}
 														<div class="row">
@@ -175,7 +191,20 @@
 														</div>
 													</td>
 													{if $taskActivity->isStudentRating()}
-														<td>Hodnocení studentů</td>
+														{var $studentRating = $completed->getStudentRating()}
+														<td class="text-center student-rating">
+															{if $studentRating === null}
+																zatím žádné hodnocení
+															{else}
+																<span
+																		class="rateit"
+																		data-rateit-value="{$studentRating}"
+																		data-rateit-readonly="true"
+																		data-task-id="{$completed->getId()}">
+																</span>
+																<br/>{$studentRating}
+															{/if}
+														</td>
 													{/if}
 													<td contenteditable="true" class="taskPoints" data-task-id="{$completed->getId()}">
 														{if $completed->getPoints() === null}
@@ -189,6 +218,27 @@
 										{/snippet}
 									</tbody>
 								</table>
+								{if $taskActivity->isStudentRating()}
+								<div class="row">
+										<div class="small-12 column">
+											<span class="button" onclick="startPresentation(1)">Spustit prezentaci <span class="sliderOutput3"></span> nejlepších prací dle hodnocení studentů</span>
+										</div>
+
+									{*<div class="small-12 column">*}
+										{*<span class="button" onclick="startPresentation(0)">Spustit prezentaci <span class="sliderOutput3"></span> nejlepších prací dle mého hodnocení</span>*}
+									{*</div>*}
+									<div class="small-12 column">
+										<div class="row">
+											<div class="small-12 columns">
+												<div class="range-slider" data-slider data-options="display_selector: .sliderOutput3;initial:5;start:1">
+													<span class="range-slider-handle" role="slider" tabindex="0"></span>
+													<span class="range-slider-active-segment"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								{/if}
 							{else}
 								<div class="panel">Zatím žádné odevzdané úkoly</div>
 							{/if}
@@ -222,6 +272,43 @@
 		<script type="text/javascript" src="{$basePath}/js/google.jsapi.js"></script>
 		<script type="text/javascript">
 			google.load("visualization", "1", { packages:["corechart"] });
+
+			function startPresentation(students){
+				var allTasks = [];
+
+				if (students) {
+					$(".student-rating span.rateit").each(function () {
+						allTasks.push([$(this).data("task-id"), $(this).data('rateit-value')]);
+					});
+				} else {
+					$(".my-rating div.rateit-range").each(function () {
+						allTasks.push([$(this).data("task-id"), $(this).data('rateit-value')]);
+					});
+				}
+
+				allTasks.sort(function(a, b) { return a[1] < b[1] });
+
+				var toPresentation = [];
+				var cnt = parseInt($("#sliderOutput3").text());
+				for (var i = 0; i < allTasks.length; i++) {
+					if (i >= cnt) {
+						break;
+					}
+
+					toPresentation.push({
+							href: $("#task-photo-" + allTasks[i][0]).attr("src")
+					});
+
+				}
+
+				$.fancybox.open(toPresentation, {
+							autoPlay: true,
+							playSpeed: 5000
+						}
+				);
+
+			}
+
 
 			$(document).ready(function(){
 				$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {

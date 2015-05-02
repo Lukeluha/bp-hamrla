@@ -26,7 +26,7 @@ class Rating extends BaseEntity
 
 	/**
 	 * @var TaskCompleted
-	 * @ORM\ManyToOne(targetEntity="TaskCompleted")
+	 * @ORM\ManyToOne(targetEntity="TaskCompleted", inversedBy="ratings")
 	 */
 	protected $taskCompleted;
 

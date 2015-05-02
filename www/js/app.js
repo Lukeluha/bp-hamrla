@@ -24,6 +24,10 @@ $(document).ready(function(){
         var init = new Switchery(elem, {color: '#008CBA'});
     }
 
+	$(document).ajaxComplete(function(){
+		$(".rateit").rateit();
+	})
+
 })
 
 function initDateTimePicker(){

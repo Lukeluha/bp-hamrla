@@ -3,6 +3,7 @@
 namespace App\Model\Entities;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -50,6 +51,17 @@ class TaskCompleted extends BaseEntity
 	 * @ORM\Column(name="filename")
 	 */
 	protected $filename;
+
+	/**
+	 * @var ArrayCollection
+	 * @ORM\OneToMany(targetEntity="Rating", mappedBy="taskCompleted")
+	 */
+	protected $ratings;
+
+	public function __construct()
+	{
+		$this->ratings = new ArrayCollection();
+	}
 
 	/**
 	 * @return \DateTime
@@ -157,6 +169,22 @@ class TaskCompleted extends BaseEntity
 	{
 		$this->filename = $filename;
 		return $this;
+	}
+
+	public function getStudentRating()
+	{
+		$count = 0;
+		$points = 0;
+		foreach ($this->ratings as $rating) {
+			if (!in_array(Teacher::ROLE_TEACHER, $rating->getUser()->getRoles())) {
+				$count++;
+				$points += $rating->getPoints();
+			}
+		}
+
+		if (!$count) return null;
+
+		return $points/$count;
 	}
 
 	/**
