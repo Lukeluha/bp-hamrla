@@ -162,6 +162,24 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('tasks');
 	}
 
+	public function handleLoadHistoryTask($count, $taskId)
+	{
+		$this->task = $this->em->find(Task::getClassName(), $taskId);
+
+		$tasks = $this->em->createQueryBuilder()
+				->select('tc')
+				->from(TaskCompleted::getClassName(), 'tc')
+				->join('tc.task', 't')
+				->where('t.group = ' . $this->task->getGroup()->getId())
+				->where('t.id != ' . $this->task->getId())
+				->where('tc.points IS NOT NULL')
+				->orderBy('tc.points', 'DESC')
+				->setMaxResults($count)->getQuery()->getResult();
+
+		$this->template->historyTasks = $tasks;
+		$this->redrawControl('historyTasks');
+	}
+
 	public function handleLoadQuestion($questionId)
 	{
 		$question = $this->em->find(Question::getClassName(), $questionId);

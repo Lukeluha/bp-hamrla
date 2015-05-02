@@ -144,8 +144,9 @@
 					{/if}
 				{else}
 					<ul class="tabs" data-tab>
-						<li class="tab-title active"><a href="#taskSummary">Odevzdané úkoly</i></a></li>
-						<li class="tab-title"><a href="#taskEdit">Editace úkolu</a></li>
+						<li class="tab-title active"><a href="#taskSummary" onclick="$(document).foundation('reflow');">Odevzdané úkoly</i></a></li>
+						<li class="tab-title"><a href="#taskEdit" onclick="$(document).foundation('reflow');">Editace úkolu</a></li>
+						<li class="tab-title"><a href="#historyTasks" onclick="$(document).foundation('reflow');">Práce z minulých hodin</a></li>
 					</ul>
 					<hr/>
 					<div class="tabs-content">
@@ -231,7 +232,7 @@
 										<div class="row">
 											<div class="small-12 columns">
 												{var $count = $taskActivity->getCompletedTasks()->count()}
-												<div class="range-slider" data-slider data-options="display_selector: .sliderOutput3;initial:{if $count < 5}{$count}{else}5{/if};start:1;end:{$count}">
+												<div id="a" class="range-slider" data-slider data-options="display_selector: #sliderOutput3;initial:{if $count < 5}{$count}{else}5{/if};start:1;end:{$count}">
 													<span class="range-slider-handle" role="slider" tabindex="0"></span>
 													<span class="range-slider-active-segment"></span>
 												</div>
@@ -240,7 +241,7 @@
 									</div>
 
 									<div class="small-12 column">
-										<span class="button" onclick="startPresentation(1)">Spustit prezentaci <span class="sliderOutput3"></span> nejlepších prací dle hodnocení studentů</span>
+										<span class="button" onclick="startPresentation(1)">Spustit prezentaci <span id="sliderOutput3"></span> nejlepších prací dle hodnocení studentů</span>
 									</div>
 								</div>
 								{/if}
@@ -251,6 +252,55 @@
 						</div>
 						<div class="content" id="taskEdit">
 							{control taskForm true}
+						</div>
+						<div class="content" id="historyTasks">
+							<div class="small-12 column">
+								<div class="row">
+									<div class="small-12 columns">
+										<div class="range-slider" id="historyTaskSlider" data-slider data-options="display_selector: #sliderOutput4;initial:10;start:1;end:100">
+											<span class="range-slider-handle" role="slider" tabindex="0"></span>
+											<span class="range-slider-active-segment"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="small-12 column">
+								<span class="button" onclick="showHistoryTask({$taskActivity->getId()})">Zobrazit <span id="sliderOutput4"></span> nejlepších prací dle závěrečného hodnocení</span>
+							</div>
+
+
+							{snippet historyTasks}
+								{if isset($historyTasks)}
+									<hr/>
+									{if count($historyTasks)}
+										{foreach $historyTasks as $historyTask}
+											<div class="small-3 column text-center left">
+												{if $historyTask->isImage()}
+													<a href="#" class="fancybox" rel="historyGroup">
+														<img src="{$basePath}/{$historyTask->getFilename()}" alt="" width="150"/>
+													</a>
+												{/if}
+												<br/>
+												<p>
+													<a href="{$basePath}/{$historyTask->getFilename()}" target="_blank"><i style="font-size: 30px" class="fi-download"></i></a>
+													<br/>
+													<strong>{$historyTask->getStudent()->getName()} {$historyTask->getStudent()->getSurname()}</strong>
+													<br/>
+													{$historyTask->getPoints()} %</p>
+											</div>
+										{/foreach}
+										<hr/>
+										<div class="small-12 column">
+											<span class="button" onclick="startPresentation(1)">Spustit prezentaci</span>
+										</div>
+									{else}
+										<div class="panel">Nenalezeny žádné práce</div>
+									{/if}
+								{/if}
+							{/snippet}
+
+
 						</div>
 					</div>
 				{/if}
@@ -384,7 +434,7 @@
 						$.post({link editTask!}, { taskId: id, points: data}).error(function() {
 							alert('Nepodařilo se uložit úspěšnost');
 						}).success(function(e) {
-							$(document).foundation();
+							$(document).foundation('reflow');
 						});
 						$(this).text(data);
 
@@ -393,8 +443,18 @@
 					}
 				});
 
+			});
 
-			})
+			function showHistoryTask(taskId) {
+				var count = parseInt($("#sliderOutput4").text());
+				var url = {link loadHistoryTask!};
+				url = url + '&count=' + count + "&taskId=" + taskId;
+
+				$.nette.ajax({
+					'url': url
+				});
+			}
+
 		</script>
 	{/block}
 {/if}
