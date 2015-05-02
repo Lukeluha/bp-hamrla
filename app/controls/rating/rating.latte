@@ -9,9 +9,8 @@
 </div>
 <script>
 		var controlId = {$control->getUniqueId()};
-		$("#" + controlId + " .rating").rateit();
+		$("#" + controlId + " .rating").rateit({ resetable:false });
 		$("#" + controlId + " .rating").on('rated', updatePoints);
-		$("#" + controlId + " .rating").on('reset', updatePoints);
 
 		function updatePoints(event, value) {
 			$.get({link rate!}, { points: value });

@@ -6,14 +6,13 @@
 		</ul>
 
 		<div class="tabs-content">
-			<a href="{link refresh! }" class="button right tiny secondary refresh">
+			<hr/>
+			<div class="content active" id="questionSummary">
+				<a href="{link refresh! }" class="button right tiny secondary refresh">
 								<span>
 									<i style="font-size: 20px" class="fi-refresh"></i>
 								</span>
-			</a>
-			<hr/>
-			<div class="content active" id="questionSummary">
-
+				</a>
 				<div class="clearfix"></div>
 				<div id="questionChart"></div>
 				<hr/>
@@ -66,7 +65,7 @@
 				{if $question->getAnswers()->count()}
 					<div class="panel">Na otázku již bylo odpovězeno, nelze ji proto editovat</div>
 				{else}
-					{control questionForm}
+					{control questionForm true}
 				{/if}
 			</div>
 		</div>

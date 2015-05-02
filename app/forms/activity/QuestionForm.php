@@ -119,9 +119,10 @@ class QuestionForm extends Control
 		$button->parent->parent->remove($button->parent, TRUE);
 	}
 
-	public function render()
+	public function render($edit = false)
 	{
 		$this->template->setFile(__DIR__ . "/questionForm.latte");
+		$this->template->edit = $edit;
 		$this->template->render();
 	}
 
@@ -265,6 +266,7 @@ class QuestionForm extends Control
 
 		if (!$new) {
 			$defaults['questionId'] = $question->getId();
+			$defaults['visible'] = $question->isVisible();
 		}
 
 
@@ -272,7 +274,6 @@ class QuestionForm extends Control
 			$defaults['correctAnswer'] = $question->getCorrectTextAnswer();
 		} else {
 			$defaults['reasonRequired'] = $question->isReasonRequire();
-			$defaults['visible'] = $question->isVisible();
 
 			$i = 0;
 			foreach ($question->getOptions() as $option) {

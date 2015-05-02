@@ -10,7 +10,7 @@ use Nette\InvalidArgumentException;
  * Class Task
  * @package App\Model\Entities
  * @ORM\Table(name="tasks")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Model\Repositories\Tasks")
  */
 class Task extends BaseEntity
 {

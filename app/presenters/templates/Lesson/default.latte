@@ -149,13 +149,13 @@
 					</ul>
 					<hr/>
 					<div class="tabs-content">
-						<a href="{link loadTask! $taskActivity->getId()}" class="button right tiny secondary myAjax" data-foundation-refresh="true">
-							<span>
-								<i style="font-size: 20px" class="fi-refresh"></i>
-							</span>
-						</a>
 						<div class="clearfix"></div>
 						<div class="content active" id="taskSummary">
+							<a href="{link loadTask! $taskActivity->getId()}" class="button right tiny secondary myAjax" data-foundation-refresh="true">
+								<span>
+									<i style="font-size: 20px" class="fi-refresh"></i>
+								</span>
+							</a>
 							{if $taskActivity->getCompletedTasks()->count()}
 								<table class="small-12">
 									<thead>
@@ -171,12 +171,14 @@
 									</thead>
 									<tbody>
 										{snippet completedTasks}
+
 											{foreach $taskActivity->getCompletedTasks() as $completed}
 												<tr>
 													<td>{$completed->getStudent()->getName()} {$completed->getStudent()->getSurname()}</td>
 													<td>{$completed->getCreated()|date:"j. n. Y v H:i"}</td>
 													<td class="text-center my-rating">
 														{if $completed->isImage()}
+
 															<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax" rel="group">
 																<img src="{$basePath}/{$completed->getFilename()}" alt="" width="150" id="task-photo-{$completed->id}" />
 															</a>
@@ -220,9 +222,7 @@
 								</table>
 								{if $taskActivity->isStudentRating()}
 								<div class="row">
-										<div class="small-12 column">
-											<span class="button" onclick="startPresentation(1)">Spustit prezentaci <span class="sliderOutput3"></span> nejlepších prací dle hodnocení studentů</span>
-										</div>
+
 
 									{*<div class="small-12 column">*}
 										{*<span class="button" onclick="startPresentation(0)">Spustit prezentaci <span class="sliderOutput3"></span> nejlepších prací dle mého hodnocení</span>*}
@@ -230,21 +230,27 @@
 									<div class="small-12 column">
 										<div class="row">
 											<div class="small-12 columns">
-												<div class="range-slider" data-slider data-options="display_selector: .sliderOutput3;initial:5;start:1">
+												{var $count = $taskActivity->getCompletedTasks()->count()}
+												<div class="range-slider" data-slider data-options="display_selector: .sliderOutput3;initial:{if $count < 5}{$count}{else}5{/if};start:1;end:{$count}">
 													<span class="range-slider-handle" role="slider" tabindex="0"></span>
 													<span class="range-slider-active-segment"></span>
 												</div>
 											</div>
 										</div>
 									</div>
+
+									<div class="small-12 column">
+										<span class="button" onclick="startPresentation(1)">Spustit prezentaci <span class="sliderOutput3"></span> nejlepších prací dle hodnocení studentů</span>
+									</div>
 								</div>
 								{/if}
 							{else}
+								<div class="clearfix"></div>
 								<div class="panel">Zatím žádné odevzdané úkoly</div>
 							{/if}
 						</div>
 						<div class="content" id="taskEdit">
-							{control taskForm}
+							{control taskForm true}
 						</div>
 					</div>
 				{/if}
@@ -311,19 +317,7 @@
 
 
 			$(document).ready(function(){
-				$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
-					$('.wysiwyg').each( function () {
-						if(CKEDITOR.instances[this.id] === undefined)
-						{
-							CKEDITOR.replace(this.id);
-						}
-					});
-					$(document).foundation();
-				});
-
-
 				$('.fancybox').fancybox();
-
 
 				CKEDITOR.disableAutoInline = true;
 

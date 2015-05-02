@@ -33,10 +33,11 @@ class TaskForm extends Control
 		$this->lessonId = $lessonId;
 	}
 
-	public function render()
+	public function render($edit = false)
 	{
 		$this->template->setFile(__DIR__ . "/taskForm.latte");
 		$this->template->lessonId = $this->lessonId;
+		$this->template->edit = $edit;
 		$this->template->render();
 	}
 
@@ -44,7 +45,7 @@ class TaskForm extends Control
 	{
 		$form = new Form();
 		$form->addText('taskName', "Název úkolu")->setRequired('Zadejte název úkolu');
-		$form->addTextArea('taskText', 'Zadání úkolu', null, 5);
+		$form->addTextArea('taskText', 'Zadání úkolu', null, 5)->setAttribute('id', $this->getUniqueId() . "-task-text");
 		$form->addCheckbox('visible', "Ihned vidiltený?");
 		$form->addSelect('limitType', "Typ limitu",
 							array(0 => "Žádný", Task::LIMIT_NO_STRICT => "Volný", Task::LIMIT_STRICT => "Striktní"))
@@ -54,6 +55,7 @@ class TaskForm extends Control
 			->setAttribute('class', 'fdatetimepicker')
 			->addConditionOn($form['limitType'], Form::NOT_EQUAL, 0)->setRequired('Vyplňte termín odevzdání úkolu');
 		$form->addHidden('taskId');
+		$form->addHidden('groupId');
 		$form->addSubmit('save', 'Uložit úkol');
 
 		$form->addCheckbox('studentRating', 'Vzájemné hodnocení studenty');
@@ -64,6 +66,20 @@ class TaskForm extends Control
 		return $form;
 	}
 
+	public function handleSearchTasks()
+	{
+		$query = $this->presenter->request->getParameter('query');
+		$tasks = $this->em->getRepository(Task::getClassName())->findByText($query);
+		$this->template->tasks = $tasks;
+		$this->redrawControl('tasks');
+	}
+
+	public function handleCopy($taskId)
+	{
+		$task = $this->em->find(Task::getClassName(), $taskId);
+		$this->fillForm($task, true);
+		$this->redrawControl('form');
+	}
 
 	public function saveTask(Form $form)
 	{
@@ -87,11 +103,13 @@ class TaskForm extends Control
 
 		$task->setStudentRating($values['studentRating']);
 
-		if (!$task->getGroup()) {
+		if (!$values['groupId']) {
 			$group = new Group();
 			$this->em->persist($group);
 			$this->em->flush();
 			$task->setGroup($group);
+		} else {
+			$task->setGroup($this->em->getReference(Group::getClassName(), $values['groupId']));
 		}
 
 		try {
@@ -105,25 +123,33 @@ class TaskForm extends Control
 		}
 
 		$this->redirect('this');
-
 	}
 
 	public function setTask(Task $task)
 	{
 		$this->task = $task;
+		$this->fillForm($task);
+		return $this;
+	}
 
+	public function fillForm(Task $task, $new = false)
+	{
 		$defaults = array(
 			'taskName' => $task->getTaskName(),
 			'taskText' => $task->getTaskText(),
-			'visible' => $task->getVisible(),
-			'end' => $task->getEnd()->format("j. n. Y H:i"),
-			'limitType' => $task->getLimit(),
 			'studentRating' => $task->getStudentRating(),
-			'taskId' => $task->getId()
+			'groupId' => $task->getGroup()->getId()
 		);
 
+
+		if (!$new) {
+			$defaults['taskId'] = $task->getId();
+			$defaults['end'] = $task->getEnd()->format("j. n. Y H:i");
+			$defaults['limitType'] = $task->getLimit();
+			$defaults['visible'] = $task->getVisible();
+		}
+
 		$this['form']->setDefaults($defaults);
-		return $this;
 	}
 
 }

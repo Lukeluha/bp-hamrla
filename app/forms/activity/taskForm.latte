@@ -1,44 +1,100 @@
-<p><strong>Úkol</strong></p>
-{form form}
-	<p>
-		{label taskName /}
-		{input taskName}
-	</p>
-	<p>
-		{label taskText /}
-		{input taskText class => 'wysiwyg'}
-	</p>
+{if !$edit}
+	<p><strong>Kopie z úkolu</strong></p>
 
-	<p>
-		{label visible /}
-		{input visible}
-	</p>
-
-
-	<p>
-		{label limitType class => "left" /}&nbsp;
-		<i class="fi-info cursor-pointer tooltip-limit"></i>
-		{input limitType}
-	</p>
-
-
-
-	<div id="{$control->getUniqueId()}-taskEnd">
-		<p>
-			{label end /}
-			{input end}
-		</p>
+	<div class="row collapse prefix-radius">
+		<div class="small-1 columns left">
+			<span class="prefix"><i class="fi-magnifying-glass"></i></span>
+		</div>
+		<div class="small-11 columns left">
+			<input type="text" class="liveSearch" data-url="{link searchTasks!}" data-spinner="taskSpinner" placeholder="Hledejte staré úkoly..."/>
+		</div>
 	</div>
 
-	<p>
-		{label studentRating: /}
-		{input studentRating:}
-	</p>
+		{snippet tasks}
+			<img src="{$basePath}/images/spinner-bubble.svg" alt="" id="taskSpinner" class="hide"/>
+
+			{if isset($tasks)}
+				{if !count($tasks)}
+					<div class="panel">Nenalezeny žádné úkoly</div>
+				{else}
+					<table class="small-12">
+						<thead>
+						<tr>
+							<th>Název úkolu</th>
+							<th>Popis</th>
+							<th></th>
+						</tr>
+						</thead>
+						<tbody>
+						{foreach $tasks as $task}
+							<tr>
+								<td>{$task->getTaskName()}</td>
+								<td>{!$task->getTaskText()|truncate:200}</td>
+								<td class="text-center">
+									<a class="button tiny secondary ajax" href="{link copy! $task->getId()}" title="Zkopírovat úkol">
+										<i style="font-size:20px" class="fi-page-copy"></i>
+									</a>
+								</td>
+							</tr>
+						{/foreach}
+						</tbody>
+					</table>
+				{/if}
+			{/if}
+		{/snippet}
 
 	<hr/>
+	<p><strong>Nový úkol</strong></p>
+{else}
+	<p><strong>Editace úkolu</strong></p>
+{/if}
 
-	<p>
-		{input save class => "button"}
-	</p>
-{/form}
+	{snippet form}
+		{form form}
+			<p>
+				{label taskName /}
+				{input taskName}
+			</p>
+			<p>
+				{label taskText /}
+				{input taskText}
+			</p>
 
+			<p>
+				{label visible /}
+				{input visible}
+			</p>
+
+
+			<p>
+				{label limitType class => "left" /}&nbsp;
+				<i class="fi-info cursor-pointer tooltip-limit"></i>
+				{input limitType}
+			</p>
+
+
+
+			<div id="{$control->getUniqueId()}-taskEnd">
+				<p>
+					{label end /}
+					{input end}
+				</p>
+			</div>
+
+			<p>
+				{label studentRating: /}
+				{input studentRating:}
+			</p>
+
+			<hr/>
+
+			<p>
+				{input save class => "button"}
+			</p>
+		{/form}
+
+		<script>
+			CKEDITOR.replace({$control->getUniqueId()} + "-task-text");
+		</script>
+
+	{/snippet}
