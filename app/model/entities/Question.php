@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Question
  * @package App\Model\Entities
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Model\Repositories\Questions")
  * @ORM\Table(name="questions")
  */
 class Question extends BaseEntity
@@ -287,7 +287,15 @@ class Question extends BaseEntity
 	}
 
 
-
-
+	public function getQuestionTypeText()
+	{
+		if ($this->questionType == self::TYPE_CHOICE) {
+			return "Uzavřená (jedna možná odpověď)";
+		} elseif ($this->questionType == self::TYPE_MULTIPLECHOICE) {
+			return "Uzavřená (více možných odpovědí)";
+		} else {
+			return "Otevřená";
+		}
+	}
 
 }

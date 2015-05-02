@@ -99,6 +99,7 @@ class QuestionForm extends Control
 		$form->addCheckbox('visible', 'Ihned viditelné?');
 
 		$form->addHidden('questionId');
+		$form->addHidden('groupId');
 
 		$form->onSuccess[] = $this->saveQuestion;
 		$form->onValidate[] = $this->validateRightAnswers;
@@ -146,13 +147,14 @@ class QuestionForm extends Control
 					->setLesson($this->em->getReference(Question::getClassName(), $this->lessonId))
 					->setQuestionType($values['questionType']);
 
-		if (!$question->getGroup()) {
+		if (!$values['groupId']) {
 			$group = new Group();
 			$this->em->persist($group);
 			$this->em->flush();
 			$question->setGroup($group);
+		} else {
+			$question->setGroup($this->em->getReference(Group::getClassName(), $values['groupId']));
 		}
-
 
 		try {
 			$this->em->persist($question);
@@ -212,31 +214,21 @@ class QuestionForm extends Control
 	public function setQuestion(Question $question)
 	{
 		$this->question = $question;
-		$defaults = array();
+		$this->fillForm($question);
+	}
 
-		$defaults['questionText'] = $question->getQuestionText();
-		$defaults['questionType'] = $question->getQuestionType();
-		$defaults['questionId'] = $question->getId();
-
-
-		if ($question->getQuestionType() == Question::TYPE_TEXT) {
-			$defaults['correctAnswer'] = $question->getCorrectTextAnswer();
-		} else {
-			$defaults['reasonRequired'] = $question->isReasonRequire();
-			$defaults['visible'] = $question->isVisible();
-
-			$i = 0;
-			foreach ($question->getOptions() as $option) {
-				$this['form']['choiceOptions'][$i]->setDefaults(array(
-					'optionText' => $option->getOptionText(),
-					'correctAnswer' => $option->isCorrect(),
-					'optionId' => $option->getId()
-				));
-				$i++;
-			}
-		}
-
-		$this['form']->setDefaults($defaults);
+	public function handleCopy($questionId)
+	{
+		$question = $this->em->find(Question::getClassName(), $questionId);
+		$this->fillForm($question, true);
+		$this->redrawControl('form');
+	}
+	
+	public function handleSearchQuestions()
+	{
+		$query = $this->presenter->request->getParameter('query');
+		$this->template->questions = $this->em->getRepository(Question::getClassName())->findByText($query);
+		$this->redrawControl('questions');
 	}
 
 	public function validateRightAnswers(Form $form)
@@ -261,6 +253,45 @@ class QuestionForm extends Control
 				$this->parent->parent->template->openModal = true;
 			}
 		}
+	}
+
+	private function fillForm(Question $question, $new = false)
+	{
+		$defaults = array();
+
+		$defaults['questionText'] = $question->getQuestionText();
+		$defaults['questionType'] = $question->getQuestionType();
+		$defaults['groupId'] = $question->getGroup()->getId();
+
+		if (!$new) {
+			$defaults['questionId'] = $question->getId();
+		}
+
+
+		if ($question->getQuestionType() == Question::TYPE_TEXT) {
+			$defaults['correctAnswer'] = $question->getCorrectTextAnswer();
+		} else {
+			$defaults['reasonRequired'] = $question->isReasonRequire();
+			$defaults['visible'] = $question->isVisible();
+
+			$i = 0;
+			foreach ($question->getOptions() as $option) {
+				$optionDefaults = array(
+					'optionText' => $option->getOptionText(),
+					'correctAnswer' => $option->isCorrect(),
+				);
+
+				if (!$new) {
+					$optionDefaults['optionId'] = $option->getId();
+				}
+
+				$this['form']['choiceOptions'][$i]->setDefaults($optionDefaults);
+
+				$i++;
+			}
+		}
+
+		$this['form']->setDefaults($defaults);
 	}
 
 }
