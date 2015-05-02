@@ -3,7 +3,6 @@
 namespace App\Presenters;
 
 use App\Controls\RatingControl;
-use App\Model\Entities\Answer;
 use App\Model\Entities\Lesson;
 use App\Model\Entities\Question;
 use App\Model\Entities\Task;
@@ -171,8 +170,8 @@ class LessonPresenter extends AuthorizedBasePresenter
 				->from(TaskCompleted::getClassName(), 'tc')
 				->join('tc.task', 't')
 				->where('t.group = ' . $this->task->getGroup()->getId())
-				->where('t.id != ' . $this->task->getId())
-				->where('tc.points IS NOT NULL')
+				->andWhere('t.id != ' . $this->task->getId())
+				->andWhere('tc.points IS NOT NULL')
 				->orderBy('tc.points', 'DESC')
 				->setMaxResults($count)->getQuery()->getResult();
 

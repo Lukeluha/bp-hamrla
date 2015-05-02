@@ -133,7 +133,7 @@
 							<div class="small-3 column text-center left">
 								{if $completed->isImage()}
 									<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax" rel="group">
-										<img src="{$basePath}/{$completed->getFilename()}" alt="" width="150"/>
+										<img src="{$basePath}/{$completed->getFilename('thumbnail')}" alt="" width="150"/>
 									</a>
 									<div class="text-center" style="padding-top:10px">
 										{control rating-$completed->id false}
@@ -146,7 +146,7 @@
 					<ul class="tabs" data-tab>
 						<li class="tab-title active"><a href="#taskSummary" onclick="$(document).foundation('reflow');">Odevzdané úkoly</i></a></li>
 						<li class="tab-title"><a href="#taskEdit" onclick="$(document).foundation('reflow');">Editace úkolu</a></li>
-						<li class="tab-title"><a href="#historyTasks" onclick="$(document).foundation('reflow');">Práce z minulých hodin</a></li>
+						<li class="tab-title"><a href="#historyTasks" onclick="$(document).foundation('reflow');">Práce z dřívejších hodin</a></li>
 					</ul>
 					<hr/>
 					<div class="tabs-content">
@@ -181,7 +181,13 @@
 														{if $completed->isImage()}
 
 															<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax" rel="group">
-																<img src="{$basePath}/{$completed->getFilename()}" alt="" width="150" id="task-photo-{$completed->id}" />
+																<img
+																		src="{$basePath}/{$completed->getFilename('thumbnail')}"
+																		alt=""
+																		width="150"
+																		data-full="{$basePath}/{$completed->getFilename()}"
+																		id="task-photo-{$completed->id}"
+																		/>
 															</a>
 														{/if}
 														<div class="row">
@@ -205,7 +211,7 @@
 																		data-rateit-readonly="true"
 																		data-task-id="{$completed->getId()}">
 																</span>
-																<br/>{$studentRating}
+																<br/><strong>{$studentRating}</strong>
 															{/if}
 														</td>
 													{/if}
@@ -224,25 +230,27 @@
 								{if $taskActivity->isStudentRating()}
 								<div class="row">
 
-
+									{var $count = $taskActivity->getCompletedImageTasksCount()}
+									{if $count}
 									{*<div class="small-12 column">*}
 										{*<span class="button" onclick="startPresentation(0)">Spustit prezentaci <span class="sliderOutput3"></span> nejlepších prací dle mého hodnocení</span>*}
 									{*</div>*}
-									<div class="small-12 column">
-										<div class="row">
-											<div class="small-12 columns">
-												{var $count = $taskActivity->getCompletedTasks()->count()}
-												<div id="a" class="range-slider" data-slider data-options="display_selector: #sliderOutput3;initial:{if $count < 5}{$count}{else}5{/if};start:1;end:{$count}">
-													<span class="range-slider-handle" role="slider" tabindex="0"></span>
-													<span class="range-slider-active-segment"></span>
+										<div class="small-12 column">
+											<div class="row">
+												<div class="small-12 columns">
+													<div class="range-slider" data-slider data-options="display_selector: #taskCount;initial:{if $count < 5}{$count}{else}5{/if};start:1;end:{$count}">
+														<span class="range-slider-handle" role="slider" tabindex="0"></span>
+														<span class="range-slider-active-segment"></span>
+														<span id="taskCount" style="display:none;"></span>
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
 
-									<div class="small-12 column">
-										<span class="button" onclick="startPresentation(1)">Spustit prezentaci <span id="sliderOutput3"></span> nejlepších prací dle hodnocení studentů</span>
-									</div>
+										<div class="small-12 column">
+											<span class="button" id="taskPresentationLabel" onclick="startPresentation(1)">Spustit prezentaci <span id="sliderOutput3"></span> nejlepších prací dle hodnocení studentů</span>
+										</div>
+									{/if}
 								</div>
 								{/if}
 							{else}
@@ -257,16 +265,17 @@
 							<div class="small-12 column">
 								<div class="row">
 									<div class="small-12 columns">
-										<div class="range-slider" id="historyTaskSlider" data-slider data-options="display_selector: #sliderOutput4;initial:10;start:1;end:100">
+										<div class="range-slider" id="historyTaskSlider" data-slider data-options="display_selector: #historyTaskCount;initial:10;start:1;end:100">
 											<span class="range-slider-handle" role="slider" tabindex="0"></span>
 											<span class="range-slider-active-segment"></span>
+											<span id="historyTaskCount" style="display: none"></span>
 										</div>
 									</div>
 								</div>
 							</div>
 
 							<div class="small-12 column">
-								<span class="button" onclick="showHistoryTask({$taskActivity->getId()})">Zobrazit <span id="sliderOutput4"></span> nejlepších prací dle závěrečného hodnocení</span>
+								<span class="button" id="historyTaskLabel" onclick="showHistoryTask({$taskActivity->getId()})"></span>
 							</div>
 
 
@@ -352,7 +361,7 @@
 					}
 
 					toPresentation.push({
-							href: $("#task-photo-" + allTasks[i][0]).attr("src")
+							href: $("#task-photo-" + allTasks[i][0]).data("full")
 					});
 
 				}
@@ -446,7 +455,7 @@
 			});
 
 			function showHistoryTask(taskId) {
-				var count = parseInt($("#sliderOutput4").text());
+				var count = parseInt($("#historyTaskCount").text());
 				var url = {link loadHistoryTask!};
 				url = url + '&count=' + count + "&taskId=" + taskId;
 
@@ -454,6 +463,32 @@
 					'url': url
 				});
 			}
+
+
+			// hack because of range slider event bug
+			$(document).on('DOMSubtreeModified', '#historyTaskCount', function() {
+				var val = $(this).text();
+				if (val == 1) {
+					var text = "Zobrazit nejlepší práci dle závěrečného hodnocení";
+				} else if (val > 1 && val < 5) {
+					var text = "Zobrazit " + val + " nejlepší práce dle závěrečného hodnocení";
+				} else {
+					var text = "Zobrazit " + val + " nejlepších prací dle závěrečného hodnocení";
+				}
+
+				$("#historyTaskLabel").text(text);
+			});
+
+			$(document).on('DOMSubtreeModified', '#taskCount', function() {
+				var val = $(this).text();
+				if (val == 1) {
+					var text = "Spustit prezentaci nejlepší práce dle hodnocení studentů";
+				} else {
+					var text = "Spustit prezentaci " + val + " nejlepších práci dle hodnocení studentů";
+				}
+
+				$("#taskPresentationLabel").text(text);
+			});
 
 		</script>
 	{/block}

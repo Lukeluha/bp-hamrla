@@ -115,8 +115,8 @@ class LessonService extends BaseService
 			$activities['tasks'] = $this->em
 				->createQueryBuilder()->select('t')
 				->from(Task::getClassName(), 't')
-				->where('t.lesson = :lessonId AND t.start <= :now')
-				->setParameters(array('lessonId' => $lesson->getId(), 'now' => new \DateTime()))
+				->where('t.lesson = :lessonId AND t.visible = 1')
+				->setParameters(array('lessonId' => $lesson->getId()))
 				->orderBy('t.taskName', 'ASC')
 				->getQuery()->getResult();
 		}

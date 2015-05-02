@@ -258,6 +258,16 @@ class Task extends BaseEntity
 		return $this->visible;
 	}
 
+	public function getCompletedImageTasksCount()
+	{
+		$count = 0;
+		foreach ($this->completedTasks as $task) {
+			if ($task->isImage()) $count++;
+		}
+
+		return $count;
+	}
+
 
 
 }

@@ -58,6 +58,12 @@ class TaskCompleted extends BaseEntity
 	 */
 	protected $ratings;
 
+	/**
+	 * @var boolean
+	 * @ORM\Column(type="integer")
+	 */
+	protected $image;
+
 	public function __construct()
 	{
 		$this->ratings = new ArrayCollection();
@@ -154,11 +160,23 @@ class TaskCompleted extends BaseEntity
 	}
 
 	/**
+	 * @param string $type Size of image task
 	 * @return string
 	 */
-	public function getFilename()
+	public function getFilename($type = 'full')
 	{
-		return $this->filename;
+		if ($this->isImage()) {
+			if ($type == 'full') {
+				return $this->filename;
+			} else {
+				$temp = explode('.', $this->filename);
+				$ext  = array_pop($temp);
+				$name = implode('.', $temp);
+				return $name . "-$type." . $ext;
+			}
+		} else {
+			return $this->filename;
+		}
 	}
 
 	/**
@@ -188,13 +206,44 @@ class TaskCompleted extends BaseEntity
 	}
 
 	/**
-	 * @see Nette\Http\FileUpload
-	 * @return bool
+	 * @return ArrayCollection
 	 */
+	public function getRatings()
+	{
+		return $this->ratings;
+	}
+
+	/**
+	 * @param ArrayCollection $ratings
+	 * @return $this
+	 */
+	public function setRatings($ratings)
+	{
+		$this->ratings = $ratings;
+		return $this;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getImage()
+	{
+		return $this->image;
+	}
+
 	public function isImage()
 	{
-		$type = finfo_file(finfo_open(FILEINFO_MIME_TYPE), WWW_DIR . '/' . $this->filename);
-		return in_array($type, array('image/gif', 'image/png', 'image/jpeg'), TRUE);
+		return $this->image;
+	}
+
+	/**
+	 * @param boolean $image
+	 * @return $this
+	 */
+	public function setImage($image)
+	{
+		$this->image = $image;
+		return $this;
 	}
 
 

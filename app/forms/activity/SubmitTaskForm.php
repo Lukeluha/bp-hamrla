@@ -11,6 +11,7 @@ use App\Model\Entities\Task;
 use Nette\Application\UI\Form;
 use App\Model\Entities\Student;
 use Nette\Utils\Strings;
+use Nette\Utils\Image;
 
 class SubmitTaskForm extends Control
 {
@@ -77,17 +78,43 @@ class SubmitTaskForm extends Control
 		$lesson = $this->task->getLesson();
 		$schoolYear = $lesson->getTeaching()->getClass()->getSchoolYear();
 
-
-		$pwd = "files/tasks/" . $schoolYear->getId() . "/" . $lesson->getId() . "/". $this->user->getId() . "-" . $this->task->getId() . "-" . Strings::webalize($this->user->getSurname() . "-".$this->user->getName()) . "." . $this->getFileExtension($values['task']->getName());
-
-		$values['task']->move(WWW_DIR . "/" . $pwd);
+		$mainPwd = "files/tasks/" . $schoolYear->getId() . "/" . $lesson->getId() . "/". $this->user->getId() . "-" . $this->task->getId() . "-" . Strings::webalize($this->user->getSurname() . "-".$this->user->getName());
 
 		$task = new TaskCompleted();
 		$task->setStudent($this->user)
-				->setCreated($now)
-				->setTask($this->task)
-				->setFilename($pwd)
-				->setNote($values['note']);
+			->setCreated($now)
+			->setTask($this->task)
+			->setNote($values['note']);
+
+		if ($values['task']->isImage()) {
+			/** @var Image $image */
+			$image = $values['task']->toImage();
+			$pwd = $mainPwd . "." . $this->getFileExtension($values['task']->getName());
+			$image->save($pwd);
+
+			$task->setFilename($pwd);
+
+			$pwd = $mainPwd . "-web." . $this->getFileExtension($values['task']->getName());
+
+			if ($image->getWidth() > 1300) {
+				$image->resize(1300, null);
+			}
+
+			$image->save($pwd);
+
+
+			$image->resize(150, null);
+			$pwd = $mainPwd . "-thumbnail." . $this->getFileExtension($values['task']->getName());
+			$image->save($pwd);
+
+			$task->setImage(true);
+		} else {
+			$pwd = $mainPwd . "." . $this->getFileExtension($values['task']->getName());
+			$values['task']->move(WWW_DIR . "/" . $pwd);
+			$task->setFilename($pwd);
+			$task->setImage(false);
+		}
+
 
 		try {
 			$this->em->persist($task);
