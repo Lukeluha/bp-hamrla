@@ -11,7 +11,11 @@ namespace App\Controls;
 
 use App\Filter\TemplateFilters;
 use App\Model\Entities\ChatMessage;
+use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
+use App\Model\Entities\Student;
+use App\Model\Entities\Teaching;
+use App\Model\Repositories\Classes;
 use Nette\Application\UI\Control;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Security\User;
@@ -33,12 +37,30 @@ class ChatControl extends Control
 	 */
 	private $actualYear;
 
-	public function __construct(User $user, SchoolYear $actualYear, EntityManager $em)
+	/**
+	 * @var Teaching
+	 */
+	private $teaching;
+
+	public function __construct(User $user, SchoolYear $actualYear, Teaching $teaching = null, EntityManager $em)
 	{
-		parent::__construct();
 		$this->em = $em;
 		$this->user = $user;
 		$this->actualYear = $actualYear;
+		$this->teaching = $teaching;
+	}
+
+	public function handleToggleChat()
+	{
+		$status = $this->presenter->request->getParameter('status');
+		if ($status === 'true') {
+			$this->teaching->setChat(Teaching::CHAT_ALLOWED);
+		} else {
+			$this->teaching->setChat(Teaching::CHAT_DISALLOWED);
+		}
+
+		$this->em->persist($this->teaching);
+		$this->em->flush();
 	}
 
 	public function render()
@@ -48,6 +70,8 @@ class ChatControl extends Control
 		$this->template->setFile(__DIR__ . '/chat.latte');
 
 		$this->template->users = json_encode($this->getUsersForChat());
+		$this->template->teaching = $this->teaching;
+		$this->template->chatAllowed = !$this->isChatDisallowedForUser();
 		$this->template->render();
 	}
 
@@ -70,9 +94,19 @@ class ChatControl extends Control
 			);
 			$i++;
 		}
-
-
 		return $usersArray;
+	}
+
+	protected function isChatDisallowedForUser()
+	{
+		if ($this->user->isInRole('teacher')) return false;
+
+		return (bool) $this->em->createQueryBuilder()
+					->select('s')
+					->from(Student::getClassName(), 's')
+					->join('s.classes', 'c')
+					->join('c.teachings', 't')
+					->where('s.id = ' . $this->user->id . " AND t.chat = 'disallowed'")->getQuery()->getOneOrNullResult();
 	}
 
 	public function handleCheckNewMessages()
@@ -83,6 +117,7 @@ class ChatControl extends Control
 		$messagesArray = array();
 		foreach ($messages as $message) {
 			$messagesArray[] = array(
+				'idMessage' => $message->getId(),
 				'from' => $message->getFrom()->getId(),
 				'message' => $message->getMessage(),
 				'date' => $message->getDatetime()->format('Y-m-d')
@@ -99,13 +134,14 @@ class ChatControl extends Control
 	public function handleGetConversationWithUser()
 	{
 		$userId = $this->presenter->getParameter('userId');
-		$page = $this->presenter->getParameter('page');
+		$fromId = $this->presenter->getParameter('fromId');
 
-		$messages = $this->em->getRepository(ChatMessage::getClassName())->findChatConversation($this->user->getId(), $userId);
+		$messages = $this->em->getRepository(ChatMessage::getClassName())->findChatConversation($this->user->getId(), $userId, 15, $fromId);
 
 		$messagesArray = array();
 		foreach ($messages as $message) {
 			array_unshift($messagesArray, array(
+				'idMessage' => $message->getId(),
 				'from' => $message->getFrom()->getId(),
 				'message' => $message->getMessage(),
 				'date' => $message->getDatetime()->format('Y-m-d')
@@ -127,6 +163,7 @@ class ChatControl extends Control
 
 			foreach ($messages as $message) {
 				array_unshift($messagesArray, array(
+					'idMessage' => $message->getId(),
 					'from' => $message->getFrom()->getId(),
 					'message' => $message->getMessage(),
 					'date' => $message->getDatetime()->format('Y-m-d')
@@ -146,6 +183,7 @@ class ChatControl extends Control
 		$users = $this->getUsersForChat();
 
 		$this->presenter->payload->users = $users;
+		$this->presenter->payload->chatAllowed = !$this->isChatDisallowedForUser();
 		$this->presenter->sendPayload();
 	}
 

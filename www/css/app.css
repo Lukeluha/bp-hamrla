@@ -9607,3 +9607,8 @@ i.error {
 div.row.padding {
   padding: 5px;
 }
+
+/* line 435, ../../scss/app.scss */
+#chatStatus {
+  color: darkgray;
+}

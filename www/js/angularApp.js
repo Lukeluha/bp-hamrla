@@ -49,6 +49,12 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
      */
     $scope.tablet = true;
 
+	/**
+	 * Is chat allowed
+	 * @type {boolean}
+	 */
+	$scope.chatAllowed = true;
+
 
 
 
@@ -74,7 +80,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
      * @param getAllConversationsUrl
      * @param checkNewMessagesUrl
      */
-    $scope.init = function(userId, userProfilePicture, checkUsersUrl, sendMessageUrl, users, getConversationUrl, getAllConversationsUrl, checkNewMessagesUrl) {
+    $scope.init = function(userId, userProfilePicture, checkUsersUrl, sendMessageUrl, users, getConversationUrl, getAllConversationsUrl, checkNewMessagesUrl, chatAllowed) {
         $scope.userId = userId;
         $scope.userProfilePicture = userProfilePicture;
         $scope.checkUsersUrl = checkUsersUrl;
@@ -82,6 +88,7 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
         $scope.users = users;
         $scope.getConversationUrl = getConversationUrl;
         $scope.checkNewMessagesUrl = checkNewMessagesUrl;
+		$scope.chatAllowed = chatAllowed;
 
         var popups = localStorage.getItem('popups' + $scope.userId);
         if ( popups ) {
@@ -172,13 +179,33 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
                 .success(function(data) {
                     $scope.conversations[userId] = data.conversation;
                     popup.loading = false;
+					popup.isPrev = ($scope.conversations[userId].length == 15);
+
                     savePopupsToStorage();
                 });
         } else {
             popup.loading = false;
         }
 
+
     }
+
+	/**
+	 * Load previous page
+	 * @param popup
+	 */
+	$scope.prevPage = function(popup) {
+		popup.loading = true;
+		$http.get($scope.getConversationUrl, { params: {userId : popup.userId, fromId : $scope.conversations[popup.userId][0]['idMessage']}})
+			.success(function(data) {
+				$scope.conversations[popup.userId] = data.conversation.concat($scope.conversations[popup.userId]);
+				popup.loading = false;
+				popup.isPrev = (data.conversation.length == 15);
+			}).error(function(){
+				alert('Nastala chyba');
+				popup.loading = false;
+			});
+	}
 
     /**
      * Close popup when click on close icon
@@ -333,12 +360,13 @@ app.controller('ChatController', ['$scope', '$http', '$interval', '$timeout', fu
 
 
     /**
-     * Check for all online users
+     * Check for all online users and chat status
      */
     $interval(function(){
         $http.get($scope.checkUsersUrl)
             .success(function(data) {
                 $scope.users = data.users;
+				$scope.chatAllowed = data.chatAllowed;
             })
     },30000);
 

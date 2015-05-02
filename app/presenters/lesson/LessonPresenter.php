@@ -300,4 +300,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 			}
 		}
 	}
+
+	/**
+	 * Factory for creating chat component
+	 */
+	public function createComponentChat()
+	{
+		return $this->chatControlFactory->create($this->user, $this->actualYear, $this->lesson->getTeaching());
+	}
 }

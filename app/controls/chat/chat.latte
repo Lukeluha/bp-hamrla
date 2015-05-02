@@ -7,9 +7,18 @@
 							{$users},
 							'{link getConversationWithUser!}',
 							'{link getConversationsWithUsers!}',
-							'{link checkNewMessages!}'
-						);">
-	<ul class="unstyled">
+							'{link checkNewMessages!}',
+							{if $chatAllowed}true{else}false{/if}
+							);">
+	<ul class="unstyled" ng-show="chatAllowed">
+		{if $teaching}
+			{if $user->isInRole('teacher')}
+				<li>
+					<input type="checkbox" id="chatStatusCheckbox" {if $teaching->getChat() == 'allowed'}checked{/if} ng-model="chatAllowed"/>
+					<span class="right" id="chatStatus">{if $teaching->getChat() == 'allowed'}Chat je povolen{else}Chat je zakázán{/if}</span>
+				</li>
+			{/if}
+		{/if}
 		<img ng-src="{$basePath}/images/spinner-bubble.svg" alt="spinner" ng-show="!users"/>
 		<li ng-repeat="user in users | orderObjectBy: 'ordering'" ng-click="openPopup(user.id)" ng-class="{ 'chat-teacher' : user.role == 'teacher' }">
 			<img class="img-circle" ng-src="{$basePath}/images/{{ user.profilePicture }}" width="25"/>
@@ -24,8 +33,9 @@
 		<div class="clearfix"></div>
 
 	</ul>
+	<div class="panel" ng-show="!chatAllowed">Chat je pro Vás vypnut</div>
 </div>
-<div id="chat-popups" ng-show="popups.length">
+<div id="chat-popups" ng-show="popups.length && chatAllowed">
 	<div class="chat-popup right" ng-repeat="popup in popups" ng-click="clickOnPopup(popup)">
 		<div class="chat-header cursor-pointer" ng-class="{ 'minimize' : !popup.status }" ng-click="minimizeMaximizePopup(popup.userId)">
 			<span class="status" ng-class="{ 'online' : users[popup.userId].online }">&#9679;</span>
@@ -35,6 +45,8 @@
 		</div>
 
 		<div ng-show="popup.status" class="chat-text" scroll-glue id="chat-text-{{ popup.userId }}">
+			<span ng-show="popup.isPrev" class="button secondary tiny small-12" ng-click="prevPage(popup)">načíst předchozí</span>
+			<span ng-show="!popup.isPrev" class="button secondary tiny small-12 disabled">žádné předchozí zprávy</span>
 			<img ng-src="{$basePath}/images/spinner-bubble.svg" alt="spinner" ng-show="popup.loading"/>
 			<ul ng-show="conversations[popup.userId] && conversations[popup.userId].length" class="chat-conversation">
 				<li ng-repeat="message in conversations[popup.userId]" ng-class="{ 'text-right': message.from != userId}">
@@ -56,3 +68,25 @@
 				/>
 	</div>
 </div>
+
+<script>
+	var elem = document.querySelector('#chatStatusCheckbox');
+	if (elem !== null) {
+		var switchery = new Switchery(elem, { color: '#008CBA' });
+
+		var url = {link toggleChat!};
+		elem.onchange = function() {
+			if (elem.checked) {
+				$("#chatStatus").text('Chat je povolen');
+			} else {
+				$("#chatStatus").text('Chat je zakázán');
+			}
+			$.nette.ajax({
+				url: url,
+				data: {
+					status: elem.checked
+				}
+			});
+		};
+	}
+</script>

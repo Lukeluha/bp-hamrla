@@ -46,6 +46,14 @@ class TeachingPresenter extends AuthorizedBasePresenter
 	}
 
 	/**
+	 * Factory for creating chat component
+	 */
+	public function createComponentChat()
+	{
+		return $this->chatControlFactory->create($this->user, $this->actualYear, $this->teaching);
+	}
+
+	/**
 	 * Check if user has permission to view this teaching
 	 */
 	protected function checkUser()

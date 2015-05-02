@@ -35,9 +35,9 @@ services:
 	- App\Forms\ISubmitTaskFormFactory
 
 	chatFactory:
-		class: App\Controls\ChatControl(%user%, %year%, ...)
+		class: App\Controls\ChatControl(%user%, %year%, %teaching%, ...)
 		implement: App\Controls\IChatControlFactory
-		parameters: [user, year]
+		parameters: [user, year, teaching]
 
 	router: App\RouterFactory::createRouter
 	authenticator: App\Model\Services\UserService

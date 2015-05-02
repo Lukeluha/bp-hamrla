@@ -68,7 +68,7 @@ abstract class AuthorizedBasePresenter extends BasePresenter
 	 */
 	public function createComponentChat()
 	{
-		return $this->chatControlFactory->create($this->user, $this->actualYear);
+		return $this->chatControlFactory->create($this->user, $this->actualYear, null);
 	}
 
 	public function handleLogout()
