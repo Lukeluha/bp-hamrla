@@ -1,0 +1,28 @@
+<ul class="unstyled no-margin">
+	{snippet students}
+	{foreach $class->getStudents() as $student}
+		<li>
+			{$student->getName()} {$student->getSurname()}
+			<span class="right">
+				{if $lesson}
+					<a class="ajax success" href="{link addActivityPoint! $student->getId()}" title="Přidat bod za aktivitu">
+						+1
+					</a>
+				{/if}
+
+				{if $lesson}
+					<span class="grey">(tuto hodinu {$activityPoints[$student->getId()]})</span>
+				{else}
+					<span class="grey">(celkem aktivita {$activityPoints[$student->getId()]})</span>
+				{/if}
+
+				{if $lesson}
+					<a class="ajax alert" href="{link removeActivityPoint! $student->getId()}" title="Odebrat bod za aktivitu">
+						-1
+					</a>
+				{/if}
+			</span>
+		</li>
+	{/foreach}
+	{/snippet}
+</ul>

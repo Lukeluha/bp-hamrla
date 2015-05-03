@@ -37,6 +37,7 @@ class ClassEntity extends BaseEntity
 	 *		joinColumns={@ORM\JoinColumn(name="class_id", referencedColumnName="id")},
 	 *      inverseJoinColumns={@ORM\JoinColumn(name="student_id", referencedColumnName="id")}
 	 *		)
+	 * @ORM\OrderBy({"surname" = "ASC"})
 	 * @var ArrayCollection
 	 */
 	protected $students;

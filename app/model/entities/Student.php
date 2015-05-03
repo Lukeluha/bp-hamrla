@@ -24,7 +24,6 @@ class Student extends User
 	 */
 	protected $classes;
 
-
 	public function __construct()
 	{
 		$this->classes = new ArrayCollection();
@@ -112,6 +111,5 @@ class Student extends User
 
 		return $teachings;
 	}
-
 
 }

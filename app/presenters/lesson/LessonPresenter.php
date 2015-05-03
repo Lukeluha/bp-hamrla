@@ -17,6 +17,7 @@ use App\Controls\IRatingControlFactory;
 use Nette\Application\UI\Multiplier;
 use App\Controls\IQuestionSummaryControlFactory;
 use App\Forms\ITaskFormFactory;
+use App\Controls\IStudentsControlFactory;
 
 class LessonPresenter extends AuthorizedBasePresenter
 {
@@ -72,6 +73,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 	 * @inject
 	 */
 	public $taskFormFactory;
+
+	/**
+	 * @var IStudentsControlFactory
+	 * @inject
+	 */
+	public $studentsControlFactory;
 
 	/**
 	 * @var Question
@@ -299,6 +306,13 @@ class LessonPresenter extends AuthorizedBasePresenter
 				$this->redirect('Homepage:default');
 			}
 		}
+	}
+
+	public function createComponentStudents()
+	{
+		$control = $this->studentsControlFactory->create($this->lesson->getTeaching()->getClass());
+		$control->setLesson($this->lesson);
+		return $control;
 	}
 
 	/**

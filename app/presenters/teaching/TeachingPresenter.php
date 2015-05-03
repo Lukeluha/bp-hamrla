@@ -6,6 +6,7 @@ use App\Model\Entities\Lesson;
 use App\Model\Entities\Teaching;
 use Nette\Application\BadRequestException;
 use App\Controls\IPostsControlFactory;
+use App\Controls\IStudentsControlFactory;
 
 /**
  * Class TeachingPresenter
@@ -23,6 +24,12 @@ class TeachingPresenter extends AuthorizedBasePresenter
 	 * @inject
 	 */
 	public $postsControl;
+
+	/**
+	 * @var IStudentsControlFactory
+	 * @inject
+	 */
+	public $studentsControlFactory;
 
 	public function actionDefault($teachingId)
 	{
@@ -51,6 +58,11 @@ class TeachingPresenter extends AuthorizedBasePresenter
 	public function createComponentChat()
 	{
 		return $this->chatControlFactory->create($this->user, $this->actualYear, $this->teaching);
+	}
+
+	public function createComponentStudents()
+	{
+		return $this->studentsControlFactory->create($this->teaching->getClass());
 	}
 
 	/**

@@ -14,7 +14,7 @@
 		{if $teaching}
 			{if $user->isInRole('teacher')}
 				<li>
-					<input type="checkbox" id="chatStatusCheckbox" {if $teaching->getChat() == 'allowed'}checked{/if} ng-model="chatAllowed"/>
+					<input type="checkbox" id="chatStatusCheckbox" {if $teaching->getChat() == 'allowed'}checked{/if}/>
 					<span class="right" id="chatStatus">{if $teaching->getChat() == 'allowed'}Chat je povolen{else}Chat je zakázán{/if}</span>
 				</li>
 			{/if}
@@ -74,7 +74,7 @@
 	if (elem !== null) {
 		var switchery = new Switchery(elem, { color: '#008CBA' });
 
-		var url = {link toggleChat!};
+		var chatToggleUrl = {link toggleChat!};
 		elem.onchange = function() {
 			if (elem.checked) {
 				$("#chatStatus").text('Chat je povolen');
@@ -82,7 +82,7 @@
 				$("#chatStatus").text('Chat je zakázán');
 			}
 			$.nette.ajax({
-				url: url,
+				url: chatToggleUrl,
 				data: {
 					status: elem.checked
 				}

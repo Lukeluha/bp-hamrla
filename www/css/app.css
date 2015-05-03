@@ -9612,3 +9612,18 @@ div.row.padding {
 #chatStatus {
   color: darkgray;
 }
+
+/* line 439, ../../scss/app.scss */
+a.success {
+  color: #43AC6A;
+}
+
+/* line 443, ../../scss/app.scss */
+a.alert {
+  color: #f04124;
+}
+
+/* line 447, ../../scss/app.scss */
+span.grey {
+  color: #a9a9a9;
+}
