@@ -398,8 +398,15 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	public function handleFindStudents($query)
 	{
 		if ($this->isAjax()) {
-			$students = $this->em->getRepository(Student::getClassName())->findByName($query, $this->actualYear);
-			$this->template->students = $students;
+			if (strlen(trim($query))) {
+				$students = $this->em
+								->getRepository(Student::getClassName())
+								->findByName($query, $this->actualYear, $this->em->getRepository(SchoolYear::getClassName())->findPreviousSchoolYear($this->actualYear));
+				$this->template->students = $students;
+			} else {
+				$this->template->students = null;
+			}
+
 			$this->redrawControl('students');
 		}
 	}
@@ -431,6 +438,11 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	{
 		if ($this->isAjax()) {
 			$student = $this->em->getRepository(Student::getClassName())->find($studentId);
+
+			if (!$student->getMainClass($this->actualYear)) {
+				$toCopy = $student->getMainClass($this->em->getRepository(SchoolYear::getClassName())->findPreviousSchoolYear($this->actualYear));
+				$this->classService->copyClass($toCopy, $this->actualYear);
+			}
 
 			$this->class->addStudent($student);
 			$this->em->persist($this->class);

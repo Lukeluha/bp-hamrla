@@ -30,12 +30,18 @@ class StudentService extends BaseService
 	 */
 	private $userService;
 
-	public function __construct(EntityManager $em, UserService $userService)
+	/**
+	 * @var ClassService
+	 */
+	private $classService;
+
+	public function __construct(EntityManager $em, UserService $userService, ClassService $classService)
 	{
 		parent::__construct($em);
 		$this->actualYear = $this->em->getRepository(SchoolYear::getClassName())->findCurrentSchoolYear();
 		$this->prevYear = $this->em->getRepository(SchoolYear::getClassName())->findPreviousSchoolYear($this->actualYear);
 		$this->userService = $userService;
+		$this->classService = $classService;
 	}
 
 	/**
@@ -87,6 +93,10 @@ class StudentService extends BaseService
 
 			if (!$name || !$surname || !$class) break;
 
+			$surname = str_replace(' ', '', $surname);
+			$name = str_replace(' ', '', $name);
+			$class = mb_strtoupper(str_replace(' ', '', $class));
+
 			if (!$classEntity->isGroup() && $classEntity->getName() != $class) {
 				throw new BadClassNameException($class);
 			}
@@ -106,7 +116,7 @@ class StudentService extends BaseService
 					$classEntity->addStudent($student);
 				}
 
-			} else { // if this is group, search deeper for student in past years
+			} else { // if this is group, search deeper for student in previous year
 				if (!$student) { // not found student in this year
 					$student = $this->em->getRepository(Student::getClassName())->findByNameInClass($name, $surname, $class, $this->prevYear);
 					if (!$student) { // not found student in last year => create new one and create his class
@@ -131,7 +141,7 @@ class StudentService extends BaseService
 
 						$passwords[$student->getId()] = $pass;
 					} else { // found student in last year, copy old class
-						// TODO copy class
+						$this->classService->copyClass($classEntity, $this->actualYear);
 					}
 				}
 

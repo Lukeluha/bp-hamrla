@@ -20,24 +20,32 @@ class Students extends EntityRepository
 	 * Get students by given query in given school year
 	 * @param $query
 	 * @param $schoolYear
+	 * @param $prevYear
 	 * @return array
 	 */
-	public function findByName($query, SchoolYear $schoolYear = null)
+	public function findByName($query, SchoolYear $schoolYear = null, SchoolYear $prevYear = null)
 	{
 		if (!$schoolYear) return null;
 
-		return $this->createQueryBuilder()
+		$qb = $this->createQueryBuilder()
 					->select("s")
 					->from(Student::getClassName(), 's')
 					->leftJoin('s.classes', 'c')
-					->where("(CONCAT(s.name, CONCAT(' ', s.surname)) LIKE :query
+					->where("((CONCAT(s.name, CONCAT(' ', s.surname)) LIKE :query
 								OR CONCAT(s.surname, CONCAT(' ', s.name)) LIKE :query)
-								AND c.type = '". ClassEntity::TYPE_CLASS . "' AND c.schoolYear = " . $schoolYear->getId())
-					->setParameter(":query", "%$query%")
-					->addOrderBy("s.surname")
-					->addOrderBy("s.name")
-					->setMaxResults(5)
-					->getQuery()->getResult();
+								AND c.type = '". ClassEntity::TYPE_CLASS . "')");
+
+		if ($prevYear) {
+			$qb->andWhere("(c.schoolYear = " . $prevYear->getId() . "OR c.schoolYear = " . $schoolYear->getId() . ")");
+		} else {
+			$qb->andWhere("(c.schoolYear = " . $schoolYear->getId() . ")");
+		}
+
+		return $qb->setParameter(":query", "%$query%")
+		->addOrderBy("s.surname")
+		->addOrderBy("s.name")
+		->setMaxResults(5)
+		->getQuery()->getResult();
 	}
 
 	public function findByNameInClass($name, $surname, $className, SchoolYear $schoolYear = null)

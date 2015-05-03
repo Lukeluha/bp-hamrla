@@ -68,6 +68,7 @@ class SettingsPresenter extends AuthorizedBasePresenter
 			$this->template->students = $this->em->getRepository(Student::getClassName())->findByName('', $this->actualYear);
 		}
 
+
 		$this->template->schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array(), array('from' => 'DESC'));
 	}
 
