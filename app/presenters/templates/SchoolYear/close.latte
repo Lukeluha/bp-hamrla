@@ -1,0 +1,23 @@
+{block content}
+	<div class="panel small-12 large-9">
+		<p><strong>Chystáte se uzavřít školní rok {$schoolYear->getFrom()->format("Y")}/{$schoolYear->getTo()->format("Y")}</strong></p>
+		<p>
+			Na výběr máte z těchto možností:
+			<ul>
+				<li>vyexportování všech úkolů do zip archivu</li>
+				<li>smazání všech konverzací</li>
+				<li>smazání veškerých dat</li>
+				<li>pouze uzavření roku s ponecháním dat</li>
+			</ul>
+		</p>
+		<p>Po uzavření již nebude možné přidávat do tohoto školního roku nová data.</p>
+	</div>
+
+	<a href="{link export! $schoolYear->getId()}" class="button">
+		Exportovat úkoly
+	</a>
+	
+	<div class="small-12 large-9">
+		{control closeForm}
+	</div>
+{/block}

@@ -3,8 +3,11 @@
 namespace App\Presenters;
 
 
+use App\Model\Entities\ChatMessage;
 use App\Model\Entities\SchoolYear;
 use App\Model\FoundationRenderer;
+use Nette\Application\BadRequestException;
+use Nette\Application\Responses\FileResponse;
 use Nette\Application\UI\Form;
 
 /**
@@ -52,6 +55,108 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 		} else {
 			$this->addLinkToNav('Nový školní rok', 'this');
 		}
+	}
+
+	public function createComponentCloseForm()
+	{
+		$form = new Form();
+
+		$form->addRadioList('closeOptions', null, array(
+			'conversationDelete' => 'Smazání konverzací',
+			'allDelete' => "Smazání veškerých dat"
+		));
+
+		$form->addSubmit('save', "Uzavřít školní rok")->setAttribute('class', 'button alert');
+		$form->setRenderer(new FoundationRenderer());
+		$form->onSuccess[] = $this->closeYear;
+		$form->addHidden('schoolYearId');
+
+		return $form;
+	}
+
+	public function closeYear(Form $form)
+	{
+		$values = $form->getValues();
+		$schoolYear = $this->em->find(SchoolYear::getClassName(), $values['schoolYearId']);
+
+		if (isset($values['closeOptions']) && $values['closeOptions']) {
+			if ($values['closeOptions'] == 'conversationDelete') {
+				$this->em->createQueryBuilder()->delete(ChatMessage::getClassName(), 'm')->getQuery()->execute();
+				$this->em->flush();
+			} else {
+
+			}
+		}
+
+		$schoolYear->setClosed(true);
+
+		try {
+			$this->em->persist($schoolYear);
+			$this->em->flush();
+			$this->flashMessage('Školní rok byl úspěšně uzavřen', "success");
+		} catch (\Exception $e) {
+			$this->flashMessage('Školní rok nebyl úspěšně uzavřen', "alert");
+			return;
+		}
+
+		$this->redirect('Settings:default');
+
+	}
+
+	public function handleExport($yearId)
+	{
+		$schoolYear = $this->em->find(SchoolYear::getClassName(), $yearId);
+
+		/** Source: http://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php */
+
+		$folderName = $schoolYear->getFrom()->format('Y') . "-" . $schoolYear->getTo()->format('Y') . "-" . $schoolYear->getId();
+
+
+		$rootPath = realpath(WWW_DIR . "/files/tasks/" . $folderName);
+
+		$zip = new \ZipArchive();
+		$zip->open($rootPath . '.zip', \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+		/** @var SplFileInfo[] $files */
+		$files = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator($rootPath),
+			\RecursiveIteratorIterator::LEAVES_ONLY
+		);
+
+		foreach ($files as $name => $file)
+		{
+			// Skip directories (they would be added automatically)
+			if (!$file->isDir())
+			{
+				// Get real and relative path for current file
+				$filePath = $file->getRealPath();
+				$relativePath = substr($filePath, strlen($rootPath) + 1);
+
+				// Add current file to archive
+				$zip->addFile($filePath, $relativePath);
+			}
+		}
+
+		$zip->close();
+
+		$this->sendResponse(new FileResponse($rootPath . ".zip", $folderName . ".zip", 'application/zip'));
+
+	}
+
+	public function actionClose($schoolYearId)
+	{
+		$schoolYear = $this->em->find(SchoolYear::getClassName(), $schoolYearId);
+
+		if (!$schoolYear) throw new BadRequestException;
+
+		$this->addLinkToNav('Uzavření školního roku', 'this');
+
+		$this['closeForm']->setDefaults(array(
+			'schoolYearId' => $schoolYearId
+		));
+
+
+		$this->template->schoolYear = $schoolYear;
 	}
 
 	/**

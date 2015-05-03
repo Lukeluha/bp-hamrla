@@ -62,7 +62,7 @@
 				<span class="prefix"><i class="fi-magnifying-glass"></i></span>
 			</div>
 			<div class="small-11 large-8 columns left">
-				<input type="text" class="liveSearch" data-url="{link searchClass!}" data-spinner="classSpinner" placeholder="Začněte vyhledávat třídu/skupinu..."/>
+				<input type="text" class="liveSearch" data-url="{link searchClass!}" data-spinner="classSpinner" placeholder="Začněte vyhledávat třídu/skupinu"/>
 			</div>
 		</div>
 
@@ -70,7 +70,7 @@
 			<img src="{$basePath}/images/spinner-bubble.svg" alt="" id="classSpinner" class="hide"/>
 			{if isset($classes)}
 				{if !count($classes)}
-					<div class="panel small-12 large-9">Nenalezeny žádné třídy</div>
+					<div class="panel small-12 large-9">Nenaleazeny žádné třídy</div>
 				{else}
 					<table class="small-12 large-9">
 						<thead>
@@ -125,7 +125,7 @@
 								<a class="button secondary tiny" n:href="SchoolYear:default $year->getId()">Editovat</a>
 							{/if}
 							{if !$year->getClosed()}
-								<button class="button alert tiny">Uzavřít</button>
+								<a href="{link SchoolYear:close $year->getId()}" class="button alert tiny">Uzavřít</a>
 							{/if}
 						</td>
 					</tr>

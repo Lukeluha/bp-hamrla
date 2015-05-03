@@ -13,7 +13,6 @@ use App\Model\Entities\TeachingTime;
 use App\Model\FoundationRenderer;
 use App\Model\Services\BadClassNameException;
 use App\Model\Services\BadFormatException;
-use App\Model\Utils;
 use Doctrine\Common\Collections\ArrayCollection;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
