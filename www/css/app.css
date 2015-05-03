@@ -9639,3 +9639,8 @@ a.alert {
 span.grey {
   color: #a9a9a9;
 }
+
+/* line 462, ../../scss/app.scss */
+tr.alert {
+  background-color: #f2dede;
+}

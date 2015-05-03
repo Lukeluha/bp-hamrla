@@ -183,7 +183,10 @@
 										{snippet completedTasks}
 
 											{foreach $taskActivity->getCompletedTasks() as $completed}
-												<tr>
+												<tr {if $taskActivity->getLimit() == 'nostrict' && $completed->getCreated() > $taskActivity->getEnd()}
+													class="alert tooltipster" title="Odevzdáno po limitu"
+												{/if}
+														>
 													<td>{$completed->getStudent()->getName()} {$completed->getStudent()->getSurname()}</td>
 													<td>{$completed->getCreated()|date:"j. n. Y v H:i"}</td>
 													<td class="text-center my-rating">

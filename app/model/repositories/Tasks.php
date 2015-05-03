@@ -22,4 +22,12 @@ class Tasks extends EntityRepository
 			->getQuery()->getResult();
 	}
 
+	public function findByOpened()
+	{
+//		return $this->createQueryBuilder()
+//				->select('t')
+//				->from(Task::getClassName(), )
+
+	}
+
 }
