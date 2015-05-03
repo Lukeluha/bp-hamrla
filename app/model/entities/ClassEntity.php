@@ -44,8 +44,8 @@ class ClassEntity extends BaseEntity
 
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="SchoolYear")
-	 * @ORM\JoinColumn(name="school_year_id", referencedColumnName="id")
+	 * @ORM\ManyToOne(targetEntity="SchoolYear", cascade={"remove"})
+	 * @ORM\JoinColumn(name="school_year_id", referencedColumnName="id", onDelete="CASCADE")
 	 * @var SchoolYear
 	 */
 	protected $schoolYear;

@@ -10,7 +10,7 @@ use Nette\InvalidArgumentException;
  * Class Teaching
  * @package App\Model\Entities
  * @ORM\Entity()
- * @ORM\Table(name="teaching")
+ * @ORM\Table(name="teachings")
  */
 class Teaching extends BaseEntity
 {
@@ -20,14 +20,14 @@ class Teaching extends BaseEntity
 	/**
 	 * @var Subject
 	 * @ORM\ManyToOne(targetEntity="Subject")
-	 * @ORM\JoinColumn(name="subject_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="subject_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $subject;
 
 	/**
 	 * @var ClassEntity
 	 * @ORM\ManyToOne(targetEntity="ClassEntity", inversedBy="teachings")
-	 * @ORM\JoinColumn(name="class_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="class_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $class;
 

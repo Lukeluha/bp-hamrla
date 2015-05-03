@@ -21,12 +21,14 @@ class Rating extends BaseEntity
 	/**
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $user;
 
 	/**
 	 * @var TaskCompleted
 	 * @ORM\ManyToOne(targetEntity="TaskCompleted", inversedBy="ratings")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $taskCompleted;
 

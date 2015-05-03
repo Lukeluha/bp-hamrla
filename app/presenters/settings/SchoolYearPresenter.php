@@ -83,15 +83,16 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 			if ($values['closeOptions'] == 'conversationDelete') {
 				$this->em->createQueryBuilder()->delete(ChatMessage::getClassName(), 'm')->getQuery()->execute();
 				$this->em->flush();
-			} else {
+				$schoolYear->setClosed(true);
+				$this->em->persist($schoolYear);
 
+			} else {
+				$this->em->remove($schoolYear);
 			}
 		}
 
-		$schoolYear->setClosed(true);
 
 		try {
-			$this->em->persist($schoolYear);
 			$this->em->flush();
 			$this->flashMessage('Školní rok byl úspěšně uzavřen', "success");
 		} catch (\Exception $e) {

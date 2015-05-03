@@ -22,7 +22,7 @@ class Post extends BaseEntity
 	/**
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
-	 * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $user;
 
@@ -36,14 +36,14 @@ class Post extends BaseEntity
 	/**
 	 * @var Teaching
 	 * @ORM\ManyToOne(targetEntity="Teaching", inversedBy="posts")
-	 * @ORM\JoinColumn(name="teaching_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="teaching_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $teaching;
 
 	/**
 	 * @var Lesson
 	 * @ORM\ManyToOne(targetEntity="Lesson")
-	 * @ORM\JoinColumn(name="lesson_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="lesson_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $lesson;
 

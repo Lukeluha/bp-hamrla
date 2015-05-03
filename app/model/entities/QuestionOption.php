@@ -22,6 +22,7 @@ class QuestionOption extends BaseEntity
 	/**
 	 * @var Question
 	 * @ORM\ManyToOne(targetEntity="Question", inversedBy="options")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $question;
 

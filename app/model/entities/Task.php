@@ -50,12 +50,14 @@ class Task extends BaseEntity
 	/**
 	 * @var Lesson
 	 * @ORM\ManyToOne(targetEntity="Lesson", inversedBy="tasks")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $lesson;
 
 	/**
 	 * @var Group
 	 * @ORM\ManyToOne(targetEntity="Group")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $group;
 

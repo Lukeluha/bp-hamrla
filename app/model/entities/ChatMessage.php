@@ -14,14 +14,14 @@ class ChatMessage extends BaseEntity
 	/**
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
-	 * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="from_user_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $from;
 
 	/**
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
-	 * @ORM\JoinColumn(name="to_user_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="to_user_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $to;
 

@@ -39,6 +39,7 @@ class Question extends BaseEntity
 	/**
 	 * @var Lesson
 	 * @ORM\ManyToOne(targetEntity="Lesson", inversedBy="questions")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $lesson;
 
@@ -51,6 +52,7 @@ class Question extends BaseEntity
 	/**
 	 * @var Group
 	 * @ORM\ManyToOne(targetEntity="Group")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $group;
 

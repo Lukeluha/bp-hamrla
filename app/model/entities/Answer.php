@@ -32,12 +32,14 @@ class Answer extends BaseEntity
 	/**
 	 * @var Question
 	 * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $question;
 
 	/**
 	 * @var Student
 	 * @ORM\ManyToOne(targetEntity="Student", inversedBy="answers")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $student;
 

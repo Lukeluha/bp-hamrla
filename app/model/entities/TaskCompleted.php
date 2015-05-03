@@ -23,14 +23,14 @@ class TaskCompleted extends BaseEntity
 	/**
 	 * @var Student
 	 * @ORM\ManyToOne(targetEntity="Student")
-	 * @ORM\JoinColumn(name="student_id")
+	 * @ORM\JoinColumn(name="student_id", onDelete="CASCADE")
 	 */
 	protected $student;
 
 	/**
 	 * @var Task
 	 * @ORM\ManyToOne(targetEntity="Task", inversedBy="completedTasks")
-	 * @ORM\JoinColumn(name="task_id")
+	 * @ORM\JoinColumn(name="task_id", onDelete="CASCADE")
 	 */
 	protected $task;
 

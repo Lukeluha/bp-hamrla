@@ -16,12 +16,14 @@ class ActivityPoints extends BaseEntity
 	/**
 	 * @var Lesson
 	 * @ORM\ManyToOne(targetEntity="Lesson")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $lesson;
 
 	/**
 	 * @var Student
 	 * @ORM\ManyToOne(targetEntity="Student")
+	 * @ORM\JoinColumn(onDelete="CASCADE")
 	 */
 	protected $student;
 

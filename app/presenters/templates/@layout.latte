@@ -74,6 +74,12 @@
 	{$flash->message|noescape}
 	<a href="#" class="close">&times;</a>
 </div>
+{if !$actualYear && $presenter->name != "SchoolYear"}
+	<div class="alert-box alert">
+		Není aktivní žádný školní rok. Možná jej chcete <a href="{link SchoolYear:default}">vytvořit</a>
+		<a href="#" class="close">&times;</a>
+	</div>
+{/if}
 <div class="row full-width">
 	<div class="small-12 column no-padding" id="main-content-wrapper">
 		<div n:if="$presenter->name != Login" class="hide-for-small small-12 ">
@@ -96,7 +102,7 @@
 
 
 
-	{if $presenter->name != "Login"}
+	{if $presenter->name != "Login" && $actualYear}
 		<div class="hide-for-small column no-padding" id="chat-wrapper" ng-controller="ChatController">
 				{block chat}
 					{control chat}

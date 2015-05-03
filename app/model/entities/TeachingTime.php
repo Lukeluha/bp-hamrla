@@ -43,7 +43,7 @@ class TeachingTime extends BaseEntity
 	/**
 	 * @var Teaching
 	 * @ORM\ManyToOne(targetEntity="Teaching")
-	 * @ORM\JoinColumn(name="teaching_id")
+	 * @ORM\JoinColumn(name="teaching_id", onDelete="CASCADE")
 	 */
 	protected $teaching;
 

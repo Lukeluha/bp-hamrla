@@ -21,7 +21,7 @@ class Comment extends BaseEntity
 	/**
 	 * @var User
 	 * @ORM\ManyToOne(targetEntity="User")
-	 * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $user;
 
@@ -35,7 +35,7 @@ class Comment extends BaseEntity
 	/**
 	 * @var Post
 	 * @ORM\ManyToOne(targetEntity="Post", inversedBy="replies")
-	 * @ORM\JoinColumn(name="reply_to", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="reply_to", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $replyTo;
 
