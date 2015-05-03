@@ -134,19 +134,22 @@
 				{if $user->isInRole('student')}
 					{control submitTaskForm}
 					{if $taskActivity->isStudentRating()}
+						{if count($taskActivity->getCompletedTasks())}
 						<p class="lead">Hodnocení ostatních prací</p>
-						{foreach $taskActivity->getCompletedTasks() as $completed}
-							<div class="small-3 column text-center left">
-								{if $completed->isImage()}
-									<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax" rel="group">
-										<img src="{$basePath}/{$completed->getFilename('thumbnail')}" alt="" width="150"/>
-									</a>
-									<div class="text-center" style="padding-top:10px">
-										{control rating-$completed->id false}
-									</div>
-								{/if}
-							</div>
-						{/foreach}
+							{foreach $taskActivity->getCompletedTasks() as $completed}
+								{continueIf $completed->getStudent()->getId() == $user->getId()}
+								<div class="small-3 column text-center left">
+									{if $completed->isImage()}
+										<a href="{link rating $completed->getId(), true}" class="fancybox fancybox.ajax" rel="group">
+											<img src="{$basePath}/{$completed->getFilename('thumbnail')}" alt="" width="150"/>
+										</a>
+										<div class="text-center" style="padding-top:10px">
+											{control rating-$completed->id false}
+										</div>
+									{/if}
+								</div>
+							{/foreach}
+						{/if}
 					{/if}
 				{else}
 					<ul class="tabs" data-tab>

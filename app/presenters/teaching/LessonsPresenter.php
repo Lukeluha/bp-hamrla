@@ -38,6 +38,7 @@ class LessonsPresenter extends AuthorizedBasePresenter
 	{
 		$this->template->teaching = $this->teaching;
 		$this->template->todayWeek = date('W');
+		$this->template->nextWeek = date('W', strtotime('+1 week'));
 	}
 
 	public function handleDelete($lessonId)

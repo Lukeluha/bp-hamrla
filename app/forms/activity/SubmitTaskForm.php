@@ -78,7 +78,17 @@ class SubmitTaskForm extends Control
 		$lesson = $this->task->getLesson();
 		$schoolYear = $lesson->getTeaching()->getClass()->getSchoolYear();
 
-		$mainPwd = "files/tasks/" . $schoolYear->getId() . "/" . $lesson->getId() . "/".  Strings::webalize($this->task->getTaskName()) . "-" . Strings::webalize($this->user->getSurname() . "-".$this->user->getName()) . '-' . $this->user->getId();
+		$mainPwd = "files/tasks/" . $schoolYear->getFrom()->format("Y") . "-" . $schoolYear->getTo()->format("Y") . "-" . $schoolYear->getId();
+		@mkdir($mainPwd);
+		$mainPwd .= "/" . Strings::webalize($lesson->getTeaching()->getSubject()->getAbbreviation());
+		@mkdir($mainPwd);
+		$mainPwd .= "/" . Strings::webalize($lesson->getTeaching()->getClass()->getName());
+		@mkdir($mainPwd);
+		$mainPwd .= "/" . Strings::webalize($this->task->getTaskName()) . "-" . Strings::webalize($this->task->getId());
+		@mkdir($mainPwd);
+
+		$mainPwd .= "/" . Strings::webalize($this->user->getSurname() . "-".$this->user->getName());
+		$mainPwd .= '-' . $this->user->getId();
 
 		$task = new TaskCompleted();
 		$task->setStudent($this->user)

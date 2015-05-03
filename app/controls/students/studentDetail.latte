@@ -32,7 +32,13 @@
 									{$answer->getQuestion()->getLesson()}
 								</a>
 							</td>
-							<td>{$answer->getPoints()} %</td>
+							<td>
+								{if $answer->getPoints()}
+									{$answer->getPoints()} %
+								{else}
+									<span class="label alert">čeká na ohodnocení</span>
+								{/if}
+							</td>
 						</tr>
 					{/foreach}
 					</tbody>
@@ -68,7 +74,13 @@
 									{$completedTask->getTask()->getLesson()}
 								</a>
 							</td>
-							<td>{$completedTask->getPoints()} %</td>
+							<td>
+								{if $completedTask->getPoints()}
+									{$completedTask->getPoints()} %
+								{else}
+								    <span class="label alert">čeká na ohodnocení</span>
+								{/if}
+							</td>
 						</tr>
 					{/foreach}
 					</tbody>
@@ -103,7 +115,13 @@
 									{$answer->getQuestion()->getLesson()}
 								</a>
 							</td>
-							<td>{$answer->getPoints()} %</td>
+							<td>
+								{if $answer->getPoints()}
+									{$answer->getPoints()} %
+								{else}
+									<span class="label alert">čeká na ohodnocení</span>
+								{/if}
+							</td>
 						</tr>
 					{/foreach}
 					</tbody>
@@ -141,7 +159,13 @@
 									{$completedTask->getTask()->getLesson()}
 								</a>
 							</td>
-							<td>{$completedTask->getPoints()} %</td>
+							<td>
+								{if $completedTask->getPoints()}
+									{$completedTask->getPoints()} %
+								{else}
+									<span class="label alert">čeká na ohodnocení</span>
+								{/if}
+							</td>
 						</tr>
 					{/foreach}
 					</tbody>

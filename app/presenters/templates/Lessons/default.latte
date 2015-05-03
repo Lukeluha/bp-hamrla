@@ -1,15 +1,23 @@
 {block content}
 	<a href="{link editLesson $teaching->getId()}" class="button">Vytvořit novou hodinu</a>
-<ul class="accordion" data-accordion>
+	<ul class="accordion" data-accordion>
 	{foreach $teaching->getLessons() as $lesson}
 		{if !isset($prevWeek) || $lesson->getStartDate()->format("W") != $prevWeek->format("W")}
 			{var $prevWeek = $lesson->getStartDate()|date:'W'}
 			{if !$iterator->isFirst()}</div></li>{/if}
 			<li class="accordion-navigation">
-				<a href="#week-{$iterator->getCounter()}">{$lesson->getStartDate()|date:'W'}. týden {if $lesson->getStartDate()->format('W') == $todayWeek}<span class="label">aktuální týden</span>{/if} </a>
+				<a href="#week-{$iterator->getCounter()}">
+					{$lesson->getStartDate()|date:'W'}. týden
+					{if $lesson->getStartDate()->format('W') == $todayWeek}
+						<span class="label">aktuální týden</span>
+					{/if}
+					{if $lesson->getStartDate()->format('W') == $nextWeek}
+						<span class="label success">nejbližší týden</span>
+					{/if}
+				</a>
 				<div
 						id="week-{$iterator->getCounter()}"
-						{if $lesson->getStartDate()->format('W') == $todayWeek}
+						{if $lesson->getStartDate()->format('W') == $todayWeek || $lesson->getStartDate()->format('W') == $nextWeek}
 							class="content active"
 						{else}
 							class="content"
