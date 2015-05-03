@@ -102,6 +102,34 @@
 
 	{/if}
 
+	{if $user->isAllowed('settings', 'classes')}
+		<h2>Správa předmětů</h2>
+		<a href="{link Subjects:default}"><button class="button tiny">Přidat předmět</button></a>
+
+		{if !count($subjects)}
+			<div class="panel small-12 large-9">Nenaleazeny žádné předměty</div>
+		{else}
+			<table class="small-12 large-9">
+				<thead>
+				<tr>
+					<th>Název</th>
+					<th>Zkratka</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+				{foreach $subjects as $subject}
+					<tr>
+						<td>{$subject->getName()}</td>
+						<td>{$subject->getAbbreviation()}</td>
+						<td><a href="{link Subjects:default subjectId => $subject->getId()}" class="button secondary tiny">Editovat</a></td>
+					</tr>
+				{/foreach}
+				</tbody>
+			</table>
+		{/if}
+	{/if}
+
 	{if $user->isAllowed('settings', 'school-years')}
 		<h2>Správa školních roků</h2>
 		<a n:href="SchoolYear:default"><button class="button tiny">Přidat školní rok</button></a>

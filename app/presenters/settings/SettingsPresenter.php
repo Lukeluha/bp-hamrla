@@ -5,6 +5,7 @@ namespace App\Presenters;
 use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
+use App\Model\Entities\Subject;
 use App\Model\Services\BaseService;
 
 /**
@@ -68,6 +69,7 @@ class SettingsPresenter extends AuthorizedBasePresenter
 			$this->template->students = $this->em->getRepository(Student::getClassName())->findByName('', $this->actualYear);
 		}
 
+		$this->template->subjects = $this->em->getRepository(Subject::getClassName())->findAll();
 
 		$this->template->schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array(), array('from' => 'DESC'));
 	}
