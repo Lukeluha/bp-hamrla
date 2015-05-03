@@ -10,7 +10,7 @@ use Nette\Security\role;
 /**
  * Class Teacher
  * Entity represents teacher in database
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Model\Repositories\Teachers")
  * @ORM\Table(name="users")
  * @package App\Model\Entities
  */

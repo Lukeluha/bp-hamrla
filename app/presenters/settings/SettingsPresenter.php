@@ -6,6 +6,7 @@ use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
 use App\Model\Entities\Subject;
+use App\Model\Entities\Teacher;
 use App\Model\Services\BaseService;
 
 /**
@@ -57,6 +58,21 @@ class SettingsPresenter extends AuthorizedBasePresenter
 	}
 
 	/**
+	 * Search for teacher
+	 * @param $query
+	 */
+	public function handleSearchTeachers($query)
+	{
+		if (strlen(trim($query))) {
+			$this->template->teachers = $this->em->getRepository(Teacher::getClassName())->findByQuery($query);
+		} else {
+			$this->template->teachers = null;
+		}
+
+		$this->redrawControl('teachers');
+	}
+
+	/**
 	 * Main page with all available settings
 	 */
 	public function renderDefault()
@@ -69,7 +85,12 @@ class SettingsPresenter extends AuthorizedBasePresenter
 			$this->template->students = $this->em->getRepository(Student::getClassName())->findByName('', $this->actualYear);
 		}
 
+		if (!isset($this->template->teachers)) {
+			$this->template->teachers = $this->em->getRepository(Teacher::getClassName())->findByQuery('');
+		}
+
 		$this->template->subjects = $this->em->getRepository(Subject::getClassName())->findAll();
+
 
 		$this->template->schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array(), array('from' => 'DESC'));
 	}

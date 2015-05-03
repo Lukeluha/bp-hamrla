@@ -14,10 +14,6 @@ class SubjectsPresenter extends AuthorizedBasePresenter
 	{
 		$this->checkPermissions("settings", "subjects");
 
-		if (!$this->actualYear) {
-			$this->flashMessage("Nebyl nalezen aktuální školní rok", 'alert');
-			$this->redirect('Settings:default');
-		}
 
 		$this->addLinkToNav('Nastavení', 'Settings:default');
 

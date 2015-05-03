@@ -74,7 +74,7 @@
 	{$flash->message|noescape}
 	<a href="#" class="close">&times;</a>
 </div>
-{if !$actualYear && $presenter->name != "SchoolYear"}
+{if $presenter->name != 'Login' && !$actualYear && $presenter->name != "SchoolYear"}
 	<div class="alert-box alert">
 		Není aktivní žádný školní rok. Možná jej chcete <a href="{link SchoolYear:default}">vytvořit</a>
 		<a href="#" class="close">&times;</a>

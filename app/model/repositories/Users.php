@@ -90,5 +90,4 @@ class Users extends EntityRepository
 		}
 
 	}
-
 }

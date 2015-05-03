@@ -4,6 +4,8 @@ namespace App\Presenters;
 use App\Forms\IStudentFormFactory;
 use App\Forms\StudentFormFactory;
 use App\Model\Entities\Student;
+use App\Model\Services\UserService;
+use Nette\Security\Passwords;
 
 /**
  * Class StudentsPresenter
@@ -23,6 +25,12 @@ class StudentsPresenter extends AuthorizedBasePresenter
 	 * @inject
 	 */
 	public $studentFormFactory;
+
+	/**
+	 * @var UserService
+	 * @inject
+	 */
+	public $userService;
 
 	public function startup()
 	{
@@ -52,6 +60,21 @@ class StudentsPresenter extends AuthorizedBasePresenter
 			$this->addLinkToNav("Nový student", "Students:default");
 
 		}
+	}
+
+	public function handleGenerateNewPassword()
+	{
+		try {
+			$password = $this->userService->generateNewPassword($this->student);
+			$this->student->setPassword(Passwords::hash($password));
+			$this->em->persist($this->student);
+			$this->em->flush();
+			$this->flashMessage("Heslo bylo úspěšně vygenerováno. Nové heslo je: <strong>$password</strong>", "success");
+		} catch (\Exception $e) {
+			$this->flashMessage("Heslo nebylo vygenerováno. ", "alert");
+		}
+
+		$this->redirect('this');
 	}
 
 	/**
