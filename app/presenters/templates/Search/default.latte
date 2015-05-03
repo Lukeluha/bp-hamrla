@@ -1,0 +1,68 @@
+{block content}
+		<div class="row collapse prefix-radius">
+			<div class="small-1 columns left">
+				<span class="prefix"><i class="fi-magnifying-glass"></i></span>
+			</div>
+			<div class="small-11 large-8 columns left">
+				<input type="text" class="liveSearch" data-url="{link search!}" data-spinner="searchSpinner" placeholder="Začněte vyhledávat..."/>
+			</div>
+		</div>
+
+		{snippet}
+			<img src="{$basePath}/images/spinner-bubble.svg" alt="" id="searchSpinner" class="hide"/>
+			{if isset($results)}
+
+				{if !count($results['questions'])}
+					<div class="panel small-12 large-9">Nenalezeny žádné otázky</div>
+				{else}
+					<table class="small-12 large-9">
+						<thead>
+						<tr>
+							<th>Text otázky</th>
+							<th>Hodina</th>
+						</tr>
+						</thead>
+						<tbody>
+							{foreach $results['questions'] as $question}
+								<tr>
+									<td>{$question->getQuestionText()}</td>
+									<td>
+										<a href="{link Lesson:default $question->getLesson()->getId()}">
+											{$question->getLesson()->getName()} -
+											{$question->getLesson()->getTeaching()->getClass()->getName()}
+										</a>
+									</td>
+								</tr>
+							{/foreach}
+						</tbody>
+					</table>
+				{/if}
+
+				{if !count($results['tasks'])}
+					<div class="panel small-12 large-9">Nenalezeny žádné úkoly</div>
+				{else}
+					<table class="small-12 large-9">
+						<thead>
+						<tr>
+							<th>Název úkolu</th>
+							<th>Hodina</th>
+						</tr>
+						</thead>
+						<tbody>
+						{foreach $results['tasks'] as $task}
+							<tr>
+								<td>{$task->getTaskName()}</td>
+								<td>
+									<a href="{link Lesson:default $task->getLesson()->getId()}">
+										{$task->getLesson()->getName()} -
+										{$task->getLesson()->getTeaching()->getClass()->getName()}
+									</a>
+								</td>
+							</tr>
+						{/foreach}
+						</tbody>
+					</table>
+				{/if}
+			{/if}
+		{/snippet}
+{/block}
