@@ -44,6 +44,7 @@ function init(){
 		content: $('<span><strong>žádný</strong> - není žádný limit pro odevzdání<br/><strong>volný</strong> - studenti mohou odevzdávat i po limitu, v závěrečném zhodnocení budou tito studenti označeni<br /><strong>striktní</strong> - studenti nebudou moci odevzdat po uplynutí limitu</span>')
 	});
 
+	$('.tooltipster').tooltipster();
 
 }
 
