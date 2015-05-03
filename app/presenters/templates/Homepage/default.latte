@@ -1,3 +1,22 @@
+{block leftMenu}
+	{if $user->isInRole('student') && count($tasksToFinish)}
+		<div class="column small-12 large-2 activities">
+			<h3>Úkoly k odevzdání</h3>
+			<ul class="unstyled no-margin">
+				{foreach $tasksToFinish as $taskToFinish}
+					<li>
+						<a href="{link Lesson:default $taskToFinish->getLesson()->getId()}">
+							{$taskToFinish->getTaskName()}
+						</a>
+					</li>
+				{/foreach}
+			</ul>
+		</div>
+	{else}
+		{include parent}
+	{/if}
+{/block}
+
 {block content}
 	{control posts}
 {/block}

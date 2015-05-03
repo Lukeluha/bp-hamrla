@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 use App\Controls\IPostsControlFactory;
+use App\Model\Entities\Task;
 
 /**
  * Homepage presenter.
@@ -21,6 +22,9 @@ class HomepagePresenter extends AuthorizedBasePresenter
 	
 	public function renderDefault()
 	{
+		if ($this->user->isInRole('student')) {
+			$this->template->tasksToFinish = $this->em->getRepository(Task::getClassName())->findByOpened($this->user->id);
+		}
 
 	}
 }
