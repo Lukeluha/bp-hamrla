@@ -1,8 +1,12 @@
 {block leftMenu}
-	<div class="column small-12 large-2 activities">
-		<h3>Studenti</h3>
-		{control students}
-	</div>
+	{if $user->isInRole('teacher')}
+		<div class="column small-12 large-2 activities">
+			<h3>Studenti</h3>
+			{control students}
+		</div>
+	{else}
+		{include parent}
+	{/if}
 {/block}
 
 {block content}

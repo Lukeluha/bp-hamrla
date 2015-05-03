@@ -78,7 +78,7 @@ class SubmitTaskForm extends Control
 		$lesson = $this->task->getLesson();
 		$schoolYear = $lesson->getTeaching()->getClass()->getSchoolYear();
 
-		$mainPwd = "files/tasks/" . $schoolYear->getId() . "/" . $lesson->getId() . "/". $this->user->getId() . "-" . $this->task->getId() . "-" . Strings::webalize($this->user->getSurname() . "-".$this->user->getName());
+		$mainPwd = "files/tasks/" . $schoolYear->getId() . "/" . $lesson->getId() . "/".  Strings::webalize($this->task->getTaskName()) . "-" . Strings::webalize($this->user->getSurname() . "-".$this->user->getName()) . '-' . $this->user->getId();
 
 		$task = new TaskCompleted();
 		$task->setStudent($this->user)
