@@ -2,7 +2,9 @@
 	{snippet students}
 	{foreach $class->getStudents() as $student}
 		<li>
-			{$student->getName()} {$student->getSurname()}
+			<a href="{link loadStudent! $student->getId()}" data-reveal-id="studentDetail" class="myAjax">
+				{$student->getName()} {$student->getSurname()}
+			</a>
 			<span class="right">
 				{if $lesson}
 					<a class="ajax success" href="{link addActivityPoint! $student->getId()}" title="Přidat bod za aktivitu">
@@ -26,3 +28,18 @@
 	{/foreach}
 	{/snippet}
 </ul>
+
+
+<div id="studentDetail" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+
+	{snippet studentDetail}
+	{if isset($student)}
+		{control studentDetail}
+	{else}
+		<h2 id="modalTitle">Detail studenta</h2>
+		<img src="{$basePath}/images/spinner-bubble.svg" alt=""/>
+	{/if}
+
+	{/snippet}
+	<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>

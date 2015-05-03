@@ -62,7 +62,7 @@ class TeachingPresenter extends AuthorizedBasePresenter
 
 	public function createComponentStudents()
 	{
-		return $this->studentsControlFactory->create($this->teaching->getClass());
+		return $this->studentsControlFactory->create($this->teaching);
 	}
 
 	/**

@@ -29,6 +29,7 @@ services:
 	- App\Controls\IRatingControlFactory
 	- App\Controls\IQuestionSummaryControlFactory
 	- App\Controls\IStudentsControlFactory
+	- App\Controls\IStudentDetailControlFactory
 	- App\Forms\IQuestionFormFactory
 	- App\Forms\ITaskFormFactory
 	- App\Forms\IStudentFormFactory

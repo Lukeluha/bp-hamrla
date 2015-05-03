@@ -37,7 +37,7 @@ class Answer extends BaseEntity
 
 	/**
 	 * @var Student
-	 * @ORM\ManyToOne(targetEntity="Student")
+	 * @ORM\ManyToOne(targetEntity="Student", inversedBy="answers")
 	 */
 	protected $student;
 
@@ -145,6 +145,27 @@ class Answer extends BaseEntity
 	{
 		$this->points = $points;
 		return $this;
+	}
+
+	public function __toString()
+	{
+		if ($this->question->getQuestionType() == Question::TYPE_CHOICE) {
+			return $this->options->first()->getOptionText();
+		} elseif ($this->question->getQuestionType() == Question::TYPE_MULTIPLECHOICE) {
+			$options = '';
+			$i = 0;
+			foreach ($this->options as $option) {
+				if ($i) $options .= ", ";
+
+				$options .= $option->getOptionText();
+
+				$i++;
+			}
+
+			return $options;
+		} else {
+			return $this->answerText;
+		}
 	}
 
 }

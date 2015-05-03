@@ -310,7 +310,7 @@ class LessonPresenter extends AuthorizedBasePresenter
 
 	public function createComponentStudents()
 	{
-		$control = $this->studentsControlFactory->create($this->lesson->getTeaching()->getClass());
+		$control = $this->studentsControlFactory->create($this->lesson->getTeaching());
 		$control->setLesson($this->lesson);
 		return $control;
 	}

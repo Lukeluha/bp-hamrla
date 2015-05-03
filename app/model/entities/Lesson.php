@@ -242,6 +242,11 @@ class Lesson extends BaseEntity
 		return $this;
 	}
 
+	public function __toString()
+	{
+		return $this->name ? $this->name : $this->getRank() . ". hodina";
+	}
+
 
 
 

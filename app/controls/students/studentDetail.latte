@@ -1,0 +1,161 @@
+<h2 class="title">Detail studenta {$student->getName()} {$student->getSurname()}</h2>
+
+{if $lesson}
+	<ul class="tabs" data-tab>
+		<li class="tab-title active"><a href="#panel1">Tuto hodinu</a></li>
+		<li class="tab-title"><a href="#panel2">Celkově</a></li>
+	</ul>
+{/if}
+
+
+<div class="tabs-content">
+	{if $lesson}
+		<div class="content active" id="panel1">
+			<p class="lead">Odpovědi na otázky v této hodině</p>
+			{if count($lessonAnswers)}
+				<table class="small-12">
+					<thead>
+					<tr>
+						<th>Otázka</th>
+						<th>Odpověď</th>
+						<th>Hodina</th>
+						<th>Hodnocení</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $lessonAnswers as $answer}
+						<tr>
+							<td>{$answer->getQuestion()->getQuestionText()}</td>
+							<td>{$answer}</td>
+							<td>
+								<a href="{plink Lesson:default $answer->getQuestion()->getLesson()->getId()}">
+									{$answer->getQuestion()->getLesson()}
+								</a>
+							</td>
+							<td>{$answer->getPoints()} %</td>
+						</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			{else}
+				<div class="panel">Nenalezeny žádné odpovědi</div>
+			{/if}
+
+			<p class="lead">Odevzdané úkoly tuto hodinu</p>
+			{if count($lessonTasks)}
+				<table class="small-12">
+					<thead>
+					<tr>
+						<th>Úkol</th>
+						<th>Soubor</th>
+						<th>Hodina</th>
+						<th>Hodnocení</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $lessonTasks as $completedTask}
+						<tr>
+							<td>{$completedTask->getTask()->getTaskName()}</td>
+							<td class="text-center">
+								{if $completedTask->isImage()}
+									<a href="{$basePath}/{$completedTask->getFilename('web')}" class="fancyboxx" rel="studentTaskGroup">
+										<img src="{$basePath}/{$completedTask->getFilename('thumbnail')}" alt=""/>
+									</a>
+								{/if}
+							</td>
+							<td>
+								<a href="{plink Lesson:default $completedTask->getTask()->getLesson()->getId()}">
+									{$completedTask->getTask()->getLesson()}
+								</a>
+							</td>
+							<td>{$completedTask->getPoints()} %</td>
+						</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			{else}
+				<div class="panel">Nenalezeny žádné odpovědi</div>
+			{/if}
+		</div>
+	{/if}
+
+	<div class="content {if !$lesson}active{/if}" id="panel2">
+
+		{if isset($answers)}
+			<p class="lead">Odpovědi na otázky</p>
+			{if count($answers)}
+				<table class="small-12">
+					<thead>
+					<tr>
+						<th>Otázka</th>
+						<th>Odpověď</th>
+						<th>Hodina</th>
+						<th>Hodnocení</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $answers as $answer}
+						<tr>
+							<td>{$answer->getQuestion()->getQuestionText()}</td>
+							<td>{$answer}</td>
+							<td>
+								<a href="{plink Lesson:default $answer->getQuestion()->getLesson()->getId()}">
+									{$answer->getQuestion()->getLesson()}
+								</a>
+							</td>
+							<td>{$answer->getPoints()} %</td>
+						</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			{else}
+				<div class="panel">Nenalezeny žádné odpovědi</div>
+			{/if}
+		{/if}
+
+		{if isset($tasks)}
+			<p class="lead">Odevzdané úkoly</p>
+			{if count($tasks)}
+				<table class="small-12">
+					<thead>
+					<tr>
+						<th>Úkol</th>
+						<th>Soubor</th>
+						<th>Hodina</th>
+						<th>Hodnocení</th>
+					</tr>
+					</thead>
+					<tbody>
+					{foreach $tasks as $completedTask}
+						<tr>
+							<td>{$completedTask->getTask()->getTaskName()}</td>
+							<td class="text-center">
+								{if $completedTask->isImage()}
+									<a href="{$basePath}/{$completedTask->getFilename('web')}" class="fancyboxx" rel="studentTaskGroup">
+										<img src="{$basePath}/{$completedTask->getFilename('thumbnail')}" alt=""/>
+									</a>
+								{/if}
+							</td>
+							<td>
+								<a href="{plink Lesson:default $completedTask->getTask()->getLesson()->getId()}">
+									{$completedTask->getTask()->getLesson()}
+								</a>
+							</td>
+							<td>{$completedTask->getPoints()} %</td>
+						</tr>
+					{/foreach}
+					</tbody>
+				</table>
+			{else}
+				<div class="panel">Nenalezeny žádné odpovědi</div>
+			{/if}
+		{/if}
+
+	</div>
+</div>
+
+<script>
+	$(document).ready(function() {
+		$(".fancyboxx").fancybox();
+	});
+</script>

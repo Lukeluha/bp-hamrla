@@ -4,12 +4,12 @@ namespace App\Controls;
 
 
 use App\Model\Entities\ActivityPoints;
-use App\Model\Entities\ClassEntity;
 use App\Model\Entities\Lesson;
 use App\Model\Entities\Student;
+use App\Model\Entities\Teaching;
 use Doctrine\ORM\Query;
 use Kdyby\Doctrine\EntityManager;
-use Kdyby\Doctrine\QueryBuilder;
+use Nette\Application\BadRequestException;
 use Nette\Application\UI\Control;
 
 class StudentsControl extends Control
@@ -30,10 +30,27 @@ class StudentsControl extends Control
 	 */
 	protected $lesson;
 
-	public function __construct(ClassEntity $class, EntityManager $em)
+	/**
+	 * @var Teaching
+	 */
+	protected $teaching;
+
+	/**
+	 * @var Student
+	 */
+	protected $student;
+
+	/**
+	 * @var IStudentDetailControlFactory
+	 */
+	protected $studentDetailControlFactory;
+
+	public function __construct(Teaching $teaching, EntityManager $em, IStudentDetailControlFactory $studentDetailControlFactory)
 	{
 		$this->em = $em;
-		$this->class = $class;
+		$this->class = $teaching->getClass();
+		$this->teaching = $teaching;
+		$this->studentDetailControlFactory = $studentDetailControlFactory;
 	}
 
 	public function render()
@@ -55,6 +72,16 @@ class StudentsControl extends Control
 		}
 		$this->template->activityPoints = $activityPoints;
 		$this->template->render();
+	}
+
+	public function handleLoadStudent($studentId)
+	{
+		$student = $this->em->find(Student::getClassName(), $studentId);
+		if (!$student) throw new BadRequestException;
+
+		$this->template->student = $this->student = $student;
+
+		$this->redrawControl('studentDetail');
 	}
 
 	public function handleAddActivityPoint($studentId)
@@ -104,6 +131,14 @@ class StudentsControl extends Control
 				->from(ActivityPoints::getClassName(), 'a')
 				->where('a.student = '. $studentId)->getQuery()->setHydrationMode(Query::HYDRATE_SINGLE_SCALAR)->getOneOrNullResult();
 		}
+	}
+
+	public function createComponentStudentDetail()
+	{
+		$control = $this->studentDetailControlFactory->create($this->student);
+		$control->setTeaching($this->teaching);
+		$control->setLesson($this->lesson);
+		return $control;
 	}
 
 	/**

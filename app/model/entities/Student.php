@@ -24,9 +24,16 @@ class Student extends User
 	 */
 	protected $classes;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="Answer", mappedBy="student")
+	 * @var ArrayCollection
+	 */
+	protected $answers;
+
 	public function __construct()
 	{
 		$this->classes = new ArrayCollection();
+		$this->answers = new ArrayCollection();
 	}
 
 	/**
@@ -110,6 +117,24 @@ class Student extends User
 		}
 
 		return $teachings;
+	}
+
+	/**
+	 * @return ArrayCollection
+	 */
+	public function getAnswers()
+	{
+		return $this->answers;
+	}
+
+	/**
+	 * @param ArrayCollection $answers
+	 * @return $this
+	 */
+	public function setAnswers($answers)
+	{
+		$this->answers = $answers;
+		return $this;
 	}
 
 }

@@ -3,14 +3,14 @@
 namespace App\Controls;
 
 
-use App\Model\Entities\ClassEntity;
+use App\Model\Entities\Teaching;
 
 interface IStudentsControlFactory
 {
 	/**
-	 * @param ClassEntity $class
+	 * @param Teaching $teaching
 	 * @return StudentsControl
 	 */
-	function create(ClassEntity $class);
+	function create(Teaching $teaching);
 
 }
