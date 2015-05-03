@@ -322,4 +322,15 @@ class LessonPresenter extends AuthorizedBasePresenter
 	{
 		return $this->chatControlFactory->create($this->user, $this->actualYear, $this->lesson->getTeaching());
 	}
+
+	public function beforeRender()
+	{
+		parent::beforeRender();
+
+		if ($this->lesson->getName()) {
+			$this->template->title = $this->lesson->getName() . " | " . $this->lesson->getTeaching()->getSubject()->getAbbreviation();
+		} else {
+			$this->template->title = $this->lesson->getRank() . ". hodina | " . $this->lesson->getTeaching()->getSubject()->getAbbreviation();
+		}
+	}
 }

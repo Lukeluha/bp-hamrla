@@ -144,9 +144,10 @@ class LessonsPresenter extends AuthorizedBasePresenter
 		$this->redirect('this');
 	}
 
-	public function checkDates()
+	public function beforeRender()
 	{
-
+		parent::beforeRender();
+		$this->template->title = "Přehled hodin | " . $this->teaching->getSubject()->getAbbreviation();
 	}
 
 }

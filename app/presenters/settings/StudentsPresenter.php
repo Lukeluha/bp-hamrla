@@ -102,4 +102,11 @@ class StudentsPresenter extends AuthorizedBasePresenter
 
 		return $form;
 	}
+
+
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->title = "Správa studenta";
+	}
 }

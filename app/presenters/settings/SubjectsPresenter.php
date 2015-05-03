@@ -72,4 +72,10 @@ class SubjectsPresenter extends AuthorizedBasePresenter
 		$this->redirect('Settings:default');
 	}
 
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->title = "Správa předmětu";
+	}
+
 }

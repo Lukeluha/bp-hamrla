@@ -43,4 +43,11 @@ class LoginPresenter extends BasePresenter
 		}
 	}
 
+	public function beforeRender()
+	{
+		parent::beforeRender();
+
+		$this->template->title = "Přihlášení";
+	}
+
 }

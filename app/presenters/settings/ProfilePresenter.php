@@ -104,4 +104,10 @@ class ProfilePresenter extends AuthorizedBasePresenter
 		$this->redirect('this');
 	}
 
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->title = "Nastavení profilu";
+	}
+
 }

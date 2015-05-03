@@ -78,5 +78,11 @@ class TeachingPresenter extends AuthorizedBasePresenter
 		}
 	}
 
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->title = "Vyučování | " . $this->teaching->getSubject()->getAbbreviation();
+	}
+
 	
 }

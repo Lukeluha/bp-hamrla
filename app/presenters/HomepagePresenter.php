@@ -27,4 +27,10 @@ class HomepagePresenter extends AuthorizedBasePresenter
 		}
 
 	}
+
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->title = "Hlavní stránka";
+	}
 }

@@ -774,4 +774,10 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 		$this->redrawControl('teachingForm');
 	}
+
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->title = "Nastavení třídy";
+	}
 }

@@ -71,4 +71,10 @@ class SearchPresenter extends AuthorizedBasePresenter
 		$this->redrawControl();
 	}
 
+
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->title = "Vyhledávání";
+	}
 }

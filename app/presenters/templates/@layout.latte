@@ -7,7 +7,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>{ifset title}{include title|striptags} | {/ifset}Nette Sandbox</title>
+	<title>{ifset $title}{$title} | {/ifset}WAPPS</title>
 
 	{if $isProduction}
 		<link rel="stylesheet" href="{$basePath}/css/screen.min.css" />

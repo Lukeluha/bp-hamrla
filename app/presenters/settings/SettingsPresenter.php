@@ -95,5 +95,11 @@ class SettingsPresenter extends AuthorizedBasePresenter
 		$this->template->schoolYears = $this->em->getRepository(SchoolYear::getClassName())->findBy(array(), array('from' => 'DESC'));
 	}
 
+	public function beforeRender()
+	{
+		parent::beforeRender();
+		$this->template->title = "Nastavení";
+	}
+
 
 }
