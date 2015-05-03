@@ -9163,6 +9163,18 @@ body {
 }
 
 /* line 12, ../../scss/app.scss */
+body.loginPage {
+  background-image: url("../images/login-bg2.jpg");
+  background-attachment: fixed;
+}
+/* line 16, ../../scss/app.scss */
+body.loginPage div#loginForm {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: rgba(245, 245, 245, 0.9);
+}
+
+/* line 23, ../../scss/app.scss */
 textarea {
   display: block;
   width: 100%;
@@ -9182,67 +9194,67 @@ textarea {
   transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
-/* line 31, ../../scss/app.scss */
+/* line 42, ../../scss/app.scss */
 .no-resize {
   overflow: hidden;
   resize: none;
 }
 
-/* line 36, ../../scss/app.scss */
+/* line 47, ../../scss/app.scss */
 .no-padding {
   padding: 0;
 }
 
-/* line 40, ../../scss/app.scss */
+/* line 51, ../../scss/app.scss */
 .no-margin {
   margin: 0;
 }
 
-/* line 44, ../../scss/app.scss */
+/* line 55, ../../scss/app.scss */
 #menu {
   z-index: 100;
 }
-/* line 45, ../../scss/app.scss */
+/* line 56, ../../scss/app.scss */
 #menu .top-bar-section ul li {
   background: #4D4D4D;
 }
-/* line 53, ../../scss/app.scss */
+/* line 64, ../../scss/app.scss */
 #menu ul.vertical-center li {
   color: white;
 }
-/* line 57, ../../scss/app.scss */
+/* line 68, ../../scss/app.scss */
 #menu ul.vertical-center :hover li {
   background: #333333;
 }
-/* line 61, ../../scss/app.scss */
+/* line 72, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info {
   padding-top: 5px;
   padding-left: 5px;
 }
-/* line 65, ../../scss/app.scss */
+/* line 76, ../../scss/app.scss */
 #menu ul.vertical-center ul#profile-info li:nth-child(3) {
   font-size: 11px;
   color: grey;
 }
 
-/* line 74, ../../scss/app.scss */
+/* line 85, ../../scss/app.scss */
 #chat-wrapper {
   position: absolute;
   width: 100%;
   z-index: 10;
 }
 
-/* line 80, ../../scss/app.scss */
+/* line 91, ../../scss/app.scss */
 .status {
   color: grey;
 }
 
-/* line 84, ../../scss/app.scss */
+/* line 95, ../../scss/app.scss */
 .online {
   color: green;
 }
 
-/* line 88, ../../scss/app.scss */
+/* line 99, ../../scss/app.scss */
 #chat {
   background-color: #ECECEC;
   height: calc(100vh - 55px);
@@ -9251,12 +9263,12 @@ textarea {
   overflow-y: scroll;
   right: 0;
 }
-/* line 95, ../../scss/app.scss */
+/* line 106, ../../scss/app.scss */
 #chat ul {
   margin-left: 0;
   cursor: pointer;
 }
-/* line 98, ../../scss/app.scss */
+/* line 109, ../../scss/app.scss */
 #chat ul li {
   height: 40px;
   line-height: 40px;
@@ -9264,27 +9276,27 @@ textarea {
   padding: 0 5px;
   border-bottom: 1px solid white;
 }
-/* line 106, ../../scss/app.scss */
+/* line 117, ../../scss/app.scss */
 #chat ul .status {
   font-size: 20px;
 }
-/* line 110, ../../scss/app.scss */
+/* line 121, ../../scss/app.scss */
 #chat ul li:hover {
   background: #dedede;
 }
-/* line 115, ../../scss/app.scss */
+/* line 126, ../../scss/app.scss */
 #chat img {
   margin-right: 2px;
 }
 
-/* line 121, ../../scss/app.scss */
+/* line 132, ../../scss/app.scss */
 .breadcrumbs {
   border-radius: 0;
   border: none;
   border-bottom: 2px solid #ECECEC;
 }
 
-/* line 127, ../../scss/app.scss */
+/* line 138, ../../scss/app.scss */
 .full-width {
   width: 100%;
   margin-left: auto;
@@ -9292,12 +9304,12 @@ textarea {
   max-width: initial;
 }
 
-/* line 134, ../../scss/app.scss */
+/* line 145, ../../scss/app.scss */
 ul.unstyled {
   list-style-type: none;
 }
 
-/* line 138, ../../scss/app.scss */
+/* line 149, ../../scss/app.scss */
 .img-circle {
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
@@ -9305,122 +9317,122 @@ ul.unstyled {
   border-radius: 150px;
 }
 
-/* line 143, ../../scss/app.scss */
+/* line 154, ../../scss/app.scss */
 input.form-control-error {
   margin-bottom: 0;
 }
 
-/* line 148, ../../scss/app.scss */
+/* line 159, ../../scss/app.scss */
 .alert-box.success a {
   color: #005938;
 }
 
-/* line 152, ../../scss/app.scss */
+/* line 163, ../../scss/app.scss */
 .alert-box.success a:hover {
   color: #003823;
 }
 
-/* line 157, ../../scss/app.scss */
+/* line 168, ../../scss/app.scss */
 td > .button {
   margin: 0 !important;
 }
 
-/* line 161, ../../scss/app.scss */
+/* line 172, ../../scss/app.scss */
 .alert-box {
   margin-bottom: 0;
 }
 
-/* line 165, ../../scss/app.scss */
+/* line 176, ../../scss/app.scss */
 .hide {
   display: none;
 }
 
-/* line 169, ../../scss/app.scss */
+/* line 180, ../../scss/app.scss */
 .post {
   padding-bottom: 20px;
 }
-/* line 172, ../../scss/app.scss */
+/* line 183, ../../scss/app.scss */
 .post .post-header {
   background-color: #ECECEC;
   text-align: center;
   padding: 10px;
 }
-/* line 178, ../../scss/app.scss */
+/* line 189, ../../scss/app.scss */
 .post .post-header i {
   line-height: 1em;
   font-size: 90px;
 }
-/* line 184, ../../scss/app.scss */
+/* line 195, ../../scss/app.scss */
 .post .post-content {
   padding: 20px;
   background-color: #BFBFBF;
 }
-/* line 188, ../../scss/app.scss */
+/* line 199, ../../scss/app.scss */
 .post .post-content .button {
   margin: 0;
 }
-/* line 193, ../../scss/app.scss */
+/* line 204, ../../scss/app.scss */
 .post .created-date {
   font-size: 12px;
   color: #818181;
 }
 
-/* line 200, ../../scss/app.scss */
+/* line 211, ../../scss/app.scss */
 .posts .post-content {
   padding-bottom: 0;
 }
-/* line 205, ../../scss/app.scss */
+/* line 216, ../../scss/app.scss */
 .posts .bottom a {
   color: white;
 }
-/* line 208, ../../scss/app.scss */
+/* line 219, ../../scss/app.scss */
 .posts .bottom a i {
   font-size: 30px;
 }
 
-/* line 215, ../../scss/app.scss */
+/* line 226, ../../scss/app.scss */
 hr.white {
   border: 1px solid white;
 }
 
 @media only screen {
-  /* line 220, ../../scss/app.scss */
+  /* line 231, ../../scss/app.scss */
   #main-content-wrapper {
     padding-right: 200px;
   }
 
-  /* line 224, ../../scss/app.scss */
+  /* line 235, ../../scss/app.scss */
   .post-header {
     width: 24.5%;
   }
 }
 @media only screen and (max-width: 40em) {
-  /* line 230, ../../scss/app.scss */
+  /* line 241, ../../scss/app.scss */
   #main-content-wrapper {
     padding-right: 0;
   }
 
-  /* line 234, ../../scss/app.scss */
+  /* line 245, ../../scss/app.scss */
   .post-header {
     width: 100%;
   }
 
-  /* line 238, ../../scss/app.scss */
+  /* line 249, ../../scss/app.scss */
   .small-full {
     width: 100%;
   }
 
-  /* line 242, ../../scss/app.scss */
+  /* line 253, ../../scss/app.scss */
   .reveal-modal {
     padding: 1rem;
   }
 
-  /* line 246, ../../scss/app.scss */
+  /* line 257, ../../scss/app.scss */
   .new-activity {
     margin-top: 50px !important;
   }
 }
-/* line 251, ../../scss/app.scss */
+/* line 262, ../../scss/app.scss */
 #chat-popups {
   position: fixed;
   bottom: 0;
@@ -9428,13 +9440,13 @@ hr.white {
   padding-right: 200px;
   height: 280px;
 }
-/* line 258, ../../scss/app.scss */
+/* line 269, ../../scss/app.scss */
 #chat-popups .chat-popup {
   width: 250px;
   height: 280px;
   margin-right: 20px;
 }
-/* line 263, ../../scss/app.scss */
+/* line 274, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header {
   font-size: 12px;
   font-weight: bold;
@@ -9443,13 +9455,13 @@ hr.white {
   padding: 5px 10px;
   color: white;
 }
-/* line 272, ../../scss/app.scss */
+/* line 283, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-header.minimize {
   position: fixed;
   bottom: 0;
   width: 250px;
 }
-/* line 278, ../../scss/app.scss */
+/* line 289, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-text {
   height: 220px;
   background: white;
@@ -9457,17 +9469,17 @@ hr.white {
   border-right: 1px solid lightgray;
   overflow-y: scroll;
 }
-/* line 286, ../../scss/app.scss */
+/* line 297, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation {
   list-style-type: none;
   margin: 0;
   padding: 10px;
 }
-/* line 291, ../../scss/app.scss */
+/* line 302, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation li {
   margin-bottom: 15px;
 }
-/* line 298, ../../scss/app.scss */
+/* line 309, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble {
   position: relative;
   padding: 5px;
@@ -9477,19 +9489,19 @@ hr.white {
   font-size: 12px;
   width: 190px;
 }
-/* line 308, ../../scss/app.scss */
+/* line 319, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left {
   background: #e0e0e0;
   margin-left: 5px;
   float: right;
 }
-/* line 315, ../../scss/app.scss */
+/* line 326, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right {
   margin-right: 5px;
   float: left;
   background: #DBF4FF;
 }
-/* line 321, ../../scss/app.scss */
+/* line 332, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble:after {
   content: "";
   position: absolute;
@@ -9499,34 +9511,34 @@ hr.white {
   width: 0;
   z-index: 1;
 }
-/* line 331, ../../scss/app.scss */
+/* line 342, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-left:after {
   left: -7px;
   border-width: 5px 7px 5px 0;
   border-color: transparent #e0e0e0;
 }
-/* line 337, ../../scss/app.scss */
+/* line 348, ../../scss/app.scss */
 #chat-popups .chat-popup .chat-conversation .bubble-right:after {
   right: -7px;
   border-width: 5px 0 5px 7px;
   border-color: transparent #DBF4FF;
 }
-/* line 344, ../../scss/app.scss */
+/* line 355, ../../scss/app.scss */
 #chat-popups .chat-popup input {
   height: 30px;
 }
 
-/* line 352, ../../scss/app.scss */
+/* line 363, ../../scss/app.scss */
 .cursor-pointer {
   cursor: pointer;
 }
 
-/* line 356, ../../scss/app.scss */
+/* line 367, ../../scss/app.scss */
 img.no-resize {
   max-width: none;
 }
 
-/* line 360, ../../scss/app.scss */
+/* line 371, ../../scss/app.scss */
 .comment {
   background-color: #d3d3d3;
   margin-bottom: 15px;
@@ -9534,96 +9546,96 @@ img.no-resize {
   padding: 10px;
 }
 
-/* line 368, ../../scss/app.scss */
+/* line 379, ../../scss/app.scss */
 .switch p {
   font-size: 12px;
   margin-bottom: 3px;
 }
 
-/* line 374, ../../scss/app.scss */
+/* line 385, ../../scss/app.scss */
 .strong {
   font-weight: bold;
 }
 
-/* line 378, ../../scss/app.scss */
+/* line 389, ../../scss/app.scss */
 .activities {
   background-color: #ECECEC;
 }
-/* line 380, ../../scss/app.scss */
+/* line 391, ../../scss/app.scss */
 .activities p {
   font-size: 13px;
 }
-/* line 384, ../../scss/app.scss */
+/* line 395, ../../scss/app.scss */
 .activities ul li {
   font-size: 13px;
 }
-/* line 389, ../../scss/app.scss */
+/* line 400, ../../scss/app.scss */
 .activities hr {
   margin: 0.5rem 0;
 }
 
-/* line 395, ../../scss/app.scss */
+/* line 406, ../../scss/app.scss */
 .activities h3 {
   font-size: 16px;
   font-weight: bold;
 }
 
-/* line 402, ../../scss/app.scss */
+/* line 413, ../../scss/app.scss */
 #lessonName p {
   margin: 0;
 }
 
-/* line 407, ../../scss/app.scss */
+/* line 418, ../../scss/app.scss */
 #lessonDescription {
   margin-top: 10px;
 }
 
-/* line 411, ../../scss/app.scss */
+/* line 422, ../../scss/app.scss */
 input[type="radio"], input[type="checkbox"] {
   margin-right: 10px;
 }
 
-/* line 415, ../../scss/app.scss */
+/* line 426, ../../scss/app.scss */
 div.success {
   background-color: #dff0d8;
 }
 
-/* line 419, ../../scss/app.scss */
+/* line 430, ../../scss/app.scss */
 i.success {
   color: #6C9902;
 }
 
-/* line 423, ../../scss/app.scss */
+/* line 434, ../../scss/app.scss */
 div.error {
   background-color: #f2dede;
 }
 
-/* line 427, ../../scss/app.scss */
+/* line 438, ../../scss/app.scss */
 i.error {
   color: #f04124;
 }
 
-/* line 431, ../../scss/app.scss */
+/* line 442, ../../scss/app.scss */
 div.row.padding {
   padding: 5px;
 }
 
-/* line 435, ../../scss/app.scss */
+/* line 446, ../../scss/app.scss */
 #chatStatus {
   color: darkgray;
 }
 
-/* line 439, ../../scss/app.scss */
+/* line 450, ../../scss/app.scss */
 a.success {
   color: #43AC6A;
 }
 
-/* line 443, ../../scss/app.scss */
+/* line 454, ../../scss/app.scss */
 a.alert {
   color: #f04124;
 }
 
-/* line 447, ../../scss/app.scss */
+/* line 458, ../../scss/app.scss */
 span.grey {
   color: #a9a9a9;
 }

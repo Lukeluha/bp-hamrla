@@ -9,6 +9,17 @@ body {
   background-color: whitesmoke;
 }
 
+body.loginPage {
+  background-image: url('../images/login-bg2.jpg');
+  background-attachment: fixed;
+
+  div#loginForm {
+	margin-top: 30px;
+	padding: 20px;
+	background-color: rgba(245, 245, 245, 0.9);
+  }
+}
+
 textarea {
   display: block;
   width: 100%;

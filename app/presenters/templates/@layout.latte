@@ -64,7 +64,7 @@
 		</script>
 	{/if}
 </head>
-<body {if $presenter->name != "Login"}ng-cloak{/if}>
+<body {if $presenter->name != "Login"}ng-cloak{else}class="loginPage"{/if}>
 
 <div n:if="$presenter->name != Login" class="fixed">
 	{control menu}

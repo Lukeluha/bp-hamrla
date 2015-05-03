@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use App\Model\FoundationRenderer;
 use Nette\Application\UI\Form;
 
 class LoginPresenter extends BasePresenter
@@ -14,6 +15,8 @@ class LoginPresenter extends BasePresenter
 		$form->addPassword("password", "Heslo")->setRequired("Vyplňte heslo");
 
 		$form->onSuccess[] = array($this, "loginDo");
+
+		$form->setRenderer(new FoundationRenderer());
 
 		$form->addSubmit("loginDo", "Přihlásit se");
 
