@@ -63,14 +63,16 @@ $(document).on('click', '.myAjax', function(e){
 			$('#' + $(this).data('reveal-id')).foundation('reveal','open');
 		}
 
-		if ($(this).hasClass('button')) {
-			$(this).addClass('disabled');
-			var isSubmit = $(this).is('input[type=submit]') || $(this).is('button[type=submit]');
+		if (!$(this).data('no-change-text')) {
+			if ($(this).hasClass('button')) {
+				$(this).addClass('disabled');
+				var isSubmit = $(this).is('input[type=submit]') || $(this).is('button[type=submit]');
 
-			if (isSubmit) {
-				$(this).val("Počkejte...");
-			} else {
-				$(this).text("Počkejte...");
+				if (isSubmit) {
+					$(this).val("Počkejte...");
+				} else {
+					$(this).text("Počkejte...");
+				}
 			}
 		}
 	}

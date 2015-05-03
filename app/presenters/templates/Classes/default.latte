@@ -163,7 +163,7 @@
 
 		{var $teachings = $class->getTeachings()}
 		{if !count($teachings)}
-			<div class="panel">Tato {if $class->isGroup()}skupina{else}třída{/if} nemá žádné vyučování.</div>
+			<div class="panel small-12 large-9">Tato {if $class->isGroup()}skupina{else}třída{/if} nemá žádné vyučování.</div>
 		{else}
 			<table class="small-12 large-9">
 				<thead>
@@ -171,6 +171,7 @@
 						<th>Předmět</th>
 						<th>Doba výuky</th>
 						<th>Vyučující</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -197,6 +198,19 @@
 								{if !$iterator->isFirst()}, {/if}
 								{$teacher->getSurname()} {$teacher->getName()}
 							{/foreach}
+						</td>
+						<td>
+							<a href="{link editTeaching! $teaching->getId()}"
+							   class="button tiny secondary myAjax"
+							   data-reveal-id="newTeaching"
+							   data-no-change-text="true">
+								Editovat
+							</a>
+							<a href="{link deleteTeaching! $teaching->getId()}"
+							   class="button tiny alert"
+							   onclick="return confirm('Přejete si opravdu smazat toto vyučování?')">
+								Smazat
+							</a>
 						</td>
 					</tr>
 				{/foreach}

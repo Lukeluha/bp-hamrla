@@ -154,8 +154,10 @@ class Teaching extends BaseEntity
 
 	public function addTeacher(Teacher $teacher)
 	{
-		$this->teachers[] = $teacher;
-		$teacher->addTeaching($this);
+		if (!$this->teachers->contains($teacher)) {
+			$this->teachers[] = $teacher;
+			$teacher->addTeaching($this);
+		}
 	}
 
 	/**

@@ -14,6 +14,8 @@ use App\Model\FoundationRenderer;
 use App\Model\Services\BadClassNameException;
 use App\Model\Services\BadFormatException;
 use App\Model\Utils;
+use Doctrine\Common\Collections\ArrayCollection;
+use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 use App\Forms\IStudentFormFactory;
 use App\Model\Services\StudentService;
@@ -157,6 +159,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			$teachingTime->addText("to", "Do")->setType('time')->setRequired('Vyplňte čas výuky do');
 			$teachingTime->addSelect("weekParity", "Parita týdne", array('0' => "oba týdny", TeachingTime::WEEK_EVEN => "sudý", TeachingTime::WEEK_ODD => "lichý"))->setAttribute('class', 'borderBottom');
 
+			$teachingTime->addHidden('teachingTimeId');
 
 			$teachingTime->addSubmit('remove', "Odebrat")
 				->setValidationScope(FALSE)
@@ -192,6 +195,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			$teacher->addText('teacherName', 'Jméno')->addConditionOn($teacher['teacher'], Form::EQUAL, 0)->setRequired('Vyplňte jméno učitele');
 			$teacher->addText('teacherSurname', 'Příjmení')->addConditionOn($teacher['teacher'], Form::EQUAL, 0)->setRequired('Vyplňte příjmení učitele');
 			$teacher->addText('teacherRoom', 'Místnost');
+			$teacher->addHidden('teacherId');
 
 			$teacher->addSubmit('remove', "Odebrat")
 				->setValidationScope(FALSE)
@@ -209,6 +213,8 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 		$teachers['add']->onClick[] = $redrawCallback;
 
+
+		$form->addHidden('teachingId');
 
 		$form->setCurrentGroup();
 		$form->addSubmit('save', 'Uložit')->setAttribute('class', 'button');
@@ -235,7 +241,12 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		try {
 			$this->em->beginTransaction();
 
-			$teaching = new Teaching();
+			if ($values['teachingId']) {
+				$teaching = $this->em->find(Teaching::getClassName(), $values['teachingId']);
+			} else {
+				$teaching = new Teaching();
+			}
+
 			$teaching->setClass($this->class);
 
 			if (!$values['subject']) {
@@ -252,8 +263,16 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			$this->em->persist($teaching);
 			$this->em->flush();
 
+			$createLessons = true;
+
 			foreach ($values['teachingTime'] as $teachingTime) {
-				$time = new TeachingTime();
+				if ($teachingTime['teachingTimeId']) {
+					$time = $this->em->find(TeachingTime::getClassName(), $teachingTime['teachingTimeId']);
+					$createLessons = false;
+				} else {
+					$time = new TeachingTime();
+				}
+
 				$time->setFrom($teachingTime['from'])
 						->setTo($teachingTime['to'])
 						->setWeekDay($teachingTime['weekDay'])
@@ -265,6 +284,11 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			}
 
 			$newTeachers = array();
+
+			$teaching->setTeachers(new ArrayCollection());
+			$this->em->persist($teaching);
+			$this->em->flush();
+
 			foreach ($values['teachers'] as $teacher) {
 				if ($teacher['teacher']) {
 					$teacherEntity = $this->em->getRepository(Teacher::getClassName())->find($teacher['teacher']);
@@ -288,7 +312,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 			$this->em->flush();
 
-			$this->lessonService->createLessons($teaching);
+			if ($createLessons) $this->lessonService->createLessons($teaching);
 
 			$this->em->commit();
 
@@ -303,6 +327,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 				$this->flashMessage($text, "success");
 			}
 		} catch (\Exception $e) {
+			throw $e;
 			$this->em->rollback();
 			$this->flashMessage('Vyučování nebylo vytvořeno', 'alert');
 		}
@@ -695,5 +720,59 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$this->em->flush();
 
 		$this->terminate();
+	}
+
+	public function handleDeleteTeaching($teachingId)
+	{
+		$teaching = $this->em->find(Teaching::getClassName(), $teachingId);
+		try {
+			$this->em->remove($teaching);
+			$this->em->flush();
+			$this->flashMessage("Vyučování bylo úspěšně smazáno", "success");
+		} catch (\Exception $e) {
+			$this->flashMessage("Vyučování nebylo smazáno", "alert");
+		}
+
+		$this->redirect('this');
+	}
+
+	public function handleEditTeaching($teachingId)
+	{
+		/** @var Teaching $teaching */
+		$teaching = $this->em->find(Teaching::getClassName(), $teachingId);
+
+		if (!$teaching) throw new BadRequestException;
+
+		$defaults = array(
+			'subject' => $teaching->getSubject()->getId(),
+			'teachingId' => $teachingId
+		);
+
+		foreach ($teaching->getTeachingTimes() as $teachingTime) {
+			/** @var TeachingTime $teachingTime */
+			$defaultsForTeachingTime = array(
+				'weekDay' => $teachingTime->getWeekDay(),
+				'from' => $teachingTime->getFrom()->format("H:i"),
+				'to' => $teachingTime->getTo()->format("H:i"),
+				'weekParity' => $teachingTime->getWeekParity() ? $teachingTime->getWeekParity() : 0,
+				'teachingTimeId' => $teachingTime->getId()
+			);
+			$this['teachingForm']['teachingTime'][$teachingTime->getId()]->setDefaults($defaultsForTeachingTime);
+		}
+
+		$i = 0;
+		foreach ($teaching->getTeachers() as $teacher) {
+			$defaultsForTeacher = array(
+				'teacher' => $teacher->getId(),
+				'teacherId' => $teacher->getId()
+			);
+			$this['teachingForm']['teachers'][$i]->setDefaults($defaultsForTeacher);
+			$i++;
+		}
+
+
+		$this['teachingForm']->setDefaults($defaults);
+
+		$this->redrawControl('teachingForm');
 	}
 }

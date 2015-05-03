@@ -28,7 +28,7 @@ class Lesson extends BaseEntity
 	/**
 	 * @var Teaching
 	 * @ORM\ManyToOne(targetEntity="Teaching", inversedBy="lessons")
-	 * @ORM\JoinColumn(name="teaching_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="teaching_id", referencedColumnName="id", onDelete="CASCADE")
 	 */
 	protected $teaching;
 
