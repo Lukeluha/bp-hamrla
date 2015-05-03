@@ -75,7 +75,10 @@ class Users extends EntityRepository
 									->getDQL()
 							)
 						)
-						->andWhere('s.id != ' . $user->getId())->getQuery()->getResult();
+						->andWhere('s.id != ' . $user->getId())
+					->addOrderBy('s.surname', 'ASC')
+					->addOrderBy('s.name', 'ASC')
+					->getQuery()->getResult();
 
 			$teachers = $this->createQueryBuilder()
 				->select('t')
@@ -83,6 +86,8 @@ class Users extends EntityRepository
 				->join('t.teachings', 'tc')
 				->join('tc.class', 'c')
 				->join('c.students', 's', 'WITH', 's.id ='. $user->getId())
+				->addOrderBy('t.surname', 'ASC')
+				->addOrderBy('t.name', 'ASC')
 				->getQuery()->getResult();
 
 
