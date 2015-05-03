@@ -72,7 +72,7 @@ class StudentForm extends Control
 
 		$classesSelect = array("0" => "--Vyberte--");
 		foreach ($classes as $class) {
-			$classesSelect[$class->getId()] = $class->getName()." (".$class->getSchoolYear()->__toString().")";
+			$classesSelect[$class->getId()] = $class->getName();
 		}
 
 		$form->addSelect("class", "Třída studenta", $classesSelect)->addRule(Form::NOT_EQUAL, "Vyberte prosím třídu studenta", 0);

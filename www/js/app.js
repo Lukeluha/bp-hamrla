@@ -112,8 +112,8 @@ var delay = (function(){
 
 function liveSearch(element)
 {
-    var url = $(element).data('url');
-    var query = $(element).val();
+	var query = $(element).val();
+	var url = $(element).data('url');
     var spinner = $(element).data('spinner');
 
     if (spinner) {

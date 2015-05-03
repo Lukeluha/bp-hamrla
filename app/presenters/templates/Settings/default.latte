@@ -14,34 +14,36 @@
 				<span class="prefix"><i class="fi-magnifying-glass"></i></span>
 			</div>
 			<div class="small-11 large-8 columns left">
-				<input type="text" class="liveSearch" data-url="{link searchStudent!}" data-spinner="studentSpinner"/>
+				<input type="text" class="liveSearch" data-url="{link searchStudent!}" data-spinner="studentSpinner" placeholder="Začněte vyhledávat studenta..."/>
 			</div>
 		</div>
 
 		{snippet students}
 			<img src="{$basePath}/images/spinner-bubble.svg" alt="" id="studentSpinner" class="hide"/>
 
-			{if !count($students)}
-				<div class="panel">Nenalezeni žádní studenti</div>
-			{else}
-				<table class="small-12 large-9">
-					<thead>
-					<tr>
-						<th>Jméno a příjmení</th>
-						<th>Třída</th>
-						<th></th>
-					</tr>
-					</thead>
-					<tbody>
-					{foreach $students as $student}
+			{if isset($students)}
+				{if !count($students)}
+					<div class="panel small-12 large-9">Nenalezeni žádní studenti</div>
+				{else}
+					<table class="small-12 large-9">
+						<thead>
 						<tr>
-							<td>{$student->getSurname()} {$student->getName()}</td>
-							<td>{$student->getMainClass($actualYear)->getName()} </td>
-							<td><a href="{link Students:default studentId => $student->getId()}" class="button secondary tiny">Editovat</a></td>
+							<th>Jméno a příjmení</th>
+							<th>Třída</th>
+							<th></th>
 						</tr>
-					{/foreach}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+						{foreach $students as $student}
+							<tr>
+								<td>{$student->getSurname()} {$student->getName()}</td>
+								<td>{$student->getMainClass($actualYear)->getName()} </td>
+								<td><a href="{link Students:default studentId => $student->getId()}" class="button secondary tiny">Editovat</a></td>
+							</tr>
+						{/foreach}
+						</tbody>
+					</table>
+				{/if}
 			{/if}
 		{/snippet}
 	{/if}
@@ -60,40 +62,42 @@
 				<span class="prefix"><i class="fi-magnifying-glass"></i></span>
 			</div>
 			<div class="small-11 large-8 columns left">
-				<input type="text" class="liveSearch" data-url="{link searchClass!}" data-spinner="classSpinner"/>
+				<input type="text" class="liveSearch" data-url="{link searchClass!}" data-spinner="classSpinner" placeholder="Začněte vyhledávat třídu/skupinu..."/>
 			</div>
 		</div>
 
 		{snippet classes}
-		<img src="{$basePath}/images/spinner-bubble.svg" alt="" id="classSpinner" class="hide"/>
-		{if !count($classes)}
-			<div class="panel">Nenalazeny žádné třídy</div>
-		{else}
-			<table class="small-12 large-9">
-				<thead>
-				<tr>
-					<th>Název</th>
-					<th>Typ</th>
-					<th></th>
-				</tr>
-				</thead>
-				<tbody>
-				{foreach $classes as $class}
-				<tr>
-					<td>{$class->getName()}</td>
-					<td>
-						{if $class->isGroup()}
-							skupina
-						{else}
-							třída
-						{/if}
-					</td>
-					<td><a href="{link Classes:default classId => $class->getId()}" class="button secondary tiny">Editovat</a></td>
-				</tr>
-				{/foreach}
-				</tbody>
-			</table>
-		{/if}
+			<img src="{$basePath}/images/spinner-bubble.svg" alt="" id="classSpinner" class="hide"/>
+			{if isset($classes)}
+				{if !count($classes)}
+					<div class="panel small-12 large-9">Nenalezeny žádné třídy</div>
+				{else}
+					<table class="small-12 large-9">
+						<thead>
+						<tr>
+							<th>Název</th>
+							<th>Typ</th>
+							<th></th>
+						</tr>
+						</thead>
+						<tbody>
+						{foreach $classes as $class}
+						<tr>
+							<td>{$class->getName()}</td>
+							<td>
+								{if $class->isGroup()}
+									skupina
+								{else}
+									třída
+								{/if}
+							</td>
+							<td><a href="{link Classes:default classId => $class->getId()}" class="button secondary tiny">Editovat</a></td>
+						</tr>
+						{/foreach}
+						</tbody>
+					</table>
+				{/if}
+			{/if}
 		{/snippet}
 
 	{/if}

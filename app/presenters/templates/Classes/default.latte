@@ -9,8 +9,18 @@
 		</h2>
 	{/if}
 
+	{if isset($prevYear) && $prevYear}
+		<h2>Kopie třídy z minulého roku</h2>
+		<div class="small-12 large-9">
+			{control copyClassForm}
+		</div>
+		<hr/>
+		<h2>Nová třída</h2>
+	{/if}
 
-	{control classForm}
+	<div class="small-12 large-9">
+		{control classForm}
+	</div>
 
 	<div n:if="isset($class)">
 		<h2>Studenti ve
@@ -24,7 +34,7 @@
 		<a class="button small" href="#" data-reveal-id="importStudents">Import studentů z informačního systému Bakaláři</a>
 		{snippet studentsInClass}
 			{if count($class->getStudents())}
-				<table>
+				<table class="small-12 large-9">
 					<thead>
 						<tr>
 							<th>Jméno a příjmení</th>
@@ -51,7 +61,7 @@
 							{/if}
 							<td>{$student->getLogin()}</td>
 							<td>
-								<a class="button secondary tiny" href="#">Editovat</a>
+								<a class="button secondary tiny" href="{link Students:default $student->getId()}">Editovat</a>
 								{if $class->getType() == App\Model\Entities\ClassEntity::TYPE_GROUP}
 									<a class="button alert tiny myAjax" href="{link removeStudentFromGroup! studentId => $student->getId()}">Vymazat ze skupiny</a>
 								{/if}
@@ -155,7 +165,7 @@
 		{if !count($teachings)}
 			<div class="panel">Tato {if $class->isGroup()}skupina{else}třída{/if} nemá žádné vyučování.</div>
 		{else}
-			<table class="small-12">
+			<table class="small-12 large-9">
 				<thead>
 					<tr>
 						<th>Předmět</th>
@@ -207,7 +217,7 @@
 				<li>Pro příjmení a jméno žáka zvolte možnost "Ve dvou buňkách (Novák, Jaromír)"</li>
 				<li>Potvrďte kliknutím na OK</li>
 			</ol>
-			<p>Poté stačí stažený soubor zvolit níže a kliknout na tlačítko import. Po chvilce se Vám objeví výsledek operace.</p>
+			<p>Poté stačí stažený soubor zvolit níže a kliknout na tlačítko import. Za krátký okamžik se Vám objeví výsledek operace.</p>
 		</div>
 
 		{control importForm}

@@ -34,7 +34,7 @@ class Classes extends EntityRepository
 						->where("c.schoolYear = " . $actualYear->getId() . " AND c.name LIKE :name")
 						->setParameter("name", "%".$name."%")
 						->addOrderBy('c.name', 'ASC')
-						->setMaxResults(10)
+						->setMaxResults(5)
 						->getQuery()->getResult();
 	}
 

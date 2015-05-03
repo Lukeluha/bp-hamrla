@@ -36,7 +36,7 @@ class Students extends EntityRepository
 					->setParameter(":query", "%$query%")
 					->addOrderBy("s.surname")
 					->addOrderBy("s.name")
-					->setMaxResults(10)
+					->setMaxResults(5)
 					->getQuery()->getResult();
 	}
 

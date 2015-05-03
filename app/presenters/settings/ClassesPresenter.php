@@ -13,11 +13,13 @@ use App\Model\Entities\TeachingTime;
 use App\Model\FoundationRenderer;
 use App\Model\Services\BadClassNameException;
 use App\Model\Services\BadFormatException;
+use App\Model\Utils;
 use Nette\Application\UI\Form;
 use App\Forms\IStudentFormFactory;
 use App\Model\Services\StudentService;
 use Nette\Forms\Container;
 use App\Model\Services\LessonService;
+use App\Model\Services\ClassService;
 
 /**
  * Class ClassesPresenter
@@ -50,6 +52,17 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	 */
 	public $lessonService;
 
+	/**
+	 * @var ClassService
+	 * @inject
+	 */
+	public $classService;
+
+	/**
+	 * @var SchoolYear
+	 */
+	private $prevYear;
+
 
 	public function startup()
 	{
@@ -71,6 +84,8 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	{
 		if (!$classId) {
 			$this->addLinkToNav('Vytvoření nové třídy/skupiny', 'Classes:default');
+			$this->prevYear = $this->em->getRepository(SchoolYear::getClassName())->findPreviousSchoolYear($this->actualYear);
+			$this->template->prevYear = $this->prevYear;
 		} else {
 			$this->class = $this->em->getRepository(ClassEntity::getClassName())->find($classId);
 			if (!$this->class) {
@@ -464,6 +479,49 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	}
 
 
+	public function createComponentCopyClassForm()
+	{
+		$form = new Form();
+
+		$oldClasses = $this->em->getRepository(ClassEntity::getClassName())->findBy(array(
+			'schoolYear' => $this->prevYear->getId(),
+			'type' => ClassEntity::TYPE_CLASS
+		));
+
+		$oldClassSelect = array(
+			0 => "--Vyberte--"
+		);
+
+		$newNames = array();
+		foreach ($oldClasses as $class) {
+			$oldClassSelect[$class->getId()] = $class->getName();
+//			$newNames[$class->getId()] = Utils::getNewClassName($class->getName());
+		}
+
+		$form->addSelect('oldClass', "Vyberte třídu ke kopii", $oldClassSelect)
+			->setRequired('Vyberte třídu ke kopii');
+
+		$form->addSubmit('save', "Zkopírovat třídu")->setAttribute('class', 'button small');
+		$form->onSuccess[] = $this->copyClass;
+		$form->setRenderer(new FoundationRenderer());
+		return $form;
+	}
+
+	public function copyClass(Form $form)
+	{
+		$values = $form->getValues();
+		$oldClass = $this->em->find(ClassEntity::getClassName(), $values['oldClass']);
+		try {
+			$newClass = $this->classService->copyClass($oldClass, $this->actualYear);
+			$this->flashMessage("Třída byla úspěšně zkopírována", "success");
+		} catch (\Exception $e) {
+			$this->flashMessage("Třídu se nepodařilo zkopírovat", "alert");
+			return;
+		}
+
+		$this->redirect('Classes:default', array($newClass->getId()));
+	}
+
 	/**
 	 * Factory for class form
 	 * @return Form
@@ -541,7 +599,9 @@ class ClassesPresenter extends AuthorizedBasePresenter
 			$class = new ClassEntity();
 		}
 
-		$class->setName($values['name'])->setType($values['type'])->setSchoolYear($this->em->getReference(SchoolYear::getClassName(), $values['schoolYear']));
+		$class->setName(str_replace(' ', '', $values['name']))
+			->setType($values['type'])
+			->setSchoolYear($this->em->getReference(SchoolYear::getClassName(), $values['schoolYear']));
 
 		$sameClass = $this->checkSameClass($class);
 

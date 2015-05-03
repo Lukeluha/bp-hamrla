@@ -32,8 +32,13 @@ class SettingsPresenter extends AuthorizedBasePresenter
 	 */
 	public function handleSearchStudent($query)
 	{
-		$this->template->students = $this->em->getRepository(Student::getClassName())->findByName($query, $this->actualYear);
+		if (strlen(trim($query))) {
+			$this->template->students = $this->em->getRepository(Student::getClassName())->findByName($query, $this->actualYear);
+		} else {
+			$this->template->students = null;
+		}
 		$this->redrawControl('students');
+
 	}
 
 	/**
@@ -42,7 +47,11 @@ class SettingsPresenter extends AuthorizedBasePresenter
 	 */
 	public function handleSearchClass($query)
 	{
-		$this->template->classes = $this->em->getRepository(ClassEntity::getClassName())->findByName($query, $this->actualYear);
+		if (strlen(trim($query))) {
+			$this->template->classes = $this->em->getRepository(ClassEntity::getClassName())->findByName($query, $this->actualYear);
+		} else {
+			$this->template->classes = null;
+		}
 		$this->redrawControl('classes');
 	}
 
