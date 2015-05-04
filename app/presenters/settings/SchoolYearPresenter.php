@@ -79,6 +79,27 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 		$values = $form->getValues();
 		$schoolYear = $this->em->find(SchoolYear::getClassName(), $values['schoolYearId']);
 
+		$folderName = $schoolYear->getFrom()->format('Y') . "-" . $schoolYear->getTo()->format('Y') . "-" . $schoolYear->getId();
+
+
+		$rootPath = realpath(WWW_DIR . "/files/tasks/" . $folderName);
+
+		if (file_exists($rootPath . ".zip")) {
+			unlink($rootPath . ".zip");
+		}
+		
+		$it = new RecursiveDirectoryIterator($rootPath, RecursiveDirectoryIterator::SKIP_DOTS);
+		$files = new RecursiveIteratorIterator($it,
+			RecursiveIteratorIterator::CHILD_FIRST);
+		foreach($files as $file) {
+			if ($file->isDir()){
+				rmdir($file->getRealPath());
+			} else {
+				unlink($file->getRealPath());
+			}
+		}
+		rmdir($rootPath);
+
 		if (isset($values['closeOptions']) && $values['closeOptions']) {
 			if ($values['closeOptions'] == 'conversationDelete') {
 				$this->em->createQueryBuilder()->delete(ChatMessage::getClassName(), 'm')->getQuery()->execute();
