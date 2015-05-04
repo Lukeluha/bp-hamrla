@@ -1,65 +1,67 @@
 {block leftMenu}
-	<div class="column small-12 large-2 activities">
-		<h3>Otázky</h3>
-		{if !count($activities['questions'])}
-			<p>Žádné otázky pro tuto hodinu</p>
-		{else}
-			<ul class="unstyled no-margin">
-				{snippet questions}
-				{foreach $activities['questions'] as $question}
-					<li>
-						{snippet question-$question->id}
-						<a class="myAjax" href="{link loadQuestion! $question->getId()}" data-reveal-id="questionModal">{$question->getQuestionText()}</a>
-						{if $user->isInRole('teacher')}
-							<a href="{link toggleQuestion! $question->getId()}" class="ajax right">
-							{if $question->isVisible()}
-								<span class="label success">viditelná</span>
-							{else}
-								<span class="label alert">skrytá</span>
-							{/if}
-							</a>
-						{/if}
-						{/snippet}
-					</li>
-					<div class="clearfix"></div>
-					{sep}<hr/>{/sep}
-				{/foreach}
-				{/snippet}
-			</ul>
-		{/if}
-		<hr class="white"/>
-		<h3>Úkoly</h3>
-		{if !count($activities['tasks'])}
-			<p>Žádné úkoly pro tuto hodinu</p>
-		{else}
-			<ul class="unstyled no-margin">
-				{snippet tasks}
-				{foreach $activities['tasks'] as $task}
-					<li>
-						{snippet task-$task->id}
-						<a class="myAjax" href="{link loadTask! $task->getId()}" data-foundation-refresh="true" data-reveal-id="taskModal">{$task->getTaskName()}</a>
-						{if $user->isInRole('teacher')}
-							<a href="{link toggleTask! $task->getId()}" class="ajax right">
-								{if $task->isVisible()}
-									<span class="label success right">viditelný</span>
+	<div class="activity-wrapper small-12 large-2 column">
+		<div class="small-12 activities column">
+			<h3>Otázky</h3>
+			{if !count($activities['questions'])}
+				<p>Žádné otázky pro tuto hodinu</p>
+			{else}
+				<ul class="unstyled no-margin">
+					{snippet questions}
+					{foreach $activities['questions'] as $question}
+						<li>
+							{snippet question-$question->id}
+							<a class="myAjax" href="{link loadQuestion! $question->getId()}" data-reveal-id="questionModal">{$question->getQuestionText()}</a>
+							{if $user->isInRole('teacher')}
+								<a href="{link toggleQuestion! $question->getId()}" class="ajax right">
+								{if $question->isVisible()}
+									<span class="label success">viditelná</span>
 								{else}
-									<span class="label alert right">skrytý</span>
+									<span class="label alert">skrytá</span>
 								{/if}
 								</a>
-						{/if}
-						{/snippet}
-					</li>
-					<div class="clearfix"></div>
-					{sep}<hr/>{/sep}
-				{/foreach}
-				{/snippet}
-			</ul>
-		{/if}
-		{if $user->isInRole('teacher')}
+							{/if}
+							{/snippet}
+						</li>
+						<div class="clearfix"></div>
+						{sep}<hr/>{/sep}
+					{/foreach}
+					{/snippet}
+				</ul>
+			{/if}
 			<hr class="white"/>
-			<h3>Studenti</h3>
-			{control students}
-		{/if}
+			<h3>Úkoly</h3>
+			{if !count($activities['tasks'])}
+				<p>Žádné úkoly pro tuto hodinu</p>
+			{else}
+				<ul class="unstyled no-margin">
+					{snippet tasks}
+					{foreach $activities['tasks'] as $task}
+						<li>
+							{snippet task-$task->id}
+							<a class="myAjax" href="{link loadTask! $task->getId()}" data-foundation-refresh="true" data-reveal-id="taskModal">{$task->getTaskName()}</a>
+							{if $user->isInRole('teacher')}
+								<a href="{link toggleTask! $task->getId()}" class="ajax right">
+									{if $task->isVisible()}
+										<span class="label success right">viditelný</span>
+									{else}
+										<span class="label alert right">skrytý</span>
+									{/if}
+									</a>
+							{/if}
+							{/snippet}
+						</li>
+						<div class="clearfix"></div>
+						{sep}<hr/>{/sep}
+					{/foreach}
+					{/snippet}
+				</ul>
+			{/if}
+			{if $user->isInRole('teacher')}
+				<hr class="white"/>
+				<h3>Studenti</h3>
+				{control students}
+			{/if}
+		</div>
 	</div>
 {/block}
 

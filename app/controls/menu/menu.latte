@@ -1,4 +1,4 @@
-<nav class="top-bar" data-topbar role="navigation" id="menu">
+<nav class="top-bar" data-topbar role="navigation" id="menu" data-options="back_text: Zpět">
 	<ul class="title-area">
 		<li class="name"></li>
 		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
@@ -29,7 +29,7 @@
 		</ul>
 
 		<ul class="right vertical-center">
-			<li class="left has-dropdown">
+			<li class="left has-dropdown profile">
 					<a href="#">
 						<img class="img-circle " src="{$basePath}/images/{$user->getIdentity()->profilePicture|img:45}" alt="" width="45"/>
 						<ul class="unstyled right" id="profile-info">

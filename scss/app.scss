@@ -65,13 +65,18 @@ textarea {
       color: white;
     }
 
+	li.profile {
+	  width: 100%
+	}
+
     :hover li {
       background: $oil;
     }
 
     ul#profile-info {
-      padding-top:5px;
-      padding-left: 5px;
+
+	  padding-top: 5px;
+	  padding-left: 5px;
 
       li:nth-child(3) {
         font-size: 11px;
@@ -259,6 +264,19 @@ hr.white {
   }
 }
 
+.activity-wrapper {
+	padding-left: 0.9375rem;
+  	padding-right: 0.9375rem;
+}
+
+@media #{$large-up} {
+  .activity-wrapper {
+	padding-left: 0;
+	padding-right: 0;
+  }
+}
+
+
 #chat-popups {
   position: fixed;
   bottom: 0;
@@ -388,6 +406,7 @@ img.no-resize {
 
 .activities {
   background-color: $grey;
+  margin-bottom: 20px;
   p {
 	font-size: 13px;
   }
@@ -400,13 +419,12 @@ img.no-resize {
   hr {
 	margin: 0.5rem 0;
   }
-}
 
-.activities {
   h3 {
-	  font-size: 16px;
-	  font-weight: bold;
+	font-size: 16px;
+	font-weight: bold;
   }
+
 }
 
 #lessonName {

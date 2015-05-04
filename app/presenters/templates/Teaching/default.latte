@@ -1,8 +1,10 @@
 {block leftMenu}
 	{if $user->isInRole('teacher')}
-		<div class="column small-12 large-2 activities">
-			<h3>Studenti</h3>
-			{control students}
+		<div class="activity-wrapper">
+			<div class="column small-12 large-2 activities">
+				<h3>Studenti</h3>
+				{control students}
+			</div>
 		</div>
 	{else}
 		{include parent}
@@ -13,12 +15,12 @@
 	{if $nextLesson}
 		<div class="row">
 			<div class="post column small-12">
-				<div class="post-header column small-3">
+				<div class="post-header column small-12 medium-3">
 					<i class="fi-fast-forward"></i>
 					<p>Příští hodina</p>
 
 				</div>
-				<div class="post-content column small-9">
+				<div class="post-content column small-12 medium-9">
 					<p>Příští hodina {if $teaching->getClass()->isGroup()}skupiny{else}třídy{/if}
 						{$teaching->getClass()->getName()} v předmětu {$teaching->getSubject()->getName()}
 						začíná v {$daysInWeek[$nextLesson->getStartDate()->format('N')]|substr:0,2} {$nextLesson->getStartDate()|date:"j. n. Y v H:i"}.
