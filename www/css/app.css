@@ -9635,12 +9635,19 @@ a.alert {
   color: #f04124;
 }
 
-/* line 458, ../../scss/app.scss */
+/* line 459, ../../scss/app.scss */
+div.alert a.alert {
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* line 466, ../../scss/app.scss */
 span.grey {
   color: #a9a9a9;
 }
 
-/* line 462, ../../scss/app.scss */
+/* line 470, ../../scss/app.scss */
 tr.alert {
   background-color: #f2dede;
 }

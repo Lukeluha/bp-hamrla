@@ -68,10 +68,9 @@ class NewActivityControl extends Control
 	public function createComponentForm()
 	{
 		$form = new Form();
-		$form->addRadioList('type', null, array('question' => "Otázka", 'task' => 'Úkol', 'exam' => 'Písemka'))->setValue('question');
+		$form->addRadioList('type', null, array('question' => "Otázka", 'task' => 'Úkol'))->setValue('question');
 		$form['type']->addCondition(Form::EQUAL, 'question')->toggle('question');
 		$form['type']->addCondition(Form::EQUAL, 'task')->toggle('task');
-		$form['type']->addCondition(Form::EQUAL, 'exam')->toggle('exam');
 		return $form;
 	}
 

@@ -455,6 +455,14 @@ a.alert {
   color: #f04124;
 }
 
+div.alert {
+  a.alert {
+	color: white;
+	font-weight: bold;
+	text-decoration: underline;
+  }
+}
+
 span.grey {
   color: #a9a9a9;
 }
