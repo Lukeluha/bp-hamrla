@@ -42,7 +42,7 @@
 							</div>
 						</div>
 						<div class="post-content column small-12 medium-9">
-							<p>{$post->getText()}</p>
+							<p>{$post->getText()|findUrl|noescape}</p>
 							<div class="bottom">
 								{control comments-$post->id}
 							</div>

@@ -40,7 +40,20 @@ class TemplateFilters extends Object
 			$image->save(IMG_DIR . "/" . $newPath, 100, Image::JPEG);
 			return $newPath;
 		}
-
 	}
+
+	/**
+	 * @param $text string
+	 * @return string New text with url replaced with a tags
+	 * Source: http://blog.mattheworiordan.com/post/13174566389/url-regular-expression-for-links-with-or-without
+	 */
+	public static function findUrl($text)
+	{
+		$textWithLinks = preg_replace('/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/i', '<a href="$0" target="_blank">$0</a>', $text);
+		return $textWithLinks;
+	}
+
+
+
 
 }

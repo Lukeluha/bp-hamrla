@@ -63,7 +63,7 @@ class CommentsControl extends Control
 
 		$comment = new Comment();
 		$comment->setReplyTo($this->post)
-			->setText($values['comment'])
+			->setText(strip_tags($values['comment']))
 			->setUser($this->em->getReference(User::getClassName(), $this->userId))
 			->setCreated(new \DateTime());
 
@@ -85,6 +85,7 @@ class CommentsControl extends Control
 	{
 		$this->template->setFile(__DIR__ . '/comments.latte');
 		$this->template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
+		$this->template->addFilter('findUrl', callback('\App\Filter\TemplateFilters', 'findUrl'));
 
 
 		$this->template->post = $this->post;

@@ -129,15 +129,16 @@ class PostsControl extends Control
 
 		$post->setTeaching($this->teaching)
 			->setCreated(new \DateTime())
-			->setText($values['post']);
+			->setText(strip_tags($values['post']));
 
 		if ($values['anonymous']) {
 			$post->setAnonymous($values['anonymous']);
-			$post->setUser(null);
+//			$post->setUser(null);
 		} else {
 			$post->setAnonymous(false);
-			$post->setUser($this->em->getReference(User::getClassName(), $this->userId));
 		}
+
+		$post->setUser($this->em->getReference(User::getClassName(), $this->userId));
 
 		if ($this->lesson) {
 			$post->setLesson($this->lesson);
@@ -168,6 +169,7 @@ class PostsControl extends Control
 	{
 		$this->template->setFile(__DIR__ . '/posts.latte');
 		$this->template->addFilter('img', callback('\App\Filter\TemplateFilters', 'image'));
+		$this->template->addFilter('findUrl', callback('\App\Filter\TemplateFilters', 'findUrl'));
 
 
 		if ($this->homepage) {
