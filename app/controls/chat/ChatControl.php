@@ -18,6 +18,11 @@ use Nette\Application\UI\Control;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Security\User;
 
+/**
+ * Class ChatControl
+ * Chat management, send and receive message, ...
+ * @package App\Controls
+ */
 class ChatControl extends Control
 {
 	/**

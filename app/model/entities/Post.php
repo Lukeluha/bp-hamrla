@@ -206,7 +206,7 @@ class Post extends BaseEntity
 			if ($this->lesson->getName()) {
 				$location .= ' | ' . $this->lesson->getName();
 			} else {
-				$location .= ' | ' . $this->lesson->getRank(). ". hodina";
+				$location .= ' | ' . "Hodina";
 			}
 		}
 

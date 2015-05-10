@@ -74,6 +74,13 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 		return $form;
 	}
 
+	/**
+	 * Close given year
+	 * @param Form $form
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function closeYear(Form $form)
 	{
 		$values = $form->getValues();
@@ -133,6 +140,13 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 
 	}
 
+	/**
+	 * Export tasks from current school year
+	 * @param $yearId
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function handleExport($yearId)
 	{
 		$schoolYear = $this->em->find(SchoolYear::getClassName(), $yearId);
@@ -173,6 +187,14 @@ class SchoolYearPresenter extends AuthorizedBasePresenter
 
 	}
 
+	/**
+	 * Page with closing of school year
+	 * @param $schoolYearId
+	 * @throws BadRequestException
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function actionClose($schoolYearId)
 	{
 		$schoolYear = $this->em->find(SchoolYear::getClassName(), $schoolYearId);

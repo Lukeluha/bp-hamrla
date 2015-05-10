@@ -6,6 +6,7 @@ namespace App\Model\Services;
 use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
+use App\Model\Utils;
 use Kdyby\Doctrine\EntityManager;
 
 /**
@@ -118,7 +119,7 @@ class StudentService extends BaseService
 
 			} else { // if this is group, search deeper for student in previous year
 				if (!$student) { // not found student in this year
-					$student = $this->em->getRepository(Student::getClassName())->findByNameInClass($name, $surname, $class, $this->prevYear);
+					$student = $this->em->getRepository(Student::getClassName())->findByNameInClass($name, $surname, Utils::getNewClassName($class, false), $this->prevYear);
 					if (!$student) { // not found student in last year => create new one and create his class
 						$student = new Student();
 						$student->setName($name)->setSurname($surname);

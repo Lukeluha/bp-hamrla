@@ -13,6 +13,10 @@ use Kdyby\Doctrine\EntityRepository;
  */
 class Classes extends EntityRepository
 {
+	/**
+	 * Find all classes by opened years
+	 * @return array
+	 */
 	public function findByOpenedYears()
 	{
 		return $this->createQueryBuilder()
@@ -25,6 +29,12 @@ class Classes extends EntityRepository
 						->getQuery()->getResult();
 	}
 
+	/**
+	 * Find all classes by name and school year
+	 * @param $name
+	 * @param null $actualYear
+	 * @return array|null
+	 */
 	public function findByName($name, $actualYear = null)
 	{
 		if (!$actualYear) return null;
@@ -36,11 +46,6 @@ class Classes extends EntityRepository
 						->addOrderBy('c.name', 'ASC')
 						->setMaxResults(5)
 						->getQuery()->getResult();
-	}
-
-	public function findByYear(SchoolYear $schoolYear)
-	{
-
 	}
 
 }

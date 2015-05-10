@@ -8,6 +8,7 @@ use App\Model\Entities\Teaching;
 use App\Model\FoundationRenderer;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
+use Nette\Security\AuthenticationException;
 
 class LessonsPresenter extends AuthorizedBasePresenter
 {
@@ -22,6 +23,8 @@ class LessonsPresenter extends AuthorizedBasePresenter
 		$this->teaching = $this->em->find(Teaching::getClassName(), $this->getHttpRequest()->getQuery('teachingId'));
 
 		if (!$this->teaching) throw new BadRequestException();
+
+		$this->checkUser();
 
 		$navText = 'Vyučování | '. $this->teaching->getClass()->getName();
 		$navText .= ' | ' . $this->teaching->getSubject();
@@ -43,6 +46,10 @@ class LessonsPresenter extends AuthorizedBasePresenter
 
 	public function handleDelete($lessonId)
 	{
+		if (!$this->user->isInRole('teacher')) {
+			throw new AuthenticationException;
+		}
+
 		try {
 			$this->em->remove($this->em->getReference(Lesson::getClassName(), $lessonId));
 			$this->em->flush();
@@ -54,10 +61,10 @@ class LessonsPresenter extends AuthorizedBasePresenter
 		$this->redirect('this');
 	}
 
-	public function checkUser()
+	private function checkUser()
 	{
 		if (!$this->user->isInRole('admin')) {
-			if (!$this->userService->isUserInTeaching($this->user, $this->getTeaching())){
+			if (!$this->userService->isUserInTeaching($this->user, $this->teaching)){
 				$this->flashMessage("Nejste součástí tohoto vyučování.", "alert");
 				$this->redirect('Homepage:default');
 			}
@@ -66,6 +73,10 @@ class LessonsPresenter extends AuthorizedBasePresenter
 
 	public function actionEditLesson($teachingId, $lessonId = null)
 	{
+
+		if (!$this->user->isInRole('teacher')) {
+			throw new AuthenticationException;
+		}
 
 		if ($lessonId) {
 			$lesson = $this->em->find(Lesson::getClassName(), $lessonId);
@@ -79,7 +90,6 @@ class LessonsPresenter extends AuthorizedBasePresenter
 				'lessonId' => $lessonId,
 				'teachingId' => $teachingId
 			);
-
 
 			$this->addLinkToNav('Editace hodiny', 'Lessons:editLesson', array($lessonId, $this->teaching->getId()));
 		} else {

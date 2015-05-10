@@ -6,8 +6,18 @@ namespace App\Model\Repositories;
 use App\Model\Entities\Teacher;
 use Kdyby\Doctrine\EntityRepository;
 
+/**
+ * Class Teachers
+ * Repository class for entity teacher
+ * @package App\Model\Repositories
+ */
 class Teachers extends EntityRepository
 {
+	/**
+	 * Find teachers by given query
+	 * @param $query
+	 * @return array
+	 */
 	public function findByQuery($query)
 	{
 		return $this->createQueryBuilder()

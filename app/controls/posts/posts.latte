@@ -38,7 +38,13 @@
 									<p>{$post->getUser()->getName()} {$post->getUser()->getSurname()}</p>
 								{/if}
 								<p class="small-12 medium-6 column small-only-text-center text-left created-date no-margin no-padding">{$post->getCreated()|date: "j. n. Y - H:i"}</p>
-								<p class="small-12 medium-6 column small-only-text-center text-right created-date no-margin no-padding">{$post->getLocation()}</p>
+								<p class="small-12 medium-6 column small-only-text-center text-right created-date no-margin no-padding">
+									{if $post->getLesson()}
+										<a href="{plink Lesson:default $post->getLesson()->getId()}">{$post->getLocation()}</a>
+									{elseif $post->getTeaching()}
+										<a href="{plink Teaching:default $post->getTeaching()->getId()}">{$post->getLocation()}</a>
+									{/if}
+								</p>
 							</div>
 						</div>
 						<div class="post-content column small-12 medium-9">

@@ -7,9 +7,19 @@ use App\Model\Entities\Task;
 use App\Model\Entities\TaskCompleted;
 use Kdyby\Doctrine\EntityRepository;
 
+/**
+ * Class Tasks
+ * Repository class for entity Task
+ * @package App\Model\Repositories
+ */
 class Tasks extends EntityRepository
 {
 
+	/**
+	 * Returns tasks by given text
+	 * @param $query
+	 * @return array
+	 */
 	public function findByText($query)
 	{
 		return $this->createQueryBuilder()
@@ -23,6 +33,11 @@ class Tasks extends EntityRepository
 			->getQuery()->getResult();
 	}
 
+	/**
+	 * Returns all opened tasks for given user
+	 * @param $userId
+	 * @return array
+	 */
 	public function findByOpened($userId)
 	{
 		return $this->createQueryBuilder()

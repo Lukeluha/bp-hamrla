@@ -10,15 +10,27 @@ use Nette\Neon\Exception;
 use Nette\Security\Passwords;
 use Nette\Utils\Image;
 
+/**
+ * Class ProfilePresenter
+ * Page with profile settings, such as changing password and profile picture
+ * @package App\Presenters
+ */
 class ProfilePresenter extends AuthorizedBasePresenter
 {
 
+	/**
+	 * Default page
+	 */
 	public function actionDefault()
 	{
 		$this->addLinkToNav("Nastavení profilu", "this");
 
 	}
 
+	/**
+	 * Form for changing profile picture
+	 * @return Form
+	 */
 	public function createComponentPhotoForm()
 	{
 		$form = new Form();
@@ -31,6 +43,13 @@ class ProfilePresenter extends AuthorizedBasePresenter
 		return $form;
 	}
 
+	/**
+	 * Save new profile picture
+	 * @param Form $form
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function savePhoto(Form $form)
 	{
 		$values = $form->getValues();
@@ -79,6 +98,11 @@ class ProfilePresenter extends AuthorizedBasePresenter
 		$this->redirect('this');
 	}
 
+
+	/**
+	 * Form for changing password
+	 * @return Form
+	 */
 	public function createComponentForm()
 	{
 		$form = new Form();
@@ -96,6 +120,10 @@ class ProfilePresenter extends AuthorizedBasePresenter
 		return $form;
 	}
 
+	/**
+	 * Save new password
+	 * @param Form $form
+	 */
 	public function saveUser(Form $form)
 	{
 		$values = $form->getValues();

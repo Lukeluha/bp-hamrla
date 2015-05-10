@@ -13,6 +13,11 @@ use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 use App\Model\Entities\User;
 
+/**
+ * Class AnswerForm
+ * Form for creating answers
+ * @package App\Forms
+ */
 class AnswerForm extends Control
 {
 	/**

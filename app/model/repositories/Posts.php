@@ -8,9 +8,21 @@ use Kdyby\Doctrine\EntityRepository;
 use Nette\InvalidArgumentException;
 use Nette\Security\User;
 
+/**
+ * Class Posts
+ * Repository class for entity Post
+ * @package App\Model\Repositories
+ */
 class Posts extends EntityRepository
 {
 
+	/**
+	 * Returns all posts for given teaching
+	 * @param $teachingId
+	 * @param null $fromId
+	 * @param int $limit
+	 * @return array
+	 */
 	public function findAllForTeaching($teachingId, $fromId = null, $limit = 8)
 	{
 		$query = $this->createQueryBuilder()
@@ -26,6 +38,13 @@ class Posts extends EntityRepository
 					->setMaxResults($limit)->getQuery()->getResult();
 	}
 
+	/**
+	 * Returns all posts for given lesson
+	 * @param $lessonId
+	 * @param null $fromId
+	 * @param int $limit
+	 * @return array
+	 */
 	public function findAllForLesson($lessonId, $fromId = null, $limit = 8)
 	{
 		$query = $this->createQueryBuilder()
@@ -42,6 +61,13 @@ class Posts extends EntityRepository
 			->setMaxResults($limit)->getQuery()->getResult();
 	}
 
+	/**
+	 * Returns all posts for usage in homepage
+	 * @param User $user
+	 * @param null $fromId
+	 * @param int $limit
+	 * @return array
+	 */
 	public function findAllForUser(User $user, $fromId = null, $limit = 8)
 	{
 		if ($user->isInRole('student')) {

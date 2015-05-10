@@ -13,8 +13,18 @@ use App\Model\Entities\Answer;
 use App\Model\Entities\Question;
 use App\Model\Entities\QuestionOption;
 
+/**
+ * Class AnswerService
+ * Service class for answer entity
+ * @package App\Model\Services
+ */
 class AnswerService extends BaseService
 {
+	/**
+	 * Compute points by given answer and correct answers
+	 * @param Answer $answer
+	 * @return float|int|null
+	 */
 	public function computePointsPercentage(Answer $answer)
 	{
 		$question = $answer->getQuestion();

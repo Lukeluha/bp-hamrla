@@ -27,13 +27,15 @@
 			<strong>{$iterator->getCounter()}. hodina</strong> |
 			{if $lesson->getName()}{$lesson->getName()} | {/if}{$lesson->getStartDate()|date:"j. n. Y, H:i"}
 			<a href="{link Lesson:default $lesson->getId()}" class="button secondary tiny">Detail</a>
-			<a href="{link editLesson $teaching->getId(), $lesson->getId()}" class="button tiny">Editovat</a>
-			<a
-					href="{link delete! $lesson->getId()}"
-					class="button alert tiny"
-					onclick="return confirm('Opravdu chcete vymazat tuto hodinu? Vymažou se veškerá data!)">
-				Smazat
-			</a>
+			{if $user->isInRole('teacher')}
+				<a href="{link editLesson $teaching->getId(), $lesson->getId()}" class="button tiny">Editovat</a>
+				<a
+						href="{link delete! $lesson->getId()}"
+						class="button alert tiny"
+						onclick="return confirm('Opravdu chcete vymazat tuto hodinu? Vymažou se veškerá data!)">
+					Smazat
+				</a>
+			{/if}
 		</p>
 	{/foreach}
 </ul>

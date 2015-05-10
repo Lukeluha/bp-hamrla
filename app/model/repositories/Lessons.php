@@ -9,6 +9,12 @@ use Kdyby\Doctrine\EntityRepository;
 
 class Lessons extends EntityRepository
 {
+	/**
+	 * Returns next lesson for given teaching
+	 * @param Teaching $teaching
+	 * @return mixed
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
 	public function findNext(Teaching $teaching)
 	{
 		$now = new \DateTime();
@@ -23,6 +29,11 @@ class Lessons extends EntityRepository
 
 	}
 
+	/**
+	 * Returns rank of lesson
+	 * @param Lesson $lesson
+	 * @return int
+	 */
 	public function findRank(Lesson $lesson){
 		$sql = "SELECT id, rank FROM (
 				SELECT l.*,	@rownum := @rownum + 1 AS rank

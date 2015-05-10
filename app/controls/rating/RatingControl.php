@@ -9,6 +9,11 @@ use App\Model\Entities\User;
 use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 
+/**
+ * Class RatingControl
+ * Control for rating of submitted tasks
+ * @package App\Controls
+ */
 class RatingControl extends Control
 {
 

@@ -6,13 +6,26 @@ namespace App\Presenters;
 use App\Model\Entities\Question;
 use App\Model\Entities\Task;
 
+/**
+ * Class SearchPresenter
+ * Page with main searching through all data
+ * @package App\Presenters
+ */
 class SearchPresenter extends AuthorizedBasePresenter
 {
+	/**
+	 * Default page
+	 */
 	public function actionDefault()
 	{
 		$this->addLinkToNav('Vyhledávání', 'this');
 	}
 
+
+	/**
+	 * Search for given query
+	 * @param $query
+	 */
 	public function handleSearch($query)
 	{
 		if (strlen(trim($query))) {

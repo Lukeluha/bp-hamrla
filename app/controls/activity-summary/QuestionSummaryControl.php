@@ -10,6 +10,11 @@ use Nette\Application\UI\Control;
 use App\Model\Entities\Question;
 use Nette\Application\UI\Form;
 
+/**
+ * Class QuestionSummaryControl
+ * Summary fror given questions, all answers, graphs, points editing, ...
+ * @package App\Controls
+ */
 class QuestionSummaryControl extends Control
 {
 	/**

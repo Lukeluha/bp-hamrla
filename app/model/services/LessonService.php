@@ -10,6 +10,11 @@ use App\Model\Entities\Teaching;
 use App\Model\Entities\TeachingTime;
 use Nette\Security\User;
 
+/**
+ * Class LessonService
+ * Service class for entity lesson
+ * @package App\Model\Services
+ */
 class LessonService extends BaseService
 {
 	protected $translateWeekDay = array("monday", "tuesday", "wednesday", "thursday", "friday");

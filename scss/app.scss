@@ -195,6 +195,14 @@ td > .button {
       line-height: 1em;
       font-size: 90px;
     }
+
+	a {
+	  color: #818181;
+	}
+
+	a:hover {
+	  text-decoration: underline;
+	}
   }
 
   .post-content {
@@ -488,3 +496,5 @@ span.grey {
 tr.alert {
   background-color: #f2dede;
 }
+
+

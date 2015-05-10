@@ -227,6 +227,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 	 * Save teaching entity from form
 	 * @param Form $form
 	 * @return bool
+	 * @throws \Exception
 	 */
 	public function saveTeaching(Form $form)
 	{
@@ -543,6 +544,14 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		return $form;
 	}
 
+
+	/**
+	 * Copy old class to participate in current year
+	 * @param Form $form
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function copyClass(Form $form)
 	{
 		$values = $form->getValues();
@@ -735,6 +744,15 @@ class ClassesPresenter extends AuthorizedBasePresenter
 		$this->redirect('this');
 	}
 
+
+	/**
+	 * Edit teaching
+	 * @param $teachingId
+	 * @throws BadRequestException
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function handleEditTeaching($teachingId)
 	{
 		/** @var Teaching $teaching */

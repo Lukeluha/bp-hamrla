@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lukas
- * Date: 21.04.15
- * Time: 23:27
- */
 
 namespace App\Controls;
 
@@ -15,6 +9,11 @@ use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 
+/**
+ * Class NewActivityControl
+ * Control for creating new activity, such as question or task
+ * @package App\Controls
+ */
 class NewActivityControl extends Control
 {
 	/**

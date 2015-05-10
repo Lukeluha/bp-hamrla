@@ -7,9 +7,22 @@ use App\Model\FoundationRenderer;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
 
+/**
+ * Class SubjectsPresenter
+ * Page with subjects management
+ * @package App\Presenters
+ */
 class SubjectsPresenter extends AuthorizedBasePresenter
 {
 
+	/**
+	 * Default page
+	 * @param null $subjectId
+	 * @throws BadRequestException
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function actionDefault($subjectId = null)
 	{
 		$this->checkPermissions("settings", "subjects");
@@ -34,6 +47,10 @@ class SubjectsPresenter extends AuthorizedBasePresenter
 
 	}
 
+	/**
+	 * Form for subject editing and creating
+	 * @return Form
+	 */
 	public function createComponentForm()
 	{
 		$form = new Form();
@@ -48,6 +65,13 @@ class SubjectsPresenter extends AuthorizedBasePresenter
 		return $form;
 	}
 
+	/**
+	 * Form handling
+	 * @param Form $form
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function saveSubject(Form $form)
 	{
 		$values = $form->getValues();

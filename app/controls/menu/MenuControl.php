@@ -13,6 +13,11 @@ use App\Model\Entities\User;
 use Nette\Application\UI\Control;
 use Kdyby\Doctrine\EntityManager;
 
+/**
+ * Class MenuControl
+ * Control for menu management
+ * @package App\Controls
+ */
 class MenuControl extends Control
 {
 	/**

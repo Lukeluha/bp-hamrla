@@ -8,6 +8,11 @@ use Nette\Application\UI\Form;
 use App\Model\Services\UserService;
 use Nette\Security\Passwords;
 
+/**
+ * Class TeachersPresenter
+ * Page with teachers management
+ * @package App\Presenters
+ */
 class TeachersPresenter extends AuthorizedBasePresenter
 {
 	/**
@@ -21,6 +26,14 @@ class TeachersPresenter extends AuthorizedBasePresenter
 	 */
 	public $userService;
 
+	/**
+	 * Default page with teacher detail
+	 * @param null $teacherId
+	 * @throws BadRequestException
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function actionDefault($teacherId = null)
 	{
 		$this->checkPermissions("settings", "teachers");
@@ -69,6 +82,9 @@ class TeachersPresenter extends AuthorizedBasePresenter
 		return $form;
 	}
 
+	/**
+	 * Generate new password for teacher
+	 */
 	public function handleGenerateNewPassword()
 	{
 		try {
@@ -84,6 +100,13 @@ class TeachersPresenter extends AuthorizedBasePresenter
 		$this->redirect('this');
 	}
 
+	/**
+	 * From handle
+	 * @param Form $form
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function saveTeacher(Form $form)
 	{
 		$values = $form->getValues();

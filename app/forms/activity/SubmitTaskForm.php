@@ -13,6 +13,11 @@ use App\Model\Entities\Student;
 use Nette\Utils\Strings;
 use Nette\Utils\Image;
 
+/**
+ * Class SubmitTaskForm
+ * Form for submitting students task
+ * @package App\Forms
+ */
 class SubmitTaskForm extends Control
 {
 

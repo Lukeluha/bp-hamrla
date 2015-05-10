@@ -16,6 +16,7 @@ use Nette\Forms\Controls\SubmitButton;
 
 /**
  * Class QuestionFormFactory
+ * Form for creating and editing questions
  * @package App\Forms
  */
 class QuestionForm extends Control

@@ -11,6 +11,11 @@ use Nette\Application\UI\Control;
 use App\Model\Entities\Teaching;
 use App\Model\Entities\Lesson;
 
+/**
+ * Class StudentDetailControl
+ * Control for details about student, his answers, submitted tasks, ...
+ * @package App\Controls
+ */
 class StudentDetailControl extends Control
 {
 	/**

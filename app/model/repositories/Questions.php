@@ -6,8 +6,18 @@ namespace App\Model\Repositories;
 use App\Model\Entities\Question;
 use Kdyby\Doctrine\EntityRepository;
 
+/**
+ * Class Questions
+ * Repository class for entity question
+ * @package App\Model\Repositories
+ */
 class Questions extends EntityRepository
 {
+	/**
+	 * Returns question by given query
+	 * @param $query
+	 * @return array
+	 */
 	public function findByText($query)
 	{
 		return $this->createQueryBuilder()

@@ -12,6 +12,11 @@ use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Form;
 use App\Model\Services\UserService;
 
+/**
+ * Class StudentForm
+ * Form for creating and editing student
+ * @package App\Forms
+ */
 class StudentForm extends Control
 {
 	/**

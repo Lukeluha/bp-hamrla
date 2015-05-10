@@ -10,6 +10,11 @@ use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 
+/**
+ * Class TaskForm
+ * Form for creating and editing tasks
+ * @package App\Forms
+ */
 class TaskForm extends Control
 {
 	/**

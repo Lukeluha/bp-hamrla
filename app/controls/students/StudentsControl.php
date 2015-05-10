@@ -12,6 +12,12 @@ use Kdyby\Doctrine\EntityManager;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Control;
 
+
+/**
+ * Class StudentsControl
+ * Block with students details - activity points
+ * @package App\Controls
+ */
 class StudentsControl extends Control
 {
 

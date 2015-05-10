@@ -48,6 +48,15 @@ class Students extends EntityRepository
 		->getQuery()->getResult();
 	}
 
+	/**
+	 * Returns user by given name, surname at given class
+	 * @param $name
+	 * @param $surname
+	 * @param $className
+	 * @param SchoolYear $schoolYear
+	 * @return mixed|null
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
 	public function findByNameInClass($name, $surname, $className, SchoolYear $schoolYear = null)
 	{
 		if (!$schoolYear) return null;
@@ -61,6 +70,14 @@ class Students extends EntityRepository
 					->getQuery()->getOneOrNullResult();
 	}
 
+
+	/**
+	 * Find student by given class
+	 * @param Student $student
+	 * @param ClassEntity $class
+	 * @return Student|mixed
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
 	public function findByStudentNameInClass(Student $student, ClassEntity $class)
 	{
 		$student = $this->createQueryBuilder()

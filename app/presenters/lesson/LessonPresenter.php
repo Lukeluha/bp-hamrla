@@ -19,6 +19,11 @@ use App\Controls\IQuestionSummaryControlFactory;
 use App\Forms\ITaskFormFactory;
 use App\Controls\IStudentsControlFactory;
 
+/**
+ * Class LessonPresenter
+ * Page with details and info about lesson
+ * @package App\Presenters
+ */
 class LessonPresenter extends AuthorizedBasePresenter
 {
 	/**
@@ -100,6 +105,14 @@ class LessonPresenter extends AuthorizedBasePresenter
 	 */
 	public $taskId;
 
+	/**
+	 * Default page
+	 * @param $lessonId
+	 * @throws BadRequestException
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function actionDefault($lessonId)
 	{
 		$this->lesson = $this->em->find(Lesson::getClassName(), $lessonId);
@@ -119,6 +132,9 @@ class LessonPresenter extends AuthorizedBasePresenter
 
 	}
 
+	/**
+	 * Render of default page
+	 */
 	public function renderDefault()
 	{
 		$this->template->lesson = $this->lesson;
@@ -128,6 +144,10 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->template->ckeditor = true;
 	}
 
+	/**
+	 * Save text of lesson
+	 * @throws \Nette\Application\AbortException
+	 */
 	public function handleSaveText()
 	{
 		$post = $this->getHttpRequest()->getPost();
@@ -144,6 +164,14 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->terminate();
 	}
 
+	/**
+	 * Visible/hide question
+	 * @param $questionId
+	 * @throws BadRequestException
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function handleToggleQuestion($questionId)
 	{
 		$question = $this->em->find(Question::getClassName(), $questionId);
@@ -156,6 +184,14 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('questions');
 	}
 
+	/**
+	 * Visible/hide task
+	 * @param $taskId
+	 * @throws BadRequestException
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function handleToggleTask($taskId)
 	{
 		$task = $this->em->find(Task::getClassName(), $taskId);
@@ -168,6 +204,14 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('tasks');
 	}
 
+	/**
+	 * Load all history connected tasks form past years and another teachings
+	 * @param $count
+	 * @param $taskId
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function handleLoadHistoryTask($count, $taskId)
 	{
 		$this->task = $this->em->find(Task::getClassName(), $taskId);
@@ -186,6 +230,14 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('historyTasks');
 	}
 
+	/**
+	 * Lazy load question
+	 * @param $questionId
+	 * @throws BadRequestException
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function handleLoadQuestion($questionId)
 	{
 		$question = $this->em->find(Question::getClassName(), $questionId);
@@ -197,19 +249,14 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('questionModal');
 	}
 
-	public function handleStartTask($taskId)
-	{
-		$task = $this->em->find(Task::getClassName(), $taskId);
-		if (!$task) throw new BadRequestException;
-		$task->setStart(new \DateTime());
-		$this->em->persist($task);
-		$this->em->flush();
-
-		$this->template->tasks = array($taskId => $task);
-
-		$this->redrawControl('tasks');
-	}
-
+	/**
+	 * Lazy load task
+	 * @param $taskId
+	 * @throws BadRequestException
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function handleLoadTask($taskId)
 	{
 		$task = $this->em->find(Task::getClassName(), $taskId);
@@ -223,6 +270,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('taskModal');
 	}
 
+	/**
+	 * Submit editting task
+	 * @throws \Doctrine\ORM\ORMException
+	 * @throws \Doctrine\ORM\OptimisticLockException
+	 * @throws \Doctrine\ORM\TransactionRequiredException
+	 */
 	public function handleEditTask()
 	{
 		$post = $this->getHttpRequest()->getPost();
@@ -234,11 +287,22 @@ class LessonPresenter extends AuthorizedBasePresenter
 		$this->redrawControl('taskModal');
 	}
 
+	/**
+	 * Page with image and rating
+	 * @param $taskId
+	 * @param bool $withImage
+	 */
 	public function actionRating($taskId, $withImage = false)
 	{
 		$this->template->taskId = $taskId;
 		$this->template->withImage = $withImage;
 	}
+
+
+
+
+	// component factories
+
 
 	public function createComponentQuestionForm()
 	{
@@ -298,6 +362,21 @@ class LessonPresenter extends AuthorizedBasePresenter
 		});
 	}
 
+	public function createComponentStudents()
+	{
+		$control = $this->studentsControlFactory->create($this->lesson->getTeaching());
+		$control->setLesson($this->lesson);
+		return $control;
+	}
+
+	public function createComponentChat()
+	{
+		return $this->chatControlFactory->create($this->user, $this->actualYear, $this->lesson->getTeaching());
+	}
+
+	/**
+	 * Check permissions for currently logged user
+	 */
 	public function checkUser()
 	{
 		if (!$this->user->isInRole('admin')) {
@@ -306,21 +385,6 @@ class LessonPresenter extends AuthorizedBasePresenter
 				$this->redirect('Homepage:default');
 			}
 		}
-	}
-
-	public function createComponentStudents()
-	{
-		$control = $this->studentsControlFactory->create($this->lesson->getTeaching());
-		$control->setLesson($this->lesson);
-		return $control;
-	}
-
-	/**
-	 * Factory for creating chat component
-	 */
-	public function createComponentChat()
-	{
-		return $this->chatControlFactory->create($this->user, $this->actualYear, $this->lesson->getTeaching());
 	}
 
 	public function beforeRender()

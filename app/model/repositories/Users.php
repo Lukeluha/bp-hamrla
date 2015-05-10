@@ -11,9 +11,15 @@ use App\Model\Entities\Teaching;
 use Kdyby\Doctrine\EntityRepository;
 use Nette\Security\User;
 
+/**
+ * Class Users
+ * Repository class for entity user
+ * @package App\Model\Repositories
+ */
 class Users extends EntityRepository
 {
 	/**
+	 * Find all users for chat
 	 * @param User $user
 	 * @param SchoolYear $schoolYear
 	 * @return array

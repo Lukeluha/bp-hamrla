@@ -11,6 +11,11 @@ use Kdyby\Doctrine\EntityManager;
 use Nette\Application\UI\Control;
 use Nette\Application\UI\Form;
 
+/**
+ * Class CommentsControl
+ * Showing and adding comments for given post
+ * @package App\Controls
+ */
 class CommentsControl extends Control
 {
 	/**

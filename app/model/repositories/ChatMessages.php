@@ -4,8 +4,21 @@ namespace App\Model\Repositories;
 
 use Kdyby\Doctrine\EntityRepository;
 
+/**
+ * Class ChatMessages
+ * Repository class for chat message entity
+ * @package App\Model\Repositories
+ */
 class ChatMessages extends EntityRepository
 {
+	/**
+	 * Returns conversation between 2 users and handle paging
+	 * @param $user1
+	 * @param $user2
+	 * @param int $limit
+	 * @param null $fromId
+	 * @return array
+	 */
 	public function findChatConversation($user1, $user2, $limit = 15, $fromId = null)
 	{
 		if ($fromId) {
