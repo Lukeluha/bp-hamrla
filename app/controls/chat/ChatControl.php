@@ -11,12 +11,10 @@ namespace App\Controls;
 
 use App\Filter\TemplateFilters;
 use App\Model\Entities\ChatMessage;
-use App\Model\Entities\ClassEntity;
 use App\Model\Entities\SchoolYear;
 use App\Model\Entities\Student;
 use App\Model\Entities\Teaching;
-use App\Model\Repositories\Classes;
-use Nette\Application\UI\Control;
+use Nette\Application\UI\Control;	
 use Kdyby\Doctrine\EntityManager;
 use Nette\Security\User;
 

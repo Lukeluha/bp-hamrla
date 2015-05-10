@@ -66,52 +66,65 @@
 </head>
 <body {if $presenter->name != "Login"}ng-cloak{else}class="loginPage"{/if}>
 
-<div n:if="$presenter->name != Login" class="fixed">
-	{control menu}
-</div>
+<noscript>
+	<style type="text/css">
+		.pagecontainer { display:none; }
+	</style>
+	<div class="small-12">
+		<div class="alert-box alert">
+			Pro využití této aplikace je vyžadován JavaScript. Povolte jej, prosím, ve svém prohlížeči.
+		</div>
+	</div>
+</noscript>
 
-<div n:foreach="$flashes as $flash" data-alert n:class="alert-box, $flash->type">
-	{$flash->message|noescape}
-	<a href="#" class="close">&times;</a>
-</div>
-{if $presenter->name != 'Login' && !$actualYear && $presenter->name != "SchoolYear" && $user->isInRole('admin')}
-	<div class="alert-box alert">
-		Není aktivní žádný školní rok. Možná jej chcete <a class="alert" href="{link SchoolYear:default}">vytvořit</a>
+<div class="pagecontainer">
+	<div n:if="$presenter->name != Login" class="fixed">
+		{control menu}
+	</div>
+
+	<div n:foreach="$flashes as $flash" data-alert n:class="alert-box, $flash->type">
+		{$flash->message|noescape}
 		<a href="#" class="close">&times;</a>
 	</div>
-{/if}
-<div class="row full-width">
-	<div class="small-12 column no-padding" id="main-content-wrapper">
-		<div n:if="$presenter->name != Login" class="hide-for-small small-12 ">
-			{control breadcrumbs}
-		</div>
-
-		{block leftMenu}
-			<div class="column small-12 large-2">
-				&nbsp;
-			</div>
-		{/block}
-
-
-		<div class="column {block contentWidth}small-12 large-10{/block}">
-			{block content}
-
-			{/block}
-		</div>
-	</div>
-
-
-
-	{if $presenter->name != "Login"}
-		<div class="hide-for-small column no-padding" id="chat-wrapper" ng-controller="ChatController">
-			{if $actualYear}
-				{block chat}
-					{control chat}
-				{/block}
-				<div class="clearfix"></div>
-			{/if}
+	{if $presenter->name != 'Login' && !$actualYear && $presenter->name != "SchoolYear" && $user->isInRole('admin')}
+		<div class="alert-box alert">
+			Není aktivní žádný školní rok. Možná jej chcete <a class="alert" href="{link SchoolYear:default}">vytvořit</a>
+			<a href="#" class="close">&times;</a>
 		</div>
 	{/if}
+	<div class="row full-width">
+		<div class="small-12 column no-padding" id="main-content-wrapper">
+			<div n:if="$presenter->name != Login" class="hide-for-small small-12 ">
+				{control breadcrumbs}
+			</div>
+
+			{block leftMenu}
+				<div class="column small-12 large-2">
+					&nbsp;
+				</div>
+			{/block}
+
+
+			<div class="column {block contentWidth}small-12 large-10{/block}">
+				{block content}
+
+				{/block}
+			</div>
+		</div>
+
+
+
+		{if $presenter->name != "Login"}
+			<div class="hide-for-small column no-padding" id="chat-wrapper" ng-controller="ChatController">
+				{if $actualYear}
+					{block chat}
+						{control chat}
+					{/block}
+					<div class="clearfix"></div>
+				{/if}
+			</div>
+		{/if}
+	</div>
 </div>
 
 </body>
