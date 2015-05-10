@@ -15,13 +15,15 @@ class ProfilePresenter extends AuthorizedBasePresenter
 
 	public function actionDefault()
 	{
+		$this->addLinkToNav("Nastavení profilu", "this");
 
 	}
 
 	public function createComponentPhotoForm()
 	{
 		$form = new Form();
-		$form->addUpload('photo')->setRequired("Vyberte foto")->addRule(Form::IMAGE, "Soubor musí být obrázek");
+		$form->addUpload('photo')->setRequired("Vyberte foto")->addRule(Form::IMAGE, "Soubor musí být obrázek")
+			->addRule(Form::MAX_FILE_SIZE, "Obrázek musí být menší než 10 MB", 10 * 1024 * 1024);
 
 		$form->addSubmit('save', "Uložit");
 		$form->onSuccess[] = $this->savePhoto;
@@ -41,6 +43,17 @@ class ProfilePresenter extends AuthorizedBasePresenter
 			$height = $image->getHeight();
 			$width = $image->getWidth();
 
+			if ($width > 500) {
+				$image->resize(500, null);
+			}
+
+			if ($height > 500) {
+				$image->resize(null, 500);
+			}
+
+			$height = $image->getHeight();
+			$width = $image->getWidth();
+
 			if (abs($height - $width) < 5) {
 				$image->save($path, 100, Image::JPEG);
 			} elseif ($width < $height) {
@@ -55,7 +68,10 @@ class ProfilePresenter extends AuthorizedBasePresenter
 				$image->save($path, 100, Image::JPEG);
 			}
 
-			$this->flashMessage("Obrázek byl úspěšně uložen", "success");
+			$user = $this->em->find(User::getClassName(), $this->user->getId());
+			$this->user->getIdentity()->profilePicture = $user->getProfilePicture();
+
+			$this->flashMessage("Obrázek byl úspěšně uložen. Změna se projeví po aktualizaci stránky.", "success");
 		} catch (Exception $e) {
 			$this->flashMessage("Obrázek nebyl uložen", "alert");
 		}
