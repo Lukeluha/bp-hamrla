@@ -10,4 +10,6 @@ return array(
     $vendorDir . '/nette/safe-stream/src/loader.php',
     $vendorDir . '/nette/deprecated/src/loader.php',
     $vendorDir . '/kdyby/events/src/Doctrine/compatibility.php',
+    $vendorDir . '/herrera-io/json/src/lib/json_version.php',
+    $vendorDir . '/herrera-io/phar-update/src/lib/constants.php',
 );

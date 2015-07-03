@@ -391,10 +391,12 @@ class LessonPresenter extends AuthorizedBasePresenter
 	{
 		parent::beforeRender();
 
-		if ($this->lesson->getName()) {
-			$this->template->title = $this->lesson->getName() . " | " . $this->lesson->getTeaching()->getSubject()->getAbbreviation();
-		} else {
-			$this->template->title = $this->lesson->getRank() . ". hodina | " . $this->lesson->getTeaching()->getSubject()->getAbbreviation();
+		if ($this->lesson) {
+			if ($this->lesson->getName()) {
+				$this->template->title = $this->lesson->getName() . " | " . $this->lesson->getTeaching()->getSubject()->getAbbreviation();
+			} else {
+				$this->template->title = $this->lesson->getRank() . ". hodina | " . $this->lesson->getTeaching()->getSubject()->getAbbreviation();
+			}
 		}
 	}
 }

@@ -20,7 +20,8 @@
 		"dg/adminer-custom": "~1.6",
 		"kdyby/doctrine": "~2.3",
         "phpoffice/phpexcel": "~1.8",
-		"kdyby/forms-replicator": "@dev"
+		"kdyby/forms-replicator": "@dev",
+		"phpdocumentor/phpdocumentor": "2.*"
 	},
 	"require-dev": {
 		"nette/tester": "~1.3"

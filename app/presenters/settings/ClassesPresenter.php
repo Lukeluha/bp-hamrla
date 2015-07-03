@@ -154,7 +154,7 @@ class ClassesPresenter extends AuthorizedBasePresenter
 
 		$teachingTimes = $form->addDynamic('teachingTime', function (Container $teachingTime) use ($days, $redrawCallback, $removeCallback) {
 			$teachingTime->addSelect("weekDay", "Den v týdnu", $days);
-			$teachingTime->addText("from", "Od")->setType('time')->setRequired('Vyplňte čas výuky od');
+			$teachingTime->addText("from", "Od")->setType('time')->setRequired('Vyplňte čas výuky od')->addRule(Form::PATTERN, "Vyplňte čas od ve formátu HH:MM", "([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]");
 			$teachingTime->addText("to", "Do")->setType('time')->setRequired('Vyplňte čas výuky do');
 			$teachingTime->addSelect("weekParity", "Parita týdne", array('0' => "oba týdny", TeachingTime::WEEK_EVEN => "sudý", TeachingTime::WEEK_ODD => "lichý"))->setAttribute('class', 'borderBottom');
 

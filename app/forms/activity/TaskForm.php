@@ -149,7 +149,9 @@ class TaskForm extends Control
 
 		if (!$new) {
 			$defaults['taskId'] = $task->getId();
-			$defaults['end'] = $task->getEnd()->format("j. n. Y H:i");
+			if ($task->getEnd()) {
+				$defaults['end'] = $task->getEnd()->format("j. n. Y H:i");
+			}
 			$defaults['limitType'] = $task->getLimit();
 			$defaults['visible'] = $task->getVisible();
 		}
